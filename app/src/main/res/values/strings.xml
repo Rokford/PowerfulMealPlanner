@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">PowerfulShoppingList</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="yes">yes</string>
+    <string name="no">no</string>
+    <string name="new_recipe">New Recipe</string>
+    <string name="recipies_list">Recipies List</string>
+    <string name="callendar">Callendar</string>
+    <string name="shopping_list">Shopping List</string>
+    <string name="title_activity_shopping_list">ShoppingListActivity</string>
+    <string name="title_activity_recipe_list">RecipeListActivity</string>
+    <string name="title_activity_add_shopping_item">AddShoppingItemActivity</string>
+    <string name="title_activity_add_recipe_item">AddRecipeItemActivity</string>
+    <string name="add">Add</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="button_name">Add ingredient</string>
+    <string name="name">Name</string>
+    <string name="quantity">Quantity</string>
+    <string name="unit">Unit</string>
+    <string name="name_hint">Type the name for this product</string>
+    <string name="quantity_hint">How many ?</string>
+    <string name="unit_hint">What unit?</string>
+    <string name="add_item">Add Item</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="fields_cannot_be_empty">Fields cannot be empty</string>
+
+</resources>

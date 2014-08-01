@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:psl="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_delete"
+        psl:showAsAction="always"
+        android:title="@string/delete"/>
+</menu><!-- From: file:/Users/plgrizw/AndroidstudioProjects/PowerfulShoppingList/app/src/main/res/menu/context.xml -->
