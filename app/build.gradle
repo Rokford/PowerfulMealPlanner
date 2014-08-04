@@ -2,7 +2,7 @@ apply plugin: 'android'
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "20.0.0"
+    buildToolsVersion '20.0.0'
 
     defaultConfig {
         applicationId "com.example.powerfulshoppinglist"
@@ -19,9 +19,9 @@ android {
 }
 
 dependencies {
-//    compile 'com.android.support:support-v4:+'
-//    compile 'com.android.support:appcompat-v7:+'
-
+    //    compile 'com.android.support:support-v4:+'
+    //    compile 'com.android.support:appcompat-v7:+'
     compile 'com.android.support:appcompat-v7:20.+'
     compile 'com.android.support:support-v4:20.+'
+    compile project(':libraries:library')
 }

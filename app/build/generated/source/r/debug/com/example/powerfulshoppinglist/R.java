@@ -809,13 +809,22 @@ containing a value of this type.
         public static final int abc_split_action_bar_is_narrow=0x7f050005;
     }
     public static final class color {
-        public static final int abc_search_url_text_holo=0x7f060006;
+        public static final int abc_search_url_text_holo=0x7f06000f;
         public static final int abc_search_url_text_normal=0x7f060000;
         public static final int abc_search_url_text_pressed=0x7f060001;
         public static final int abc_search_url_text_selected=0x7f060002;
         public static final int black_50_transparent=0x7f060003;
-        public static final int highlight=0x7f060004;
-        public static final int normal=0x7f060005;
+        public static final int caldroid_black=0x7f060004;
+        public static final int caldroid_darker_gray=0x7f060005;
+        public static final int caldroid_gray=0x7f060006;
+        public static final int caldroid_holo_blue_dark=0x7f060007;
+        public static final int caldroid_holo_blue_light=0x7f060008;
+        public static final int caldroid_lighter_gray=0x7f060009;
+        public static final int caldroid_sky_blue=0x7f06000a;
+        public static final int caldroid_transparent=0x7f06000b;
+        public static final int caldroid_white=0x7f06000c;
+        public static final int highlight=0x7f06000d;
+        public static final int normal=0x7f06000e;
     }
     public static final class dimen {
         public static final int abc_action_bar_default_height=0x7f080000;
@@ -928,9 +937,17 @@ containing a value of this type.
         public static final int abc_textfield_searchview_holo_light=0x7f020054;
         public static final int abc_textfield_searchview_right_holo_dark=0x7f020055;
         public static final int abc_textfield_searchview_right_holo_light=0x7f020056;
-        public static final int custom_background=0x7f020057;
-        public static final int ic_drawer=0x7f020058;
-        public static final int ic_launcher=0x7f020059;
+        public static final int calendar_next_arrow=0x7f020057;
+        public static final int calendar_prev_arrow=0x7f020058;
+        public static final int cell_bg=0x7f020059;
+        public static final int custom_background=0x7f02005a;
+        public static final int disable_cell=0x7f02005b;
+        public static final int ic_drawer=0x7f02005c;
+        public static final int ic_launcher=0x7f02005d;
+        public static final int left_arrow=0x7f02005e;
+        public static final int red_border=0x7f02005f;
+        public static final int red_border_gray_bg=0x7f020060;
+        public static final int right_arrow=0x7f020061;
     }
     public static final class id {
         public static final int action_bar=0x7f07001c;
@@ -948,6 +965,12 @@ containing a value of this type.
         public static final int addIngredientButton=0x7f07003d;
         public static final int always=0x7f07000f;
         public static final int beginning=0x7f07000a;
+        public static final int calendar_gridview=0x7f07004b;
+        public static final int calendar_left_arrow=0x7f070045;
+        public static final int calendar_month_year_textview=0x7f070046;
+        public static final int calendar_right_arrow=0x7f070047;
+        public static final int calendar_title_view=0x7f070044;
+        public static final int calendar_tv=0x7f07004a;
         public static final int checkbox=0x7f07002d;
         public static final int collapseActionView=0x7f070011;
         public static final int default_activity_button=0x7f070028;
@@ -968,20 +991,21 @@ containing a value of this type.
         public static final int left_drawer=0x7f070043;
         public static final int listMode=0x7f070001;
         public static final int list_item=0x7f070029;
-        public static final int menu_add=0x7f07004a;
-        public static final int menu_delete=0x7f070049;
-        public static final int menu_refresh=0x7f07004b;
-        public static final int menu_save=0x7f070048;
+        public static final int menu_add=0x7f070052;
+        public static final int menu_delete=0x7f070051;
+        public static final int menu_refresh=0x7f070053;
+        public static final int menu_save=0x7f070050;
         public static final int middle=0x7f07000b;
+        public static final int months_infinite_pager=0x7f070049;
         public static final int nameEditText=0x7f07003c;
-        public static final int nameTextView=0x7f070045;
+        public static final int nameTextView=0x7f07004d;
         public static final int never=0x7f07000d;
         public static final int none=0x7f070009;
         public static final int normal=0x7f070000;
         public static final int progress_circular=0x7f070018;
         public static final int progress_horizontal=0x7f070019;
         public static final int quantityEditText=0x7f07003f;
-        public static final int quantityTextView=0x7f070046;
+        public static final int quantityTextView=0x7f07004e;
         public static final int radio=0x7f07002f;
         public static final int search_badge=0x7f070032;
         public static final int search_bar=0x7f070031;
@@ -1001,13 +1025,14 @@ containing a value of this type.
         public static final int split_action_bar=0x7f07001e;
         public static final int submit_area=0x7f070039;
         public static final int tabMode=0x7f070002;
-        public static final int textView1=0x7f070044;
+        public static final int textView1=0x7f07004c;
         public static final int title=0x7f07002b;
         public static final int top_action_bar=0x7f070020;
         public static final int unitEditText=0x7f070040;
-        public static final int unitTextView=0x7f070047;
+        public static final int unitTextView=0x7f07004f;
         public static final int up=0x7f070021;
         public static final int useLogo=0x7f070003;
+        public static final int weekday_gridview=0x7f070048;
         public static final int withText=0x7f070010;
     }
     public static final class integer {
@@ -1043,9 +1068,12 @@ containing a value of this type.
         public static final int activity_main=0x7f03001a;
         public static final int activity_recipe_list=0x7f03001b;
         public static final int activity_shopping_list=0x7f03001c;
-        public static final int navigation_drawer_item=0x7f03001d;
-        public static final int shopping_list_view_item=0x7f03001e;
-        public static final int support_simple_spinner_dropdown_item=0x7f03001f;
+        public static final int calendar_view=0x7f03001d;
+        public static final int date_cell=0x7f03001e;
+        public static final int date_grid_fragment=0x7f03001f;
+        public static final int navigation_drawer_item=0x7f030020;
+        public static final int shopping_list_view_item=0x7f030021;
+        public static final int support_simple_spinner_dropdown_item=0x7f030022;
     }
     public static final class menu {
         public static final int add_item_menu=0x7f0c0000;

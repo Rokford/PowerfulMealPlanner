@@ -82,6 +82,21 @@
     <eat-comment />
 
     <color name="black_50_transparent">#50000000</color>
+    <!-- From: file:/Users/plgrizw/AndroidstudioProjects/PowerfulShoppingList/app/build/intermediates/exploded-aar/PowerfulShoppingList.libraries/library/unspecified/res/values/values.xml -->
+    <eat-comment />
+
+    <color name="caldroid_black">#000000</color>
+    <color name="caldroid_darker_gray">#aaa</color>
+    <color name="caldroid_gray">#CCC</color>
+    <color name="caldroid_holo_blue_dark">#ff0099cc</color>
+    <color name="caldroid_holo_blue_light">#ff33b5e5</color>
+    <color name="caldroid_lighter_gray">#ddd</color>
+    <color name="caldroid_sky_blue">#FFA3E8F7</color>
+    <color name="caldroid_transparent">#00000000</color>
+    <color name="caldroid_white">#FFFFFF</color>
+    <!-- From: file:/Users/plgrizw/AndroidstudioProjects/PowerfulShoppingList/app/src/main/res/values/colors.xml -->
+    <eat-comment />
+
     <color name="highlight">#ff33ffff</color>
     <color name="normal">#ff000000</color>
     <!-- From: file:/Users/plgrizw/AndroidstudioProjects/PowerfulShoppingList/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/20.0.0/res/values/values.xml -->
