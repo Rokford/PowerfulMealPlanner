@@ -10,12 +10,12 @@ public class DatabaseCreator extends SQLiteOpenHelper
 {
 	public static final String TABLE_SHOPPING_ITEMS = "shopping_items";
     public static final String TABLE_RECIPE_ITEMS = "recipe_table_names";
-    public static final String COLUMN_RECIPE_NAME = "unit";
+    public static final String COLUMN_RECIPE_NAME = "recipe_name";
 	public static final String COLUMN_ID = "_id";
 	public static final String COLUMN_ITEM = "item";
 	public static final String COLUMN_QUANTITY = "quantity";
 	public static final String COLUMN_UNIT = "unit";
-    public static final String COLUMN_TABLE_NAME = "table";
+    public static final String COLUMN_TABLE_NAME = "table_name";
 
 	private static final String DATABASE_NAME = "powerful_shopping_list.db";
 	private static final int DATABASE_VERSION = 2;
