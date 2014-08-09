@@ -27,5 +27,7 @@
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
     <string name="fields_cannot_be_empty">Fields cannot be empty</string>
+    <string name="title_activity_calendar">CalendarActivity</string>
+    <string name="action_settings">Settings</string>
 
 </resources>

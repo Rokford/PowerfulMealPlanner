@@ -25,82 +25,94 @@ import android.widget.AbsListView;
 public class ShoppingListActivity extends ActionBarActivity
 {
 
-	private DrawerLayout drawerLayout;
+    private DrawerLayout drawerLayout;
 
-	private ActionBarDrawerToggle drawerToggle;
+    private ActionBarDrawerToggle drawerToggle;
 
-	private ListView drawerList;
-	
-	private ListView shoppingListView;
-	
-	private ShoppingListAdapter adapter;
+    private ListView drawerList;
+
+    private ListView shoppingListView;
+
+    private ShoppingListAdapter adapter;
 
     SparseBooleanArray selected;
 
-	@SuppressLint("NewApi")
+    @SuppressLint("NewApi")
     @Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		drawerList = (ListView) findViewById(R.id.left_drawer);
-		
-		drawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.navigation_drawer_item, Utilities.navigationItemsArray));
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerList = (ListView) findViewById(R.id.left_drawer);
 
-		getSupportActionBar().setTitle(getResources().getString(R.string.shopping_list));
+        drawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.navigation_drawer_item, Utilities.navigationItemsArray));
 
-		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer, R.string.yes, R.string.no)
-		{
-			@Override
-			public void onDrawerOpened(View drawerView)
-			{
-				super.onDrawerOpened(drawerView);
-			}
+        getSupportActionBar().setTitle(getResources().getString(R.string.shopping_list));
 
-			@Override
-			public void onDrawerClosed(View drawerView)
-			{
-				super.onDrawerClosed(drawerView);
-			}
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer, R.string.yes, R.string.no)
+        {
+            @Override
+            public void onDrawerOpened(View drawerView)
+            {
+                super.onDrawerOpened(drawerView);
+            }
 
-			@Override
-			public void onDrawerSlide(View drawerView, float slideOffset)
-			{
+            @Override
+            public void onDrawerClosed(View drawerView)
+            {
+                super.onDrawerClosed(drawerView);
+            }
 
-				super.onDrawerSlide(drawerView, slideOffset);
-			}
-		};
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset)
+            {
 
-		drawerLayout.setDrawerListener(drawerToggle);
+                super.onDrawerSlide(drawerView, slideOffset);
+            }
+        };
 
-        drawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        drawerLayout.setDrawerListener(drawerToggle);
+
+        drawerList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
             @Override
             public void onItemClick(AdapterView<?> adapter, View v, int position,
-                                    long arg3) {
+                                    long arg3)
+            {
                 String value = (String) adapter.getItemAtPosition(position);
-                if(value == getResources().getString(R.string.recipies_list)) {
+                if (value == getResources().getString(R.string.recipies_list))
+                {
                     Intent intent = new Intent(ShoppingListActivity.this, RecipeListActivity.class);
                     startActivity(intent);
-                } else if (value == getResources().getString(R.string.shopping_list)) {
+                }
+                else if (value == getResources().getString(R.string.shopping_list))
+                {
                     Intent intent = new Intent(ShoppingListActivity.this, ShoppingListActivity.class);
+                    startActivity(intent);
+                }
+                else if (value == getResources().getString(R.string.callendar))
+                {
+                    Intent intent = new Intent(ShoppingListActivity.this, CalendarActivity.class);
                     startActivity(intent);
                 }
 
             }
         });
 
-		getSupportActionBar().setIcon(R.drawable.ic_launcher);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		getSupportActionBar().setDisplayShowTitleEnabled(true);
-	
-		shoppingListView = (ListView) findViewById(R.id.shoppingListView);
+        getSupportActionBar().setIcon(R.drawable.ic_launcher);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+
+        shoppingListView = (ListView) findViewById(R.id.shoppingListView);
         shoppingListView.setAdapter(adapter);
-        shoppingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        shoppingListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
             @Override
             public void onItemClick(AdapterView<?> adapter, View v, int position,
-                                    long arg3) {
+                                    long arg3)
+            {
                 //String value = (String) adapter.getItem(position);
                 Intent intent = new Intent(ShoppingListActivity.this, AddShoppingItemActivity.class);
                 intent.putExtra("id", position);
@@ -109,11 +121,13 @@ public class ShoppingListActivity extends ActionBarActivity
         });
 
         shoppingListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-        shoppingListView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
+        shoppingListView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener()
+        {
 
             @Override
-            public void onItemCheckedStateChanged (ActionMode mode,int position,
-                                                   long id, boolean checked){
+            public void onItemCheckedStateChanged(ActionMode mode, int position,
+                                                  long id, boolean checked)
+            {
                 final int checkedCount = shoppingListView.getCheckedItemCount();
                 mode.setTitle(checkedCount + " Selected");
 //                selected = new SparseBooleanArray();
@@ -127,8 +141,10 @@ public class ShoppingListActivity extends ActionBarActivity
             }
 
             @Override
-            public boolean onActionItemClicked (ActionMode mode, MenuItem item){
-                switch (item.getItemId()) {
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item)
+            {
+                switch (item.getItemId())
+                {
                     case R.id.menu_delete:
                         deleteSelectedItems();
                         adapter.notifyDataSetChanged();
@@ -140,7 +156,8 @@ public class ShoppingListActivity extends ActionBarActivity
             }
 
             @Override
-            public boolean onCreateActionMode (ActionMode mode, Menu menu){
+            public boolean onCreateActionMode(ActionMode mode, Menu menu)
+            {
                 // Inflate the menu for the CAB
                 MenuInflater inflater = mode.getMenuInflater();
                 inflater.inflate(R.menu.context, menu);
@@ -148,24 +165,28 @@ public class ShoppingListActivity extends ActionBarActivity
             }
 
             @Override
-            public void onDestroyActionMode (ActionMode mode){
+            public void onDestroyActionMode(ActionMode mode)
+            {
                 onResume();
             }
 
             @Override
-            public boolean onPrepareActionMode (ActionMode mode, Menu menu){
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu)
+            {
                 // Here you can perform updates to the CAB due to
                 // an invalidate() request
                 return false;
             }
         });
-	}
+    }
 
-    public void toggleSelection(int position, SparseBooleanArray mSelectedItemsIds) {
+    public void toggleSelection(int position, SparseBooleanArray mSelectedItemsIds)
+    {
         selectView(position, !mSelectedItemsIds.get(position), mSelectedItemsIds);
     }
 
-    public void selectView(int position, boolean value, SparseBooleanArray mSelectedItemsIds) {
+    public void selectView(int position, boolean value, SparseBooleanArray mSelectedItemsIds)
+    {
         if (value)
             mSelectedItemsIds.put(position, value);
         else
@@ -173,11 +194,14 @@ public class ShoppingListActivity extends ActionBarActivity
         adapter.notifyDataSetChanged();
     }
 
-    private void deleteSelectedItems() {
+    private void deleteSelectedItems()
+    {
         DatabaseManager manager = new DatabaseManager(this);
         manager.open();
-        for (int i = 0; i < adapter.getCount(); i++) {
-            if (shoppingListView.isItemChecked(i)) {
+        for (int i = 0; i < adapter.getCount(); i++)
+        {
+            if (shoppingListView.isItemChecked(i))
+            {
                 ShoppingItem selectedItem = (ShoppingItem) adapter.getItem(i);
                 manager.deleteShoppingItem(selectedItem);
             }
@@ -187,61 +211,61 @@ public class ShoppingListActivity extends ActionBarActivity
     }
 
     @Override
-	public boolean onCreateOptionsMenu(Menu menu)
-	{
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
 
-		MenuInflater inflater = getMenuInflater();
+        MenuInflater inflater = getMenuInflater();
 
-		inflater.inflate(R.menu.main_menu, menu);
+        inflater.inflate(R.menu.main_menu, menu);
 
-		return super.onCreateOptionsMenu(menu);
-	}
+        return super.onCreateOptionsMenu(menu);
+    }
 
-	@Override
-	protected void onPostCreate(Bundle savedInstanceState)
-	{
-		super.onPostCreate(savedInstanceState);
-		// Sync the toggle state after onRestoreInstanceState has occurred.
-		drawerToggle.syncState();
-	}
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState)
+    {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        drawerToggle.syncState();
+    }
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
-	{
-		if (item.getItemId() == android.R.id.home)
-		{
-			if (drawerLayout.isDrawerOpen(Gravity.LEFT))
-				drawerLayout.closeDrawers();
-			else
-				drawerLayout.openDrawer(Gravity.LEFT);
-		}
-		else if (item.getItemId() == R.id.menu_add)
-		{
-			Intent intent = new Intent(this, AddShoppingItemActivity.class);
-			startActivity(intent);
-		}
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        if (item.getItemId() == android.R.id.home)
+        {
+            if (drawerLayout.isDrawerOpen(Gravity.LEFT))
+                drawerLayout.closeDrawers();
+            else
+                drawerLayout.openDrawer(Gravity.LEFT);
+        }
+        else if (item.getItemId() == R.id.menu_add)
+        {
+            Intent intent = new Intent(this, AddShoppingItemActivity.class);
+            startActivity(intent);
+        }
 
-		return super.onOptionsItemSelected(item);
-	}
-	
-	@Override
-	protected void onResume()
-	{
-		DatabaseManager manager = new DatabaseManager(this);
-		
-		manager.open();
-		
-		ArrayList<ShoppingItem> shoppingItemsList = manager.getAllShoppingItems();
-		
-		adapter = new ShoppingListAdapter(this);
-		adapter.setShoppingItemsList(shoppingItemsList);
-		
-		shoppingListView.setAdapter(adapter);
-		
-		manager.close();
-		
-		super.onResume();
-	}
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume()
+    {
+        DatabaseManager manager = new DatabaseManager(this);
+
+        manager.open();
+
+        ArrayList<ShoppingItem> shoppingItemsList = manager.getAllShoppingItems();
+
+        adapter = new ShoppingListAdapter(this);
+        adapter.setShoppingItemsList(shoppingItemsList);
+
+        shoppingListView.setAdapter(adapter);
+
+        manager.close();
+
+        super.onResume();
+    }
 
 
 }
