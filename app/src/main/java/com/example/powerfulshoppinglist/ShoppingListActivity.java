@@ -1,12 +1,9 @@
 package com.example.powerfulshoppinglist;
 
-import java.util.ArrayList;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.util.SparseBooleanArray;
@@ -16,11 +13,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CheckedTextView;
 import android.widget.ListView;
-import android.widget.AbsListView;
+
+import java.util.ArrayList;
 
 public class ShoppingListActivity extends ActionBarActivity
 {
@@ -85,16 +83,19 @@ public class ShoppingListActivity extends ActionBarActivity
                 if (value == getResources().getString(R.string.recipies_list))
                 {
                     Intent intent = new Intent(ShoppingListActivity.this, RecipeListActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }
                 else if (value == getResources().getString(R.string.shopping_list))
                 {
                     Intent intent = new Intent(ShoppingListActivity.this, ShoppingListActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }
                 else if (value == getResources().getString(R.string.callendar))
                 {
                     Intent intent = new Intent(ShoppingListActivity.this, CalendarActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }
 

@@ -74,16 +74,19 @@ public class CalendarActivity extends ActionBarActivity
                 if (value == getResources().getString(R.string.recipies_list))
                 {
                     Intent intent = new Intent(CalendarActivity.this, RecipeListActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }
                 else if (value == getResources().getString(R.string.shopping_list))
                 {
                     Intent intent = new Intent(CalendarActivity.this, ShoppingListActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }
                 else if (value == getResources().getString(R.string.callendar))
                 {
                     Intent intent = new Intent(CalendarActivity.this, CalendarActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }
 

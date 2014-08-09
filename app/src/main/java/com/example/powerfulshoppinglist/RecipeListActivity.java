@@ -80,9 +80,11 @@ public class RecipeListActivity extends ActionBarActivity
                 String value = (String) adapter.getItemAtPosition(position);
                 if(value == getResources().getString(R.string.recipies_list)) {
                     Intent intent = new Intent(RecipeListActivity.this, RecipeListActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 } else if (value == getResources().getString(R.string.shopping_list)) {
                     Intent intent = new Intent(RecipeListActivity.this, ShoppingListActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }
 
