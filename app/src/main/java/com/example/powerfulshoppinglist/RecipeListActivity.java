@@ -89,6 +89,12 @@ public class RecipeListActivity extends ActionBarActivity
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }
+                else if (value == getResources().getString(R.string.callendar))
+                {
+                    Intent intent = new Intent(RecipeListActivity.this, CalendarActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
 
             }
         });
