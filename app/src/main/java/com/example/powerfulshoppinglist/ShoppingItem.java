@@ -2,10 +2,11 @@ package com.example.powerfulshoppinglist;
 
 public class ShoppingItem
 {
-    private long id;
-    private String item;
-    private String quantity;
-    private String unit;
+	private long id;
+	private String item;
+	private String quantity;
+	private String unit;
+    private String recipeName;
 
     public ShoppingItem()
     {
@@ -20,34 +21,44 @@ public class ShoppingItem
     }
 
     public long getId()
-    {
-        return id;
-    }
+	{
+		return id;
+	}
 
-    public void setId(long id)
-    {
-        this.id = id;
-    }
+	public void setId(long id)
+	{
+		this.id = id;
+	}
 
-    public String getItem()
-    {
-        return item;
-    }
+	public String getItem()
+	{
+		return item;
+	}
 
-    public void setItem(String item)
-    {
-        this.item = item;
-    }
+	public void setItem(String item)
+	{
+		this.item = item;
+	}
 
-    public String getQuantity()
-    {
-        return quantity;
-    }
+	public String getQuantity()
+	{
+		return quantity;
+	}
 
-    public void setQuantity(String quantity)
-    {
-        this.quantity = quantity;
-    }
+	public void setQuantity(String quantity)
+	{
+		this.quantity = quantity;
+	}
+
+	public String getRecipeName()
+	{
+		return recipeName;
+	}
+
+	public void setRecipeName(String recipeName)
+	{
+		this.recipeName = recipeName;
+	}
 
     public String getUnit()
     {
