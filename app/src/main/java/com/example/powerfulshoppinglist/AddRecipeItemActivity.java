@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -90,7 +92,31 @@ public class AddRecipeItemActivity  extends ActionBarActivity
 //        }
 
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        //Bundle extras = getIntent().getExtras();
+        if (item.getItemId() == R.id.menu_save) {
+            String recipeName = nameEditText.getText().toString();
 
+            if (recipeName.length() == 0 || ingredientItemsList.isEmpty()) {
+                Toast.makeText(this, getResources().getString(R.string.fields_cannot_be_empty), Toast.LENGTH_SHORT).show();
+            } else {
+                DatabaseManager manager = new DatabaseManager(this);
+                manager.open();
+                if (extras != null) {
+                    finish();
+                } else {
+                    for (int i = 0; i < ingredientItemsList.size(); i++) {
+                        ShoppingItem shoppingItem = ingredientItemsList.get(i);
+                        manager.createRecipeItem(recipeName, shoppingItem.getItem(), shoppingItem.getQuantity(), shoppingItem.getUnit());
+                    }
+                }
+                manager.close();
+                finish();
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)

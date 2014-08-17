@@ -6,6 +6,7 @@ public class ShoppingItem
 	private String item;
 	private String quantity;
 	private String unit;
+    private String recipeName;
 
     public ShoppingItem()
     {
@@ -49,13 +50,23 @@ public class ShoppingItem
 		this.quantity = quantity;
 	}
 
-	public String getUnit()
+	public String getRecipeName()
 	{
-		return unit;
+		return recipeName;
 	}
 
-	public void setUnit(String unit)
+	public void setRecipeName(String recipeName)
 	{
-		this.unit = unit;
+		this.recipeName = recipeName;
 	}
+
+    public String getUnit()
+    {
+        return unit;
+    }
+
+    public void setUnit(String unit)
+    {
+        this.unit = unit;
+    }
 }

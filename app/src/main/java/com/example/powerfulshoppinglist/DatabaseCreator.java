@@ -9,19 +9,18 @@ import android.util.Log;
 public class DatabaseCreator extends SQLiteOpenHelper
 {
 	public static final String TABLE_SHOPPING_ITEMS = "shopping_items";
-    public static final String TABLE_RECIPE_ITEMS = "recipe_table_names";
+    public static final String TABLE_RECIPE_ITEMS = "recipes_ingredients";
     public static final String COLUMN_RECIPE_NAME = "recipe_name";
 	public static final String COLUMN_ID = "_id";
 	public static final String COLUMN_ITEM = "item";
 	public static final String COLUMN_QUANTITY = "quantity";
 	public static final String COLUMN_UNIT = "unit";
-    public static final String COLUMN_TABLE_NAME = "table_name";
 
 	private static final String DATABASE_NAME = "powerful_shopping_list.db";
-	private static final int DATABASE_VERSION = 2;
+	private static final int DATABASE_VERSION = 5;
 
 	private static final String DATABASE_CREATE = "create table " + TABLE_SHOPPING_ITEMS + "(" + COLUMN_ID + " integer primary key autoincrement, " + COLUMN_ITEM + " text not null," + COLUMN_QUANTITY + " text not null," + COLUMN_UNIT + " text not null);";
-    private static final String DATABASE_RECIPE_TABLE_NAME = "create table " + TABLE_RECIPE_ITEMS + "(" + COLUMN_ID + " integer primary key autoincrement, " + COLUMN_TABLE_NAME + " text not null," + COLUMN_RECIPE_NAME + " text not null);";
+    private static final String DATABASE_RECIPE_TABLE_NAME = "create table " + TABLE_RECIPE_ITEMS + "(" + COLUMN_ID + " integer primary key autoincrement, " + COLUMN_RECIPE_NAME + " text not null," + COLUMN_ITEM + " text not null," + COLUMN_QUANTITY + " text not null," + COLUMN_UNIT + " text not null);";
 
 	private static DatabaseCreator mInstance = null;
 

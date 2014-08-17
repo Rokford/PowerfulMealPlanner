@@ -14,6 +14,8 @@ public class DatabaseManager
 
 	private String[] allColumns =
 	{ databaseCreator.COLUMN_ID, databaseCreator.COLUMN_ITEM, databaseCreator.COLUMN_QUANTITY, databaseCreator.COLUMN_UNIT };
+    private String[] allColumnsAndRecipies =
+            { databaseCreator.COLUMN_ID, databaseCreator.COLUMN_RECIPE_NAME , databaseCreator.COLUMN_ITEM, databaseCreator.COLUMN_QUANTITY, databaseCreator.COLUMN_UNIT };
 
 	public DatabaseManager(Context context)
 	{
@@ -83,27 +85,54 @@ public class DatabaseManager
 
 	private ShoppingItem cursorToShoppingItem(Cursor cursor)
 	{
-		ShoppingItem shoppingItem = new ShoppingItem();
-		shoppingItem.setId(cursor.getLong(0));
-		shoppingItem.setItem(cursor.getString(1));
-		shoppingItem.setQuantity(cursor.getString(2));
-		shoppingItem.setUnit(cursor.getString(3));
+        ShoppingItem shoppingItem = new ShoppingItem();
+        shoppingItem.setId(cursor.getLong(0));
+        shoppingItem.setItem(cursor.getString(1));
+        shoppingItem.setQuantity(cursor.getString(2));
+        shoppingItem.setUnit(cursor.getString(3));
 
-		return shoppingItem;
+        return shoppingItem;
 	}
 
-    public void createRecipeItem(String itemName, String quantity, String unit)
+    private ShoppingItem cursorToRecipeItem(Cursor cursor)
+    {
+        ShoppingItem shoppingItem = new ShoppingItem();
+        shoppingItem.setId(cursor.getLong(0));
+        shoppingItem.setRecipeName(cursor.getString(1));
+        shoppingItem.setItem(cursor.getString(2));
+        shoppingItem.setQuantity(cursor.getString(3));
+        shoppingItem.setUnit(cursor.getString(4));
+
+        return shoppingItem;
+    }
+
+    public void createRecipeItem(String recipeName, String itemName, String quantity, String unit)
     {
         ContentValues values = new ContentValues();
+        values.put(databaseCreator.COLUMN_RECIPE_NAME, itemName);
         values.put(databaseCreator.COLUMN_ITEM, itemName);
+        values.put(databaseCreator.COLUMN_QUANTITY, quantity);
+        values.put(databaseCreator.COLUMN_UNIT, unit);
 
-        long insertId = database.insert(databaseCreator.TABLE_SHOPPING_ITEMS, null, values);
+        long insertId = database.insert(databaseCreator.TABLE_RECIPE_ITEMS, null, values);
+    }
 
-        // Cursor cursor = database.query(databaseCreator.TABLE_SHOPPING_ITEMS,
-        // allColumns, databaseCreator.COLUMN_ID + " = " + insertId, null, null,
-        // null, null);
-        // cursor.moveToFirst();
-        // ShoppingItem newShoppingItem = cursorToShoppingItem(cursor);
-        // cursor.close();
+    public ArrayList<ShoppingItem> getAllRecipeItems()
+    {
+        ArrayList<ShoppingItem> shoppingItems = new ArrayList<ShoppingItem>();
+
+        Cursor cursor = database.query(databaseCreator.TABLE_RECIPE_ITEMS, allColumnsAndRecipies, null, null, null, null, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast())
+        {
+            ShoppingItem item = cursorToRecipeItem(cursor);
+            shoppingItems.add(item);
+            cursor.moveToNext();
+        }
+
+        // make sure to close the cursor
+        cursor.close();
+        return shoppingItems;
     }
 }
