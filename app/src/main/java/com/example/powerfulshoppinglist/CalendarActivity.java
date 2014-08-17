@@ -135,6 +135,10 @@ public class CalendarActivity extends ActionBarActivity
 
                 ListView listView = (ListView) dialogView.findViewById(R.id.calendarDialogListView);
 
+                CalendarDayAdapter calendarAdapter = new CalendarDayAdapter(CalendarActivity.this);
+//                calendarAdapter.setRecipeItemsList();
+
+                listView.setAdapter(calendarAdapter);
 
                 builder.setView(dialogView);
 

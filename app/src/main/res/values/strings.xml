@@ -30,5 +30,6 @@
     <string name="title_activity_calendar">CalendarActivity</string>
     <string name="action_settings">Settings</string>
     <string name="generate">Generate List</string>
+    <string name="add_a_recipe_from_list">Add recipe from list</string>
 
 </resources>
