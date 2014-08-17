@@ -28,7 +28,7 @@ public class RecipeListActivity extends ActionBarActivity
 
     private ListView recipeListView;
 
-    private ShoppingListAdapter adapter;
+    private RecipeListAdapter adapter;
 
     //SparseBooleanArray selected;
 
@@ -37,7 +37,7 @@ public class RecipeListActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_recipe_list);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerList = (ListView) findViewById(R.id.left_drawer);
@@ -96,8 +96,7 @@ public class RecipeListActivity extends ActionBarActivity
         getSupportActionBar().setIcon(R.drawable.ic_launcher);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        recipeListView = (ListView) findViewById(R.id.shoppingListView);
-        recipeListView.setAdapter(adapter);
+        recipeListView = (ListView) findViewById(R.id.recipeListView);
     }
 
     @Override
@@ -145,10 +144,10 @@ public class RecipeListActivity extends ActionBarActivity
 
         manager.open();
 
-        ArrayList<ShoppingItem> shoppingItemsList = manager.getAllRecipeItems();
+        ArrayList<String> recipeNamesList = manager.getAllRecipeNames();
 
-        adapter = new ShoppingListAdapter(this);
-        adapter.setShoppingItemsList(shoppingItemsList);
+        adapter = new RecipeListAdapter(this);
+        adapter.setRecipeItemsList(recipeNamesList);
 
         recipeListView.setAdapter(adapter);
 

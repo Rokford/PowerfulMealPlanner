@@ -1,6 +1,8 @@
 package com.example.powerfulshoppinglist;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -16,6 +18,8 @@ public class DatabaseManager
 	{ databaseCreator.COLUMN_ID, databaseCreator.COLUMN_ITEM, databaseCreator.COLUMN_QUANTITY, databaseCreator.COLUMN_UNIT };
     private String[] allColumnsAndRecipies =
             { databaseCreator.COLUMN_ID, databaseCreator.COLUMN_RECIPE_NAME , databaseCreator.COLUMN_ITEM, databaseCreator.COLUMN_QUANTITY, databaseCreator.COLUMN_UNIT };
+    private String[] allRecipeColumnsNames =
+            { databaseCreator.COLUMN_RECIPE_NAME };
 
 	public DatabaseManager(Context context)
 	{
@@ -106,10 +110,17 @@ public class DatabaseManager
         return shoppingItem;
     }
 
+    private String cursorToRecipeName(Cursor cursor)
+    {
+        String recipeName = cursor.getString(0);
+
+        return recipeName;
+    }
+
     public void createRecipeItem(String recipeName, String itemName, String quantity, String unit)
     {
         ContentValues values = new ContentValues();
-        values.put(databaseCreator.COLUMN_RECIPE_NAME, itemName);
+        values.put(databaseCreator.COLUMN_RECIPE_NAME, recipeName);
         values.put(databaseCreator.COLUMN_ITEM, itemName);
         values.put(databaseCreator.COLUMN_QUANTITY, quantity);
         values.put(databaseCreator.COLUMN_UNIT, unit);
@@ -134,5 +145,25 @@ public class DatabaseManager
         // make sure to close the cursor
         cursor.close();
         return shoppingItems;
+    }
+
+    public ArrayList<String> getAllRecipeNames()
+    {
+        ArrayList<String> recipeNames = new ArrayList<String>();
+
+        Cursor cursor = database.query(databaseCreator.TABLE_RECIPE_ITEMS, allRecipeColumnsNames, null, null, null, null, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast())
+        {
+            recipeNames.add(cursorToRecipeName(cursor));
+            cursor.moveToNext();
+        }
+        cursor.close();
+        HashSet hs = new HashSet();
+        hs.addAll(recipeNames);
+        recipeNames.clear();
+        recipeNames.addAll(hs);
+        return recipeNames;
     }
 }
