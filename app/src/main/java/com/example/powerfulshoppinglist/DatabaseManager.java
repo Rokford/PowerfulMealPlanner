@@ -68,6 +68,11 @@ public class DatabaseManager
 		database.delete(databaseCreator.TABLE_SHOPPING_ITEMS, databaseCreator.COLUMN_ID + " = " + id, null);
 	}
 
+    public void deleteRecipeItem(String recipeName)
+    {
+        database.delete(databaseCreator.TABLE_RECIPE_ITEMS, databaseCreator.COLUMN_RECIPE_NAME + " = '" + recipeName +"'", null);
+    }
+
 	public ArrayList<ShoppingItem> getAllShoppingItems()
 	{
 		ArrayList<ShoppingItem> shoppingItems = new ArrayList<ShoppingItem>();

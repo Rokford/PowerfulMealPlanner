@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.view.ActionMode;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -103,6 +105,57 @@ public class RecipeListActivity extends ActionBarActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         recipeListView = (ListView) findViewById(R.id.recipeListView);
+
+        recipeListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        recipeListView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener()
+        {
+
+            @Override
+            public void onItemCheckedStateChanged(ActionMode mode, int position,
+                                                  long id, boolean checked)
+            {
+                final int checkedCount = recipeListView.getCheckedItemCount();
+                mode.setTitle(checkedCount + " Selected");
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item)
+            {
+                switch (item.getItemId())
+                {
+                    case R.id.menu_delete:
+                        deleteSelectedItems();
+                        adapter.notifyDataSetChanged();
+                        mode.finish();
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+            @Override
+            public boolean onCreateActionMode(ActionMode mode, Menu menu)
+            {
+                // Inflate the menu for the CAB
+                MenuInflater inflater = mode.getMenuInflater();
+                inflater.inflate(R.menu.context, menu);
+                return true;
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode mode)
+            {
+                onResume();
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu)
+            {
+                // Here you can perform updates to the CAB due to
+                // an invalidate() request
+                return false;
+            }
+        });
     }
 
     @Override
@@ -162,5 +215,19 @@ public class RecipeListActivity extends ActionBarActivity
         super.onResume();
     }
 
-
+    private void deleteSelectedItems()
+    {
+        DatabaseManager manager = new DatabaseManager(this);
+        manager.open();
+        for (int i = 0; i < adapter.getCount(); i++)
+        {
+            if (recipeListView.isItemChecked(i))
+            {
+                String selectedItem = (String) adapter.getItem(i);
+                manager.deleteRecipeItem(selectedItem);
+            }
+            adapter.notifyDataSetChanged();
+        }
+        manager.close();
+    }
 }
