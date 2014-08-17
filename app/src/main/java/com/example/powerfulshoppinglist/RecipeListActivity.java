@@ -105,7 +105,21 @@ public class RecipeListActivity extends ActionBarActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         recipeListView = (ListView) findViewById(R.id.recipeListView);
+        recipeListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> adapter2, View v, int position,
+                                    long arg3)
+            {
+                //String value = (String) adapter.getItem(position);
+                Intent intent = new Intent(RecipeListActivity.this, AddRecipeItemActivity.class);
+                String selectedItem = (String) (adapter2.getAdapter()).getItem(position);
+                intent.putExtra("recipe_name", selectedItem);
+                startActivity(intent);
+            }
+        });
 
+        //DELETING with multiple choice listener------------------------------------------------------------
         recipeListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         recipeListView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener()
         {

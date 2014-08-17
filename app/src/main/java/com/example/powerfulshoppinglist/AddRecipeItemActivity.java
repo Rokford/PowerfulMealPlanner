@@ -22,6 +22,7 @@ public class AddRecipeItemActivity  extends ActionBarActivity
     private ShoppingListAdapter recipeIngredientsAdapter;
     private ListView ingredientsListView;
     private ArrayList<ShoppingItem> ingredientItemsList;
+    private String recipeName;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -65,6 +66,14 @@ public class AddRecipeItemActivity  extends ActionBarActivity
         ingredientsListView.setAdapter(recipeIngredientsAdapter);
 
         extras = getIntent().getExtras();
+        if (extras != null)
+        {
+            //POPULATE WITH ITEM SELECTED TO EDIT
+            recipeName = extras.getString("recipe_name");
+            nameEditText.setText(recipeName);
+            //TODO add populating ingredients list for edited recipe here
+
+        }
 
         addIngredientButton.setOnClickListener(new View.OnClickListener()
         {
@@ -80,23 +89,12 @@ public class AddRecipeItemActivity  extends ActionBarActivity
 
         }
 
-//        if (extras != null) {
-//            DatabaseManager manager = new DatabaseManager(this);
-//            manager.open();
-//            ArrayList<ShoppingItem> shoppingItemsList = manager.getAllShoppingItems();
-//            manager.close();
-//            ShoppingItem item = shoppingItemsList.get(extras.getInt("id"));
-//            nameEditText.setText(item.getItem());
-//            quantityEditText.setText(item.getQuantity());
-//            unitEditText.setText(item.getUnit());
-//        }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         //Bundle extras = getIntent().getExtras();
         if (item.getItemId() == R.id.menu_save) {
-            String recipeName = nameEditText.getText().toString();
+            String recipeNameTextBox = nameEditText.getText().toString();
 
             if (recipeName.length() == 0 || ingredientItemsList.isEmpty()) {
                 Toast.makeText(this, getResources().getString(R.string.fields_cannot_be_empty), Toast.LENGTH_SHORT).show();
@@ -104,11 +102,18 @@ public class AddRecipeItemActivity  extends ActionBarActivity
                 DatabaseManager manager = new DatabaseManager(this);
                 manager.open();
                 if (extras != null) {
+                    //EDITING: DELETE OLD AND ADD NEW RECIPE
+                    manager.deleteRecipeItem(recipeName);
+
+                    for (int i = 0; i < ingredientItemsList.size(); i++) {
+                        ShoppingItem shoppingItem = ingredientItemsList.get(i);
+                        manager.createRecipeItem(recipeNameTextBox, shoppingItem.getItem(), shoppingItem.getQuantity(), shoppingItem.getUnit());
+                    }
                     finish();
                 } else {
                     for (int i = 0; i < ingredientItemsList.size(); i++) {
                         ShoppingItem shoppingItem = ingredientItemsList.get(i);
-                        manager.createRecipeItem(recipeName, shoppingItem.getItem(), shoppingItem.getQuantity(), shoppingItem.getUnit());
+                        manager.createRecipeItem(recipeNameTextBox, shoppingItem.getItem(), shoppingItem.getQuantity(), shoppingItem.getUnit());
                     }
                 }
                 manager.close();
