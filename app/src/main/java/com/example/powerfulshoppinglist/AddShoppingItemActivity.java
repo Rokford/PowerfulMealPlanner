@@ -1,6 +1,5 @@
 package com.example.powerfulshoppinglist;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -84,10 +83,10 @@ public class AddShoppingItemActivity extends ActionBarActivity
                     if (extras.getString("for_recipe") != null)
                     {
                         Intent returnIntent = new Intent();
-                        returnIntent.putExtra("name",name);
-                        returnIntent.putExtra("quantity",quantity);
-                        returnIntent.putExtra("unit",unit);
-                        setResult(RESULT_OK,returnIntent);
+                        returnIntent.putExtra("name", name);
+                        returnIntent.putExtra("quantity", quantity);
+                        returnIntent.putExtra("unit", unit);
+                        setResult(RESULT_OK, returnIntent);
                         finish();
                     }
                     else

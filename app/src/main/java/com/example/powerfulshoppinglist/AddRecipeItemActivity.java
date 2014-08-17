@@ -12,7 +12,7 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-public class AddRecipeItemActivity  extends ActionBarActivity
+public class AddRecipeItemActivity extends ActionBarActivity
 {
     private EditText nameEditText;
     private Button addIngredientButton;
@@ -70,13 +70,13 @@ public class AddRecipeItemActivity  extends ActionBarActivity
             public void onClick(View v)
             {
                 Intent intent = new Intent(AddRecipeItemActivity.this, AddShoppingItemActivity.class);
-                intent.putExtra("for_recipe","true");
+                intent.putExtra("for_recipe", "true");
                 startActivityForResult(intent, 1, null);
             }
         });
 
 
-        }
+    }
 
 //        if (extras != null) {
 //            DatabaseManager manager = new DatabaseManager(this);
@@ -88,8 +88,6 @@ public class AddRecipeItemActivity  extends ActionBarActivity
 //            quantityEditText.setText(item.getQuantity());
 //            unitEditText.setText(item.getUnit());
 //        }
-
-
 
 
     @Override

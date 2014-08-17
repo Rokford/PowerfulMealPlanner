@@ -2,12 +2,12 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:context="${packageName}.${activityClass}" >
+                tools:context="${packageName}.${activityClass}">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -15,21 +15,21 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="20dp"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/name" />
+                android:text="@string/name"/>
 
             <EditText
                 android:id="@+id/nameEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="@string/name_hint" >
+                android:hint="@string/name_hint">
 
-                <requestFocus />
+                <requestFocus/>
             </EditText>
         </LinearLayout>
 
@@ -39,7 +39,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="20dp"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -61,7 +61,7 @@
                 android:cacheColorHint="#00000000"
                 android:choiceMode="singleChoice"
                 android:divider="@android:color/transparent"
-                android:dividerHeight="1dp" />
+                android:dividerHeight="1dp"/>
 
         </LinearLayout>
 

@@ -1,5 +1,6 @@
 package com.example.powerfulshoppinglist;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -7,16 +8,20 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.roomorama.caldroid.CaldroidFragment;
+import com.roomorama.caldroid.CaldroidListener;
 
 import java.util.Calendar;
+import java.util.Date;
 
 public class CalendarActivity extends ActionBarActivity
 {
@@ -25,6 +30,8 @@ public class CalendarActivity extends ActionBarActivity
     private ActionBarDrawerToggle drawerToggle;
 
     private ListView drawerList;
+
+//    private DateFormatter formatter = new Formatter();
 
 
     @Override
@@ -67,8 +74,7 @@ public class CalendarActivity extends ActionBarActivity
         drawerList.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
-            public void onItemClick(AdapterView<?> adapter, View v, int position,
-                                    long arg3)
+            public void onItemClick(AdapterView<?> adapter, View v, int position, long arg3)
             {
                 String value = (String) adapter.getItemAtPosition(position);
                 if (value == getResources().getString(R.string.recipies_list))
@@ -102,11 +108,80 @@ public class CalendarActivity extends ActionBarActivity
         Calendar cal = Calendar.getInstance();
         args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
         args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
+        args.putInt(CaldroidFragment.START_DAY_OF_WEEK, CaldroidFragment.MONDAY);
         caldroidFragment.setArguments(args);
 
         FragmentTransaction t = getSupportFragmentManager().beginTransaction();
         t.add(R.id.calendar_outer_LL, caldroidFragment);
         t.commit();
+
+        Date date = new Date();
+        final java.text.DateFormat formatter = android.text.format.DateFormat.getDateFormat(getApplicationContext());
+
+
+        final CaldroidListener listener = new CaldroidListener()
+        {
+
+            @Override
+            public void onSelectDate(Date date, View view)
+            {
+//                Toast.makeText(getApplicationContext(), formatter.format(date), Toast.LENGTH_SHORT).show();
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(CalendarActivity.this);
+                // Get the layout inflater
+                LayoutInflater inflater = CalendarActivity.this.getLayoutInflater();
+
+                View dialogView = inflater.inflate(R.layout.calendar_dialog, null);
+
+                ListView listView = (ListView) dialogView.findViewById(R.id.calendarDialogListView);
+
+
+                builder.setView(dialogView);
+
+
+                // Add action buttons
+//                        .setPositiveButton(R.string.signin, new DialogInterface.OnClickListener()
+//                        {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int id)
+//                            {
+//                                // sign in the user ...
+//                            }
+//                        }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
+//                {
+//                    public void onClick(DialogInterface dialog, int id)
+//                    {
+//                        LoginDialogFragment.this.getDialog().cancel();
+//                    }
+//                });
+
+
+                builder.create().show();
+
+            }
+
+            @Override
+            public void onChangeMonth(int month, int year)
+            {
+                String text = "month: " + month + " year: " + year;
+                Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onLongClickDate(Date date, View view)
+            {
+                Toast.makeText(getApplicationContext(), "Long click " + formatter.format(date), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCaldroidViewCreated()
+            {
+//                Toast.makeText(getApplicationContext(), "Caldroid view is created", Toast.LENGTH_SHORT).show();
+            }
+
+        };
+
+        caldroidFragment.setCaldroidListener(listener);
     }
 
 
@@ -123,10 +198,8 @@ public class CalendarActivity extends ActionBarActivity
     {
         if (item.getItemId() == android.R.id.home)
         {
-            if (drawerLayout.isDrawerOpen(Gravity.LEFT))
-                drawerLayout.closeDrawers();
-            else
-                drawerLayout.openDrawer(Gravity.LEFT);
+            if (drawerLayout.isDrawerOpen(Gravity.LEFT)) drawerLayout.closeDrawers();
+            else drawerLayout.openDrawer(Gravity.LEFT);
         }
         else if (item.getItemId() == R.id.menu_add)
         {

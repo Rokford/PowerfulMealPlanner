@@ -29,5 +29,6 @@
     <string name="fields_cannot_be_empty">Fields cannot be empty</string>
     <string name="title_activity_calendar">CalendarActivity</string>
     <string name="action_settings">Settings</string>
+    <string name="generate">Generate List</string>
 
 </resources>

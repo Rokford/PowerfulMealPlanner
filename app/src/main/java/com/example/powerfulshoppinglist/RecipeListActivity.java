@@ -6,14 +6,11 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
-import android.util.SparseBooleanArray;
-import android.view.ActionMode;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -73,16 +70,21 @@ public class RecipeListActivity extends ActionBarActivity
 
         drawerLayout.setDrawerListener(drawerToggle);
 
-        drawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        drawerList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
             @Override
             public void onItemClick(AdapterView<?> adapter, View v, int position,
-                                    long arg3) {
+                                    long arg3)
+            {
                 String value = (String) adapter.getItemAtPosition(position);
-                if(value == getResources().getString(R.string.recipies_list)) {
+                if (value == getResources().getString(R.string.recipies_list))
+                {
                     Intent intent = new Intent(RecipeListActivity.this, RecipeListActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
-                } else if (value == getResources().getString(R.string.shopping_list)) {
+                }
+                else if (value == getResources().getString(R.string.shopping_list))
+                {
                     Intent intent = new Intent(RecipeListActivity.this, ShoppingListActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
