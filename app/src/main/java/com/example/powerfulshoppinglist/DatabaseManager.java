@@ -1,7 +1,9 @@
 package com.example.powerfulshoppinglist;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import android.content.ContentValues;
@@ -131,6 +133,33 @@ public class DatabaseManager
         values.put(databaseCreator.COLUMN_UNIT, unit);
 
         long insertId = database.insert(databaseCreator.TABLE_RECIPE_ITEMS, null, values);
+    }
+
+    public void addRecipeToDateTable(String recipeName, String date)
+    {
+        ContentValues values = new ContentValues();
+        values.put(databaseCreator.COLUMN_RECIPE_NAME, recipeName);
+        values.put(databaseCreator.COLUMN_RECIPE_DATE, date);
+
+        long insertId = database.insert(databaseCreator.TABLE_RECIPE_DATES, null, values);
+    }
+
+    public ArrayList<String> getRecipeNamesForDate(String date)
+    {
+        ArrayList<String> recipes = new ArrayList<String>();
+
+        Cursor cursor = database.query(databaseCreator.TABLE_RECIPE_DATES, allRecipeColumnsNames, DatabaseCreator.COLUMN_RECIPE_DATE + " = '" + date + "'", null, null, null, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast())
+        {
+            recipes.add(cursor.getString(0));
+        }
+
+        // make sure to close the cursor
+        cursor.close();
+
+        return  recipes;
     }
 
     public ArrayList<ShoppingItem> getAllRecipeItems()
