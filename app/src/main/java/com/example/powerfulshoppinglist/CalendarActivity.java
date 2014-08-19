@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.roomorama.caldroid.CaldroidFragment;
 import com.roomorama.caldroid.CaldroidListener;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -31,7 +32,9 @@ public class CalendarActivity extends ActionBarActivity
 
     private ListView drawerList;
 
-//    private DateFormatter formatter = new Formatter();
+    CaldroidFragment caldroidFragment;
+
+    //    private DateFormatter formatter = new Formatter();
 
 
     @Override
@@ -103,7 +106,7 @@ public class CalendarActivity extends ActionBarActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
 
-        CaldroidFragment caldroidFragment = new CaldroidFragment();
+        caldroidFragment = new CaldroidFragment();
         Bundle args = new Bundle();
         Calendar cal = Calendar.getInstance();
         args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
@@ -123,9 +126,9 @@ public class CalendarActivity extends ActionBarActivity
         {
 
             @Override
-            public void onSelectDate(Date date, View view)
+            public void onSelectDate(final Date date, View view)
             {
-//                Toast.makeText(getApplicationContext(), Utilities.formatDateforDB(date), Toast.LENGTH_SHORT).show();
+                //                Toast.makeText(getApplicationContext(), Utilities.formatDateforDB(date), Toast.LENGTH_SHORT).show();
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(CalendarActivity.this);
                 // Get the layout inflater
@@ -136,30 +139,20 @@ public class CalendarActivity extends ActionBarActivity
                 ListView listView = (ListView) dialogView.findViewById(R.id.calendarDialogListView);
 
                 final CalendarDayAdapter calendarAdapter = new CalendarDayAdapter(CalendarActivity.this);
-//                calendarAdapter.setRecipeItemsList();
+
+                DatabaseManager manager = new DatabaseManager(CalendarActivity.this);
+
+                manager.open();
+
+                ArrayList<String> recipes = manager.getRecipeNamesForDate(Utilities.formatDateforDB(date));
+
+                manager.close();
+
+                calendarAdapter.setRecipeItemsList(recipes);
 
                 listView.setAdapter(calendarAdapter);
 
                 builder.setView(dialogView);
-
-
-                // Add action buttons
-//                        .setPositiveButton(R.string.signin, new DialogInterface.OnClickListener()
-//                        {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int id)
-//                            {
-//                                // sign in the user ...
-//                            }
-//                        }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
-//                {
-//                    public void onClick(DialogInterface dialog, int id)
-//                    {
-//                        LoginDialogFragment.this.getDialog().cancel();
-//                    }
-//                });
-
-
                 builder.create().show();
 
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -171,6 +164,7 @@ public class CalendarActivity extends ActionBarActivity
                         {
                             Intent i = new Intent(CalendarActivity.this, RecipeListActivity.class);
                             i.putExtra("forCalendar", "forCalendar");
+                            i.putExtra("dateFromCalendar", Utilities.formatDateforDB(date));
                             startActivityForResult(i, 1);
                         }
                         else
@@ -192,18 +186,38 @@ public class CalendarActivity extends ActionBarActivity
             @Override
             public void onLongClickDate(Date date, View view)
             {
-//                Toast.makeText(getApplicationContext(), "Long click " + formatter.format(date), Toast.LENGTH_SHORT).show();
+                //                Toast.makeText(getApplicationContext(), "Long click " + formatter.format(date), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onCaldroidViewCreated()
             {
-//                Toast.makeText(getApplicationContext(), "Caldroid view is created", Toast.LENGTH_SHORT).show();
+                //                Toast.makeText(getApplicationContext(), "Caldroid view is created", Toast.LENGTH_SHORT).show();
             }
 
         };
 
         caldroidFragment.setCaldroidListener(listener);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+
+        if (requestCode == 1)
+        {
+            if (resultCode == RESULT_OK)
+            {
+//                String result = data.getStringExtra("result");
+                if (caldroidFragment != null)
+                {
+                    caldroidFragment.refreshView();
+                }
+            }
+            if (resultCode == RESULT_CANCELED)
+            {
+                //Write your code if there's no result
+            }
+        }
     }
 
 
@@ -220,8 +234,10 @@ public class CalendarActivity extends ActionBarActivity
     {
         if (item.getItemId() == android.R.id.home)
         {
-            if (drawerLayout.isDrawerOpen(Gravity.LEFT)) drawerLayout.closeDrawers();
-            else drawerLayout.openDrawer(Gravity.LEFT);
+            if (drawerLayout.isDrawerOpen(Gravity.LEFT))
+                drawerLayout.closeDrawers();
+            else
+                drawerLayout.openDrawer(Gravity.LEFT);
         }
         else if (item.getItemId() == R.id.menu_add)
         {

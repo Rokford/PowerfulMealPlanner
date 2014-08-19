@@ -218,7 +218,26 @@ public class RecipeListActivity extends ActionBarActivity
         }
         else if (item.getItemId() == R.id.menu_add_checked)
         {
-            //
+            Boolean[] checkedRecipes = adapter.getCheckedRecipes();
+
+            DatabaseManager manager = new DatabaseManager(RecipeListActivity.this);
+
+            manager.open();
+
+            for (int i = 0; i < checkedRecipes.length; i++)
+            {
+                if (checkedRecipes[i])
+                {
+                    manager.addRecipeToDateTable(adapter.getItem(i), getIntent().getStringExtra("dateFromCalendar"));
+                }
+            }
+
+            manager.close();
+
+            Intent returnIntent = new Intent();
+//            returnIntent.putExtra("result",result);
+            setResult(RESULT_OK, returnIntent);
+            finish();
         }
 
         return super.onOptionsItemSelected(item);

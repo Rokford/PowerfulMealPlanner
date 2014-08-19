@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -15,6 +16,8 @@ public class RecipeListAdapter extends BaseAdapter
     private ArrayList<String> recipeNamesList;
     private ViewHolder holder;
     private LayoutInflater inflater;
+
+    private Boolean[] checkedRecipes;
     // private SparseBooleanArray mSelectedItemsIds;
 
     private boolean withCheckboxes = false;
@@ -25,7 +28,9 @@ public class RecipeListAdapter extends BaseAdapter
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         if (withCheckboxes)
+        {
             this.withCheckboxes = true;
+        }
     }
 
     @Override
@@ -48,7 +53,7 @@ public class RecipeListAdapter extends BaseAdapter
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent)
+    public View getView(final int position, View convertView, ViewGroup parent)
     {
         holder = null;
 
@@ -71,28 +76,41 @@ public class RecipeListAdapter extends BaseAdapter
         holder.nameTextView.setText(recipeNamesList.get(position));
 
         if (withCheckboxes)
+        {
             holder.checkBox.setVisibility(View.VISIBLE);
+            holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+            {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+                {
+                    if (isChecked)
+                        checkedRecipes[position] = true;
+                    else
+                        checkedRecipes[position] = false;
+                }
+            });
+        }
         else
             holder.checkBox.setVisibility(View.GONE);
 
         return convertView;
     }
 
-//    public void toggleSelection(int position) {
-//         selectView(position, !mSelectedItemsIds.get(position));
-//    }
-//
-//    public void selectView(int position, boolean value) {
-//        if (value)
-//            mSelectedItemsIds.put(position, value);
-//        else
-//            mSelectedItemsIds.delete(position);
-//        notifyDataSetChanged();
-//    }
+    //    public void toggleSelection(int position) {
+    //         selectView(position, !mSelectedItemsIds.get(position));
+    //    }
+    //
+    //    public void selectView(int position, boolean value) {
+    //        if (value)
+    //            mSelectedItemsIds.put(position, value);
+    //        else
+    //            mSelectedItemsIds.delete(position);
+    //        notifyDataSetChanged();
+    //    }
 
-//    public SparseBooleanArray getSelectedIds() {
-//        return mSelectedItemsIds;
-//    }
+    //    public SparseBooleanArray getSelectedIds() {
+    //        return mSelectedItemsIds;
+    //    }
 
     public static class ViewHolder
     {
@@ -108,5 +126,12 @@ public class RecipeListAdapter extends BaseAdapter
     public void setRecipeItemsList(ArrayList<String> recipeItemsList)
     {
         this.recipeNamesList = recipeItemsList;
+
+        checkedRecipes = new Boolean[recipeNamesList.size()];
+    }
+
+    public Boolean[] getCheckedRecipes()
+    {
+        return checkedRecipes;
     }
 }

@@ -154,6 +154,7 @@ public class DatabaseManager
         while (!cursor.isAfterLast())
         {
             recipes.add(cursor.getString(0));
+            cursor.moveToNext();
         }
 
         // make sure to close the cursor
