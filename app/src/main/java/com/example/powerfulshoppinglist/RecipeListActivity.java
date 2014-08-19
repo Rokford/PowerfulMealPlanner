@@ -32,6 +32,8 @@ public class RecipeListActivity extends ActionBarActivity
 
     private RecipeListAdapter adapter;
 
+    private boolean forCalendar = false;
+
     //SparseBooleanArray selected;
 
     @SuppressLint("NewApi")
@@ -40,6 +42,9 @@ public class RecipeListActivity extends ActionBarActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_list);
+
+        if (getIntent().getExtras() != null && getIntent().getExtras().getString("forCalendar") != null)
+            forCalendar = true;
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerList = (ListView) findViewById(R.id.left_drawer);
@@ -178,7 +183,12 @@ public class RecipeListActivity extends ActionBarActivity
 
         MenuInflater inflater = getMenuInflater();
 
-        inflater.inflate(R.menu.main_menu, menu);
+        inflater.inflate(R.menu.recipe_list_menu, menu);
+
+        if (!forCalendar)
+        {
+            menu.getItem(1).setVisible(false);
+        }
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -201,10 +211,14 @@ public class RecipeListActivity extends ActionBarActivity
             else
                 drawerLayout.openDrawer(Gravity.LEFT);
         }
-        else if (item.getItemId() == R.id.menu_add)
+        else if (item.getItemId() == R.id.menu_new)
         {
             Intent intent = new Intent(this, AddRecipeItemActivity.class);
             startActivity(intent);
+        }
+        else if (item.getItemId() == R.id.menu_add_checked)
+        {
+            //
         }
 
         return super.onOptionsItemSelected(item);
@@ -219,7 +233,11 @@ public class RecipeListActivity extends ActionBarActivity
 
         ArrayList<String> recipeNamesList = manager.getAllRecipeNames();
 
-        adapter = new RecipeListAdapter(this);
+        if (forCalendar)
+            adapter = new RecipeListAdapter(this, true);
+        else
+            adapter = new RecipeListAdapter(this, false);
+
         adapter.setRecipeItemsList(recipeNamesList);
 
         recipeListView.setAdapter(adapter);

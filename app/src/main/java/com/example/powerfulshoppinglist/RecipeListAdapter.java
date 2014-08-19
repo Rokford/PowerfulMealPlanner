@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -16,10 +17,15 @@ public class RecipeListAdapter extends BaseAdapter
     private LayoutInflater inflater;
     // private SparseBooleanArray mSelectedItemsIds;
 
-    public RecipeListAdapter(Context context)
+    private boolean withCheckboxes = false;
+
+    public RecipeListAdapter(Context context, boolean withCheckboxes)
     {
         // mSelectedItemsIds = new SparseBooleanArray();
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        if (withCheckboxes)
+            this.withCheckboxes = true;
     }
 
     @Override
@@ -53,6 +59,7 @@ public class RecipeListAdapter extends BaseAdapter
             convertView = inflater.inflate(R.layout.recipe_list_view_item, null);
 
             holder.nameTextView = (TextView) convertView.findViewById(R.id.nameTextView);
+            holder.checkBox = (CheckBox) convertView.findViewById(R.id.checkBox);
 
             convertView.setTag(holder);
         }
@@ -62,6 +69,11 @@ public class RecipeListAdapter extends BaseAdapter
         }
 
         holder.nameTextView.setText(recipeNamesList.get(position));
+
+        if (withCheckboxes)
+            holder.checkBox.setVisibility(View.VISIBLE);
+        else
+            holder.checkBox.setVisibility(View.GONE);
 
         return convertView;
     }
@@ -85,7 +97,7 @@ public class RecipeListAdapter extends BaseAdapter
     public static class ViewHolder
     {
         public TextView nameTextView;
-
+        public CheckBox checkBox;
     }
 
     public ArrayList<String> getRecipeNamesListList()

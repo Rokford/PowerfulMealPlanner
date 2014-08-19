@@ -125,7 +125,7 @@ public class CalendarActivity extends ActionBarActivity
             @Override
             public void onSelectDate(Date date, View view)
             {
-//                Toast.makeText(getApplicationContext(), formatter.format(date), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), Utilities.formatDateforDB(date), Toast.LENGTH_SHORT).show();
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(CalendarActivity.this);
                 // Get the layout inflater
@@ -135,7 +135,7 @@ public class CalendarActivity extends ActionBarActivity
 
                 ListView listView = (ListView) dialogView.findViewById(R.id.calendarDialogListView);
 
-                CalendarDayAdapter calendarAdapter = new CalendarDayAdapter(CalendarActivity.this);
+                final CalendarDayAdapter calendarAdapter = new CalendarDayAdapter(CalendarActivity.this);
 //                calendarAdapter.setRecipeItemsList();
 
                 listView.setAdapter(calendarAdapter);
@@ -162,6 +162,24 @@ public class CalendarActivity extends ActionBarActivity
 
                 builder.create().show();
 
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+                {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                    {
+                        if (calendarAdapter.getItem(position) == null)
+                        {
+                            Intent i = new Intent(CalendarActivity.this, RecipeListActivity.class);
+                            i.putExtra("forCalendar", "forCalendar");
+                            startActivityForResult(i, 1);
+                        }
+                        else
+                        {
+                            //TODO: Add clicked recipe to this day in DB
+                        }
+                    }
+                });
+
             }
 
             @Override
@@ -174,7 +192,7 @@ public class CalendarActivity extends ActionBarActivity
             @Override
             public void onLongClickDate(Date date, View view)
             {
-                Toast.makeText(getApplicationContext(), "Long click " + formatter.format(date), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), "Long click " + formatter.format(date), Toast.LENGTH_SHORT).show();
             }
 
             @Override

@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class AddRecipeItemActivity  extends ActionBarActivity
+public class AddRecipeItemActivity extends ActionBarActivity
 {
     private EditText nameEditText;
     private Button addIngredientButton;
@@ -40,10 +40,10 @@ public class AddRecipeItemActivity  extends ActionBarActivity
                 recipeIngredientsAdapter.setShoppingItemsList(ingredientItemsList);
                 recipeIngredientsAdapter.notifyDataSetChanged();
             }
-//            if (resultCode == RESULT_CANCELED)
-//            {
-//                //Write your code if there's no result
-//            }
+            //            if (resultCode == RESULT_CANCELED)
+            //            {
+            //                //Write your code if there's no result
+            //            }
         }
     }
 
@@ -81,37 +81,47 @@ public class AddRecipeItemActivity  extends ActionBarActivity
             public void onClick(View v)
             {
                 Intent intent = new Intent(AddRecipeItemActivity.this, AddShoppingItemActivity.class);
-                intent.putExtra("for_recipe","true");
+                intent.putExtra("for_recipe", "true");
                 startActivityForResult(intent, 1, null);
             }
         });
 
 
-        }
+    }
 
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         //Bundle extras = getIntent().getExtras();
-        if (item.getItemId() == R.id.menu_save) {
+        if (item.getItemId() == R.id.menu_save)
+        {
             String recipeNameTextBox = nameEditText.getText().toString();
 
-            if (recipeName.length() == 0 || ingredientItemsList.isEmpty()) {
+            if (recipeNameTextBox.length() == 0 || ingredientItemsList.isEmpty())
+            {
                 Toast.makeText(this, getResources().getString(R.string.fields_cannot_be_empty), Toast.LENGTH_SHORT).show();
-            } else {
+            }
+            else
+            {
                 DatabaseManager manager = new DatabaseManager(this);
                 manager.open();
-                if (extras != null) {
+                if (extras != null)
+                {
                     //EDITING: DELETE OLD AND ADD NEW RECIPE
                     manager.deleteRecipeItem(recipeName);
 
-                    for (int i = 0; i < ingredientItemsList.size(); i++) {
+                    for (int i = 0; i < ingredientItemsList.size(); i++)
+                    {
                         ShoppingItem shoppingItem = ingredientItemsList.get(i);
                         manager.createRecipeItem(recipeNameTextBox, shoppingItem.getItem(), shoppingItem.getQuantity(), shoppingItem.getUnit());
                     }
                     finish();
-                } else {
-                    for (int i = 0; i < ingredientItemsList.size(); i++) {
+                }
+                else
+                {
+                    for (int i = 0; i < ingredientItemsList.size(); i++)
+                    {
                         ShoppingItem shoppingItem = ingredientItemsList.get(i);
                         manager.createRecipeItem(recipeNameTextBox, shoppingItem.getItem(), shoppingItem.getQuantity(), shoppingItem.getUnit());
                     }
