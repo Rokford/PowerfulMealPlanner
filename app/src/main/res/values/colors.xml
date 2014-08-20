@@ -4,5 +4,7 @@
     <color name="black_50_transparent">#50000000</color>
     <color name="highlight">#ff33ffff</color>
     <color name="normal">#ff000000</color>
+    <color name="green">#ff74e12d</color>
+
 
 </resources>

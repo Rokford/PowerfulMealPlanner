@@ -7,6 +7,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -38,8 +39,6 @@ public class CalendarActivity extends ActionBarActivity
     AlertDialog calendarDialog;
 
     boolean inSelectionMode = false;
-
-    //    boolean selectedFirstDate = false;
 
     Date firstDate = null;
 
@@ -120,6 +119,7 @@ public class CalendarActivity extends ActionBarActivity
         caldroidFragment = new CaldroidFragment();
         Bundle args = new Bundle();
         final Calendar cal = Calendar.getInstance();
+
         args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
         args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
         args.putInt(CaldroidFragment.START_DAY_OF_WEEK, CaldroidFragment.MONDAY);
@@ -225,8 +225,8 @@ public class CalendarActivity extends ActionBarActivity
             @Override
             public void onChangeMonth(int month, int year)
             {
-                String text = "month: " + month + " year: " + year;
-                Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+                //                String text = "month: " + month + " year: " + year;
+                //                Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -238,7 +238,7 @@ public class CalendarActivity extends ActionBarActivity
             @Override
             public void onCaldroidViewCreated()
             {
-                //                Toast.makeText(getApplicationContext(), "Caldroid view is created", Toast.LENGTH_SHORT).show();
+
             }
 
         };
@@ -248,6 +248,7 @@ public class CalendarActivity extends ActionBarActivity
 
         //        caldroidFragment.setSelectedDates();
     }
+
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
@@ -301,13 +302,13 @@ public class CalendarActivity extends ActionBarActivity
         {
             if (inSelectionMode)
             {
-                //                caldroidFragment.
+                // TODO: get firstDate and LastDate here, create Shopping List for every day between them
             }
             else
             {
                 inSelectionMode = true;
 
-                Toast.makeText(getApplicationContext(), getString(R.string.select_the_first_day), Toast.LENGTH_SHORT).show();
+                //                Toast.makeText(getApplicationContext(), getString(R.string.select_the_first_day), Toast.LENGTH_SHORT).show();
 
                 invalidateOptionsMenu();
             }
