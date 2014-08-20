@@ -73,7 +73,7 @@ public class CalendarDayAdapter extends BaseAdapter
             if (getItemViewType(position) == TYPE_RECIPE_ITEM)
             {
 
-                convertView = inflater.inflate(R.layout.recipe_list_view_item, null);
+                convertView = inflater.inflate(R.layout.calendar_list_view_item, null);
 
                 holder.nameTextView = (TextView) convertView.findViewById(R.id.nameTextView);
             }

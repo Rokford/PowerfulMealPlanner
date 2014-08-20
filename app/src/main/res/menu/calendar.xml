@@ -3,7 +3,7 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="com.example.powerfulshoppinglist.CalendarActivity">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/generate"
         android:title="@string/generate"
         android:orderInCategory="1"
         app:showAsAction="always"/>

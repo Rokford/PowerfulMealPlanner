@@ -23,6 +23,7 @@ import com.roomorama.caldroid.CaldroidListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class CalendarActivity extends ActionBarActivity
 {
@@ -33,6 +34,16 @@ public class CalendarActivity extends ActionBarActivity
     private ListView drawerList;
 
     CaldroidFragment caldroidFragment;
+
+    AlertDialog calendarDialog;
+
+    boolean inSelectionMode = false;
+
+    //    boolean selectedFirstDate = false;
+
+    Date firstDate = null;
+
+    Date lastDate = null;
 
     //    private DateFormatter formatter = new Formatter();
 
@@ -108,7 +119,7 @@ public class CalendarActivity extends ActionBarActivity
 
         caldroidFragment = new CaldroidFragment();
         Bundle args = new Bundle();
-        Calendar cal = Calendar.getInstance();
+        final Calendar cal = Calendar.getInstance();
         args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
         args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
         args.putInt(CaldroidFragment.START_DAY_OF_WEEK, CaldroidFragment.MONDAY);
@@ -128,51 +139,86 @@ public class CalendarActivity extends ActionBarActivity
             @Override
             public void onSelectDate(final Date date, View view)
             {
-                //                Toast.makeText(getApplicationContext(), Utilities.formatDateforDB(date), Toast.LENGTH_SHORT).show();
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(CalendarActivity.this);
-                // Get the layout inflater
-                LayoutInflater inflater = CalendarActivity.this.getLayoutInflater();
-
-                View dialogView = inflater.inflate(R.layout.calendar_dialog, null);
-
-                ListView listView = (ListView) dialogView.findViewById(R.id.calendarDialogListView);
-
-                final CalendarDayAdapter calendarAdapter = new CalendarDayAdapter(CalendarActivity.this);
-
-                DatabaseManager manager = new DatabaseManager(CalendarActivity.this);
-
-                manager.open();
-
-                ArrayList<String> recipes = manager.getRecipeNamesForDate(Utilities.formatDateforDB(date));
-
-                manager.close();
-
-                calendarAdapter.setRecipeItemsList(recipes);
-
-                listView.setAdapter(calendarAdapter);
-
-                builder.setView(dialogView);
-                builder.create().show();
-
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+                if (inSelectionMode)
                 {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+
+                    if ((firstDate == null && lastDate == null) || (firstDate != null && lastDate != null))
                     {
-                        if (calendarAdapter.getItem(position) == null)
-                        {
-                            Intent i = new Intent(CalendarActivity.this, RecipeListActivity.class);
-                            i.putExtra("forCalendar", "forCalendar");
-                            i.putExtra("dateFromCalendar", Utilities.formatDateforDB(date));
-                            startActivityForResult(i, 1);
-                        }
-                        else
-                        {
-                            //TODO: Add clicked recipe to this day in DB
-                        }
+                        firstDate = date;
+                        lastDate = null;
+
+                        caldroidFragment.clearSelectedDates();
+                        caldroidFragment.refreshView();
+
+                        Toast.makeText(getApplicationContext(), getString(R.string.select_the_last_day), Toast.LENGTH_SHORT).show();
                     }
-                });
+                    else
+                    {
+                        if (date.after(firstDate))
+                        {
+                            caldroidFragment.setSelectedDates(firstDate, date);
+                            lastDate = date;
+                        }
+                        else if (date.before(firstDate))
+                        {
+                            caldroidFragment.setSelectedDates(date, firstDate);
+                            lastDate = firstDate;
+                            firstDate = date;
+                        }
+
+                        caldroidFragment.refreshView();
+                    }
+                }
+                else
+                {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(CalendarActivity.this);
+                    // Get the layout inflater
+                    LayoutInflater inflater = CalendarActivity.this.getLayoutInflater();
+
+                    View dialogView = inflater.inflate(R.layout.calendar_dialog, null);
+
+                    ListView listView = (ListView) dialogView.findViewById(R.id.calendarDialogListView);
+
+                    final CalendarDayAdapter calendarAdapter = new CalendarDayAdapter(CalendarActivity.this);
+
+                    DatabaseManager manager = new DatabaseManager(CalendarActivity.this);
+
+                    manager.open();
+
+                    ArrayList<String> recipes = manager.getRecipeNamesForDate(Utilities.formatDateforDB(date));
+
+                    manager.close();
+
+                    calendarAdapter.setRecipeItemsList(recipes);
+
+                    listView.setAdapter(calendarAdapter);
+
+                    builder.setView(dialogView);
+
+                    calendarDialog = builder.create();
+
+                    calendarDialog.show();
+
+                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+                    {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                        {
+                            if (calendarAdapter.getItem(position) == null)
+                            {
+                                Intent i = new Intent(CalendarActivity.this, RecipeListActivity.class);
+                                i.putExtra("forCalendar", "forCalendar");
+                                i.putExtra("dateFromCalendar", Utilities.formatDateforDB(date));
+                                startActivityForResult(i, 1);
+                            }
+                            else
+                            {
+                                // TODO: lol no idea what do do here
+                            }
+                        }
+                    });
+
+                }
 
             }
 
@@ -198,6 +244,9 @@ public class CalendarActivity extends ActionBarActivity
         };
 
         caldroidFragment.setCaldroidListener(listener);
+
+
+        //        caldroidFragment.setSelectedDates();
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -207,9 +256,12 @@ public class CalendarActivity extends ActionBarActivity
         {
             if (resultCode == RESULT_OK)
             {
-//                String result = data.getStringExtra("result");
+                //                String result = data.getStringExtra("result");
                 if (caldroidFragment != null)
                 {
+                    if (calendarDialog != null)
+                        calendarDialog.dismiss();
+
                     caldroidFragment.refreshView();
                 }
             }
@@ -226,6 +278,12 @@ public class CalendarActivity extends ActionBarActivity
     {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.calendar, menu);
+
+        if (inSelectionMode)
+        {
+            menu.getItem(0).setTitle(getString(R.string.create_list));
+        }
+
         return true;
     }
 
@@ -239,10 +297,20 @@ public class CalendarActivity extends ActionBarActivity
             else
                 drawerLayout.openDrawer(Gravity.LEFT);
         }
-        else if (item.getItemId() == R.id.menu_add)
+        else if (item.getItemId() == R.id.generate)
         {
-            Intent intent = new Intent(this, AddShoppingItemActivity.class);
-            startActivity(intent);
+            if (inSelectionMode)
+            {
+                //                caldroidFragment.
+            }
+            else
+            {
+                inSelectionMode = true;
+
+                Toast.makeText(getApplicationContext(), getString(R.string.select_the_first_day), Toast.LENGTH_SHORT).show();
+
+                invalidateOptionsMenu();
+            }
         }
 
         return super.onOptionsItemSelected(item);

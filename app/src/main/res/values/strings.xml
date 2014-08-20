@@ -29,10 +29,15 @@
     <string name="fields_cannot_be_empty">Fields cannot be empty</string>
     <string name="title_activity_calendar">CalendarActivity</string>
     <string name="action_settings">Settings</string>
-    <string name="generate">Generate List</string>
+    <string name="generate">Select Days For List</string>
     <string name="add_a_recipe_from_list">Add recipe from list</string>
     <string name="new_">New</string>
     <string name="add_checked">Add checked</string>
+    <string name="create_list">Generate List</string>
+    <string name="select_the_first_day">Select the first day</string>
+    <string name="select_the_last_day">Select the last day</string>
+
+
 
 
 </resources>
