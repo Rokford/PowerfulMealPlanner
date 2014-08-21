@@ -346,6 +346,23 @@ public class CalendarActivity extends ActionBarActivity
         return super.onOptionsItemSelected(item);
     }
 
+    private void leaveSelectionMode()
+    {
+        inSelectionMode = false;
+        invalidateOptionsMenu();
+        caldroidFragment.clearSelectedDates();
+        caldroidFragment.refreshView();
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        if (inSelectionMode)
+            leaveSelectionMode();
+        else
+            super.onBackPressed();
+    }
+
     @Override
     protected void onPostCreate(Bundle savedInstanceState)
     {
