@@ -98,6 +98,12 @@ public class ShoppingListActivity extends ActionBarActivity
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }
+                else if (value == getResources().getString(R.string.help))
+                {
+                    Intent intent = new Intent(ShoppingListActivity.this, HelpActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
 
             }
         });

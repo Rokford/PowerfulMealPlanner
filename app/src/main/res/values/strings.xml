@@ -36,8 +36,9 @@
     <string name="create_list">Generate List</string>
     <string name="select_the_first_day">Select the first day</string>
     <string name="select_the_last_day">Select the last day</string>
-
-
-
+    <string name="title_activity_help">HelpActivity</string>
+    <string name="help_2">help 2 text</string>
+    <string name="help_1">help 1 text</string>
+    <string name="help">Help</string>
 
 </resources>

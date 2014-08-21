@@ -102,6 +102,12 @@ public class RecipeListActivity extends ActionBarActivity
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }
+                else if (value == getResources().getString(R.string.help))
+                {
+                    Intent intent = new Intent(RecipeListActivity.this, HelpActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
 
             }
         });
