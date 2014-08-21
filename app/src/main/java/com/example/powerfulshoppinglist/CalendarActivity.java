@@ -34,17 +34,17 @@ public class CalendarActivity extends ActionBarActivity
 
     private ListView drawerList;
 
-    CaldroidFragment caldroidFragment;
+    private CaldroidFragment caldroidFragment;
 
-    AlertDialog calendarDialog;
+    private AlertDialog calendarDialog;
 
-    boolean inSelectionMode = false;
+    private boolean inSelectionMode = false;
 
-    Date firstDate = null;
+    private Date firstDate = null;
+    private Date lastDate = null;
 
-    Date lastDate = null;
-
-    //    private DateFormatter formatter = new Formatter();
+    int displayedMonth;
+    int displayedYear;
 
 
     @Override
@@ -124,6 +124,9 @@ public class CalendarActivity extends ActionBarActivity
         args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
         args.putInt(CaldroidFragment.START_DAY_OF_WEEK, CaldroidFragment.MONDAY);
         caldroidFragment.setArguments(args);
+
+        displayedMonth = cal.get(Calendar.MONTH) + 1;
+        displayedYear = cal.get(Calendar.YEAR);
 
         FragmentTransaction t = getSupportFragmentManager().beginTransaction();
         t.add(R.id.calendar_outer_LL, caldroidFragment);
@@ -225,8 +228,32 @@ public class CalendarActivity extends ActionBarActivity
             @Override
             public void onChangeMonth(int month, int year)
             {
-                //                String text = "month: " + month + " year: " + year;
-                //                Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+                displayedMonth = month;
+                displayedYear = year;
+
+                ArrayList<Date> dates = Utilities.getAllDatesForMonth(month - 1);
+
+                DatabaseManager manager = new DatabaseManager(CalendarActivity.this);
+
+                manager.open();
+
+                for (Date date : dates)
+                {
+                   ArrayList<String> recipes = manager.getRecipeNamesForDate(Utilities.formatDateforDB(date));
+
+                   if (recipes.size() > 0)
+                   {
+                       caldroidFragment.setBackgroundResourceForDate(R.color.green, date);
+                   }
+                }
+
+                manager.close();
+
+                caldroidFragment.refreshView();
+
+
+//                                String text = "month: " + month + " year: " + year;
+//                                Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -262,6 +289,8 @@ public class CalendarActivity extends ActionBarActivity
                 {
                     if (calendarDialog != null)
                         calendarDialog.dismiss();
+
+                    caldroidFragment.getCaldroidListener().onChangeMonth(displayedMonth, displayedYear);
 
                     caldroidFragment.refreshView();
                 }
