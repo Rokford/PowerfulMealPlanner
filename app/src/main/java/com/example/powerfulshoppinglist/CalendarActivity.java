@@ -56,7 +56,7 @@ public class CalendarActivity extends ActionBarActivity
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerList = (ListView) findViewById(R.id.left_drawer);
 
-        drawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.navigation_drawer_item, Utilities.navigationItemsArray));
+        drawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.navigation_drawer_item, R.id.textView1, Utilities.navigationItemsArray));
 
         getSupportActionBar().setTitle(getResources().getString(R.string.shopping_list));
 

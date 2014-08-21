@@ -142,7 +142,7 @@ public class HelpActivity extends ActionBarActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        drawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.navigation_drawer_item, Utilities.navigationItemsArray));
+        drawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.navigation_drawer_item, R.id.textView1, Utilities.navigationItemsArray));
 
         drawerList.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
