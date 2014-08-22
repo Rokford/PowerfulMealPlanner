@@ -1,4 +1,4 @@
-package com.example.powerfulshoppinglist;
+package com.example.powerfulmealplanner;
 
 import android.content.Context;
 import android.view.LayoutInflater;

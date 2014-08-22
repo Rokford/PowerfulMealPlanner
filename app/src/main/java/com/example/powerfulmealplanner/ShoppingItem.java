@@ -1,4 +1,4 @@
-package com.example.powerfulshoppinglist;
+package com.example.powerfulmealplanner;
 
 public class ShoppingItem
 {

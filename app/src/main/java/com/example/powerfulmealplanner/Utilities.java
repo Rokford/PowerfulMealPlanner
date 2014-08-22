@@ -1,9 +1,8 @@
-package com.example.powerfulshoppinglist;
+package com.example.powerfulmealplanner;
 
 
 import android.util.Log;
 
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;

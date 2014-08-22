@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.example.powerfulshoppinglist"
+          package="com.example.powerfulmealplanner"
           android:versionCode="1"
           android:versionName="1.0">
 
@@ -9,13 +9,13 @@
         android:targetSdkVersion="19"/>
 
     <application
-        android:name=".App"
+        android:name="com.example.powerfulmealplanner.App"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ShoppingListActivity"
+            android:name="com.example.powerfulmealplanner.ShoppingListActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -24,23 +24,23 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AddShoppingItemActivity"
+            android:name="com.example.powerfulmealplanner.AddShoppingItemActivity"
             android:label="@string/title_activity_add_shopping_item">
         </activity>
         <activity
-            android:name=".RecipeListActivity"
+            android:name="com.example.powerfulmealplanner.RecipeListActivity"
             android:label="@string/title_activity_recipe_list">
         </activity>
         <activity
-            android:name=".AddRecipeItemActivity"
+            android:name="com.example.powerfulmealplanner.AddRecipeItemActivity"
             android:label="@string/title_activity_add_recipe_item">
         </activity>
         <activity
-            android:name=".CalendarActivity"
+            android:name="com.example.powerfulmealplanner.CalendarActivity"
             android:label="@string/title_activity_calendar">
         </activity>
         <activity
-            android:name=".HelpActivity"
+            android:name="com.example.powerfulmealplanner.HelpActivity"
             android:label="@string/title_activity_help">
         </activity>
 

@@ -1,8 +1,7 @@
-package com.example.powerfulshoppinglist;
+package com.example.powerfulmealplanner;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 

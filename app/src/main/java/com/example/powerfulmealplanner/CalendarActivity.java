@@ -1,4 +1,4 @@
-package com.example.powerfulshoppinglist;
+package com.example.powerfulmealplanner;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -7,7 +7,6 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,7 +23,6 @@ import com.roomorama.caldroid.CaldroidListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 public class CalendarActivity extends ActionBarActivity
 {

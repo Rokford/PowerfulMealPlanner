@@ -1,4 +1,4 @@
-package com.example.powerfulshoppinglist;
+package com.example.powerfulmealplanner;
 
 import android.content.Intent;
 import android.os.Bundle;
