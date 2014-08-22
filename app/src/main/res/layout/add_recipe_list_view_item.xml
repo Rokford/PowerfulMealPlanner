@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="10dp"
                 android:orientation="horizontal"
                 android:background="?android:attr/activatedBackgroundIndicator">
 
@@ -41,9 +40,8 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="80dp"
         android:layout_width="wrap_content"
-        android:textColor="@color/dark_bronze"
-
         android:layout_height="wrap_content"
+        android:textColor="@color/dark_bronze"
         android:text="TextView"/>
 
 </RelativeLayout>

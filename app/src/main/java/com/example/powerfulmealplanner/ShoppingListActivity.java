@@ -45,7 +45,7 @@ public class ShoppingListActivity extends ActionBarActivity
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerList = (ListView) findViewById(R.id.left_drawer);
 
-        drawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.navigation_drawer_item, R.id.textView1, Utilities.navigationItemsArray));
+        drawerList.setAdapter(new NavigationDrawerAdapter(this));
 
         getSupportActionBar().setTitle(getResources().getString(R.string.shopping_list));
 

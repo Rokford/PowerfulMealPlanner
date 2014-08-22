@@ -21,12 +21,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/name"/>
+                android:text="@string/name"
+                android:textSize="16dp"/>
 
             <EditText
                 android:id="@+id/nameEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:capitalize="sentences"
                 android:ems="10"
                 android:hint="@string/name_hint">
 
@@ -45,20 +49,25 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="16dp"
                 android:text="@string/ingredients"/>
 
             <Button
                 android:id="@+id/addIngredientButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:background="@color/light_blue"
+
                 android:text="@string/button_name"/>
 
             <ListView
                 android:id="@+id/ingredient_list"
-                android:layout_width="240dp"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="start"
-                android:background="@color/black_50_transparent"
                 android:cacheColorHint="#00000000"
                 android:choiceMode="singleChoice"
                 android:divider="@android:color/transparent"
