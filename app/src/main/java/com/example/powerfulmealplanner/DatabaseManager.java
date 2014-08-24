@@ -198,4 +198,23 @@ public class DatabaseManager
         recipeNames.addAll(hs);
         return recipeNames;
     }
+
+    public ArrayList<ShoppingItem> getAllShoppingItemsForRecipe(String recipeName) {
+        ArrayList<ShoppingItem> shoppingItems = new ArrayList<ShoppingItem>();
+
+        Cursor cursor = database.query(databaseCreator.TABLE_RECIPE_ITEMS, allColumnsAndRecipies, databaseCreator.COLUMN_RECIPE_NAME + " = '" + recipeName +"'", null, null, null, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast())
+        {
+            ShoppingItem item = cursorToRecipeItem(cursor);
+            shoppingItems.add(item);
+            cursor.moveToNext();
+        }
+
+        // make sure to close the cursor
+        cursor.close();
+        return shoppingItems;
+    }
+
 }
