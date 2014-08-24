@@ -20,8 +20,7 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-public class ShoppingListActivity extends ActionBarActivity
-{
+public class ShoppingListActivity extends ActionBarActivity {
 
     private DrawerLayout drawerLayout;
 
@@ -33,12 +32,13 @@ public class ShoppingListActivity extends ActionBarActivity
 
     private ShoppingListAdapter adapter;
 
+    private boolean shoppingModeOn;
+
     SparseBooleanArray selected;
 
     @SuppressLint("NewApi")
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -49,23 +49,19 @@ public class ShoppingListActivity extends ActionBarActivity
 
         getSupportActionBar().setTitle(getResources().getString(R.string.shopping_list));
 
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer, R.string.yes, R.string.no)
-        {
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer, R.string.yes, R.string.no) {
             @Override
-            public void onDrawerOpened(View drawerView)
-            {
+            public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
             }
 
             @Override
-            public void onDrawerClosed(View drawerView)
-            {
+            public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
             }
 
             @Override
-            public void onDrawerSlide(View drawerView, float slideOffset)
-            {
+            public void onDrawerSlide(View drawerView, float slideOffset) {
 
                 super.onDrawerSlide(drawerView, slideOffset);
             }
@@ -73,33 +69,24 @@ public class ShoppingListActivity extends ActionBarActivity
 
         drawerLayout.setDrawerListener(drawerToggle);
 
-        drawerList.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
+        drawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapter, View v, int position,
-                                    long arg3)
-            {
+                                    long arg3) {
                 String value = (String) adapter.getItemAtPosition(position);
-                if (value == getResources().getString(R.string.recipies_list))
-                {
+                if (value == getResources().getString(R.string.recipies_list)) {
                     Intent intent = new Intent(ShoppingListActivity.this, RecipeListActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
-                }
-                else if (value == getResources().getString(R.string.shopping_list))
-                {
+                } else if (value == getResources().getString(R.string.shopping_list)) {
                     Intent intent = new Intent(ShoppingListActivity.this, ShoppingListActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
-                }
-                else if (value == getResources().getString(R.string.callendar))
-                {
+                } else if (value == getResources().getString(R.string.callendar)) {
                     Intent intent = new Intent(ShoppingListActivity.this, CalendarActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
-                }
-                else if (value == getResources().getString(R.string.help))
-                {
+                } else if (value == getResources().getString(R.string.help)) {
                     Intent intent = new Intent(ShoppingListActivity.this, HelpActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
@@ -114,27 +101,39 @@ public class ShoppingListActivity extends ActionBarActivity
 
         shoppingListView = (ListView) findViewById(R.id.shoppingListView);
         shoppingListView.setAdapter(adapter);
-        shoppingListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
+        shoppingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapter, View v, int position,
-                                    long arg3)
-            {
+            public void onItemClick(AdapterView<?> adapter2, View v, int position,
+                                    long arg3) {
                 //String value = (String) adapter.getItem(position);
-                Intent intent = new Intent(ShoppingListActivity.this, AddShoppingItemActivity.class);
-                intent.putExtra("id", position);
-                startActivity(intent);
+                if (!shoppingModeOn) {
+                    Intent intent = new Intent(ShoppingListActivity.this, AddShoppingItemActivity.class);
+                    intent.putExtra("id", position);
+                    startActivity(intent);
+                } else {
+                    DatabaseManager manager = new DatabaseManager(ShoppingListActivity.this);
+
+                    manager.open();
+                    manager.updateCheckedMode_byID(++position);
+
+                    ArrayList<ShoppingItem> shoppingItemsList = manager.getAllShoppingItemsWithId();
+                    manager.close();
+
+                    adapter.setShoppingItemsList(shoppingItemsList);
+
+//                    shoppingListView.invalidateViews();
+
+                    adapter.notifyDataSetChanged();
+                }
             }
         });
 
         shoppingListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-        shoppingListView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener()
-        {
+        shoppingListView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
 
             @Override
             public void onItemCheckedStateChanged(ActionMode mode, int position,
-                                                  long id, boolean checked)
-            {
+                                                  long id, boolean checked) {
                 final int checkedCount = shoppingListView.getCheckedItemCount();
                 mode.setTitle(checkedCount + " Selected");
 //                selected = new SparseBooleanArray();
@@ -148,10 +147,8 @@ public class ShoppingListActivity extends ActionBarActivity
             }
 
             @Override
-            public boolean onActionItemClicked(ActionMode mode, MenuItem item)
-            {
-                switch (item.getItemId())
-                {
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                switch (item.getItemId()) {
                     case R.id.menu_delete:
                         deleteSelectedItems();
                         adapter.notifyDataSetChanged();
@@ -163,8 +160,7 @@ public class ShoppingListActivity extends ActionBarActivity
             }
 
             @Override
-            public boolean onCreateActionMode(ActionMode mode, Menu menu)
-            {
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
                 // Inflate the menu for the CAB
                 MenuInflater inflater = mode.getMenuInflater();
                 inflater.inflate(R.menu.context, menu);
@@ -172,28 +168,26 @@ public class ShoppingListActivity extends ActionBarActivity
             }
 
             @Override
-            public void onDestroyActionMode(ActionMode mode)
-            {
+            public void onDestroyActionMode(ActionMode mode) {
                 onResume();
             }
 
             @Override
-            public boolean onPrepareActionMode(ActionMode mode, Menu menu)
-            {
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
                 // Here you can perform updates to the CAB due to
                 // an invalidate() request
                 return false;
             }
         });
+
+        shoppingModeOn = true;
     }
 
-    public void toggleSelection(int position, SparseBooleanArray mSelectedItemsIds)
-    {
+    public void toggleSelection(int position, SparseBooleanArray mSelectedItemsIds) {
         selectView(position, !mSelectedItemsIds.get(position), mSelectedItemsIds);
     }
 
-    public void selectView(int position, boolean value, SparseBooleanArray mSelectedItemsIds)
-    {
+    public void selectView(int position, boolean value, SparseBooleanArray mSelectedItemsIds) {
         if (value)
             mSelectedItemsIds.put(position, value);
         else
@@ -201,14 +195,11 @@ public class ShoppingListActivity extends ActionBarActivity
         adapter.notifyDataSetChanged();
     }
 
-    private void deleteSelectedItems()
-    {
+    private void deleteSelectedItems() {
         DatabaseManager manager = new DatabaseManager(this);
         manager.open();
-        for (int i = 0; i < adapter.getCount(); i++)
-        {
-            if (shoppingListView.isItemChecked(i))
-            {
+        for (int i = 0; i < adapter.getCount(); i++) {
+            if (shoppingListView.isItemChecked(i)) {
                 ShoppingItem selectedItem = (ShoppingItem) adapter.getItem(i);
                 manager.deleteShoppingItem(selectedItem);
             }
@@ -218,8 +209,7 @@ public class ShoppingListActivity extends ActionBarActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
+    public boolean onCreateOptionsMenu(Menu menu) {
 
         MenuInflater inflater = getMenuInflater();
 
@@ -229,47 +219,69 @@ public class ShoppingListActivity extends ActionBarActivity
     }
 
     @Override
-    protected void onPostCreate(Bundle savedInstanceState)
-    {
+    protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
         drawerToggle.syncState();
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        if (item.getItemId() == android.R.id.home)
-        {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
             if (drawerLayout.isDrawerOpen(Gravity.LEFT))
                 drawerLayout.closeDrawers();
             else
                 drawerLayout.openDrawer(Gravity.LEFT);
-        }
-        else if (item.getItemId() == R.id.menu_add)
-        {
+        } else if (item.getItemId() == R.id.menu_add) {
             Intent intent = new Intent(this, AddShoppingItemActivity.class);
             startActivity(intent);
+        } else if (item.getItemId() == R.id.menu_change_mode) {
+            if (shoppingModeOn == true) {
+                shoppingModeOn = false;
+            } else {
+                shoppingModeOn = true;
+                DatabaseManager manager = new DatabaseManager(this);
+                manager.open();
+                ArrayList<ShoppingItem> shoppingItemsList = manager.getAllShoppingItemsWithId();
+                manager.close();
+
+                adapter.setShoppingItemsList(shoppingItemsList);
+
+                adapter.notifyDataSetChanged();
+            }
         }
 
         return super.onOptionsItemSelected(item);
     }
 
     @Override
-    protected void onResume()
-    {
-        DatabaseManager manager = new DatabaseManager(this);
+    protected void onResume() {
+        if (!shoppingModeOn) {
+            DatabaseManager manager = new DatabaseManager(this);
 
-        manager.open();
+            manager.open();
 
-        ArrayList<ShoppingItem> shoppingItemsList = manager.getAllShoppingItems();
+            ArrayList<ShoppingItem> shoppingItemsList = manager.getAllShoppingItems();
 
-        adapter = new ShoppingListAdapter(this);
-        adapter.setShoppingItemsList(shoppingItemsList);
+            adapter = new ShoppingListAdapter(this);
+            adapter.setShoppingItemsList(shoppingItemsList);
 
-        shoppingListView.setAdapter(adapter);
+            shoppingListView.setAdapter(adapter);
 
-        manager.close();
+            manager.close();
+        } else {
+            DatabaseManager manager = new DatabaseManager(ShoppingListActivity.this);
+
+            manager.open();
+
+            ArrayList<ShoppingItem> shoppingItemsList = manager.getAllShoppingItemsWithId();
+            manager.close();
+            adapter = new ShoppingListAdapter(this);
+            adapter.setShoppingItemsList(shoppingItemsList);
+            shoppingListView.setAdapter(adapter);
+
+        }
+
 
         super.onResume();
     }

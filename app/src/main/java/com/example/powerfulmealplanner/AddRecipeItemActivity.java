@@ -72,7 +72,6 @@ public class AddRecipeItemActivity extends ActionBarActivity
             recipeName = extras.getString("recipe_name");
             nameEditText.setText(recipeName);
 
-            //TODO add populating ingredients list for edited recipe here
             DatabaseManager manager = new DatabaseManager(this);
             manager.open();
             ingredientItemsList = manager.getAllShoppingItemsForRecipe(recipeName);

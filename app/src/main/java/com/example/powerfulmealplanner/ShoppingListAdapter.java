@@ -65,6 +65,15 @@ public class ShoppingListAdapter extends BaseAdapter
 
         ShoppingItem item = shoppingItemsList.get(position);
 
+        if(item.isChecked()) {
+            holder.nameTextView.setTextColor(App.getContext().getResources().getColor(R.color.light_bronze));
+            holder.quantityTextView.setTextColor(App.getContext().getResources().getColor(R.color.light_bronze));
+            holder.unitTextView.setTextColor(App.getContext().getResources().getColor(R.color.light_bronze));
+        } else {
+            holder.nameTextView.setTextColor(App.getContext().getResources().getColor(R.color.caldroid_black));
+            holder.quantityTextView.setTextColor(App.getContext().getResources().getColor(R.color.caldroid_black));
+            holder.unitTextView.setTextColor(App.getContext().getResources().getColor(R.color.caldroid_black));
+        }
         holder.nameTextView.setText(item.getItem());
         holder.quantityTextView.setText(item.getQuantity());
         holder.unitTextView.setText(item.getUnit());

@@ -7,6 +7,10 @@
         psl:showAsAction="always"
         android:title="@string/add"/>
     <item
+        android:id="@+id/menu_change_mode"
+        psl:showAsAction="always"
+        android:title="@string/change_mode"/>
+    <item
         android:id="@+id/menu_refresh"
         psl:showAsAction="never"
         android:title="option2"/>

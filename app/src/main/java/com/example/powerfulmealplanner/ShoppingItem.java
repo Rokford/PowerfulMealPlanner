@@ -7,6 +7,17 @@ public class ShoppingItem
 	private String quantity;
 	private String unit;
     private String recipeName;
+    private boolean isChecked = false;
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean isChecked) {
+        this.isChecked = isChecked;
+    }
+
+
 
     public ShoppingItem()
     {

@@ -16,12 +16,13 @@ public class DatabaseCreator extends SQLiteOpenHelper
 	public static final String COLUMN_QUANTITY = "quantity";
 	public static final String COLUMN_UNIT = "unit";
     public static final String COLUMN_RECIPE_DATE = "date";
+    public static final String COLUMN_IS_CHECKED = "is_checked";
 
 
     private static final String DATABASE_NAME = "powerful_shopping_list.db";
-	private static final int DATABASE_VERSION = 7;
+	private static final int DATABASE_VERSION = 9;
 
-	private static final String DATABASE_CREATE = "create table " + TABLE_SHOPPING_ITEMS + "(" + COLUMN_ID + " integer primary key autoincrement, " + COLUMN_ITEM + " text not null," + COLUMN_QUANTITY + " text not null," + COLUMN_UNIT + " text not null);";
+	private static final String DATABASE_CREATE = "create table " + TABLE_SHOPPING_ITEMS + "(" + COLUMN_ID + " integer primary key autoincrement, " + COLUMN_ITEM + " text not null," + COLUMN_QUANTITY + " text not null," + COLUMN_UNIT + " text not null," + COLUMN_IS_CHECKED +" text not null);";
     private static final String DATABASE_RECIPE_TABLE_NAME = "create table " + TABLE_RECIPE_ITEMS + "(" + COLUMN_ID + " integer primary key autoincrement, " + COLUMN_RECIPE_NAME + " text not null," + COLUMN_ITEM + " text not null," + COLUMN_QUANTITY + " text not null," + COLUMN_UNIT + " text not null);";
     private static final String DATABASE_RECIPE_TABLE_DATES = "create table " + TABLE_RECIPE_DATES + "(" + COLUMN_ID + " integer primary key autoincrement, " + COLUMN_RECIPE_DATE + " text not null," + COLUMN_RECIPE_NAME + " text not null);";
 

@@ -14,7 +14,9 @@ public class DatabaseManager
 	private DatabaseCreator databaseCreator;
 
 	private String[] allColumns =
-	{ databaseCreator.COLUMN_ID, databaseCreator.COLUMN_ITEM, databaseCreator.COLUMN_QUANTITY, databaseCreator.COLUMN_UNIT };
+        { databaseCreator.COLUMN_ID, databaseCreator.COLUMN_ITEM, databaseCreator.COLUMN_QUANTITY, databaseCreator.COLUMN_UNIT };
+    private String[] allColumnsWithId =
+            { databaseCreator.COLUMN_ID, databaseCreator.COLUMN_ITEM, databaseCreator.COLUMN_QUANTITY, databaseCreator.COLUMN_UNIT, databaseCreator.COLUMN_IS_CHECKED };
     private String[] allColumnsAndRecipies =
             { databaseCreator.COLUMN_ID, databaseCreator.COLUMN_RECIPE_NAME , databaseCreator.COLUMN_ITEM, databaseCreator.COLUMN_QUANTITY, databaseCreator.COLUMN_UNIT };
     private String[] allRecipeColumnsNames =
@@ -41,6 +43,7 @@ public class DatabaseManager
 		values.put(databaseCreator.COLUMN_ITEM, itemName);
 		values.put(databaseCreator.COLUMN_QUANTITY, quantity);
 		values.put(databaseCreator.COLUMN_UNIT, unit);
+        values.put(databaseCreator.COLUMN_IS_CHECKED, "n");
 
 		long insertId = database.insert(databaseCreator.TABLE_SHOPPING_ITEMS, null, values);
 
@@ -57,6 +60,30 @@ public class DatabaseManager
         values.put(databaseCreator.COLUMN_ITEM, v1);
         values.put(databaseCreator.COLUMN_QUANTITY, v2);
         values.put(databaseCreator.COLUMN_UNIT, v3);
+        long insertId = database.update(databaseCreator.TABLE_SHOPPING_ITEMS, values,databaseCreator.COLUMN_ID + " = " + id, null);
+    }
+
+    public void updateCheckedMode_byID(int id){
+        ContentValues values = new ContentValues();
+        String v1;
+        Cursor cursor = database.query(databaseCreator.TABLE_SHOPPING_ITEMS, allColumnsWithId, databaseCreator.COLUMN_ID + " = " + id, null, null, null, null);
+        ShoppingItem item = null;
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast())
+        {
+            item = cursorToShoppingItemWithId(cursor);
+            cursor.moveToNext();
+        }
+
+        // make sure to close the cursor
+        cursor.close();
+
+        if(item.isChecked()) {
+            v1 = "n";
+        } else {
+            v1 = "y";
+        }
+        values.put(databaseCreator.COLUMN_IS_CHECKED, v1);
         long insertId = database.update(databaseCreator.TABLE_SHOPPING_ITEMS, values,databaseCreator.COLUMN_ID + " = " + id, null);
     }
 
@@ -91,8 +118,42 @@ public class DatabaseManager
 		return shoppingItems;
 	}
 
-	private ShoppingItem cursorToShoppingItem(Cursor cursor)
+    public ArrayList<ShoppingItem> getAllShoppingItemsWithId()
+    {
+        ArrayList<ShoppingItem> shoppingItems = new ArrayList<ShoppingItem>();
+
+        Cursor cursor = database.query(databaseCreator.TABLE_SHOPPING_ITEMS, allColumnsWithId, null, null, null, null, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast())
+        {
+            ShoppingItem item = cursorToShoppingItemWithId(cursor);
+            shoppingItems.add(item);
+            cursor.moveToNext();
+        }
+
+        // make sure to close the cursor
+        cursor.close();
+        return shoppingItems;
+    }
+
+	private ShoppingItem cursorToShoppingItemWithId(Cursor cursor)
 	{
+        ShoppingItem shoppingItem = new ShoppingItem();
+        shoppingItem.setId(cursor.getLong(0));
+        shoppingItem.setItem(cursor.getString(1));
+        shoppingItem.setQuantity(cursor.getString(2));
+        shoppingItem.setUnit(cursor.getString(3));
+        if (cursor.getString(4).equals("y")) {
+            shoppingItem.setChecked(true);
+        } else {
+            shoppingItem.setChecked(false);
+        }
+        return shoppingItem;
+	}
+
+    private ShoppingItem cursorToShoppingItem(Cursor cursor)
+    {
         ShoppingItem shoppingItem = new ShoppingItem();
         shoppingItem.setId(cursor.getLong(0));
         shoppingItem.setItem(cursor.getString(1));
@@ -100,7 +161,7 @@ public class DatabaseManager
         shoppingItem.setUnit(cursor.getString(3));
 
         return shoppingItem;
-	}
+    }
 
     private ShoppingItem cursorToRecipeItem(Cursor cursor)
     {
