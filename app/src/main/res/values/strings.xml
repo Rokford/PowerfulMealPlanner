@@ -14,7 +14,10 @@
     <string name="title_activity_add_shopping_item">AddShoppingItemActivity</string>
     <string name="title_activity_add_recipe_item">AddRecipeItemActivity</string>
     <string name="add">Add</string>
-    <string name="change_mode">Shopping mode</string>
+    <string name="change_mode">Shopping ON</string>
+    <string name="change_mode_off">Shopping OFF</string>
+    <string name="shopping_mode_on_toast">Shopping Mode turned ON</string>
+    <string name="shopping_mode_off_toast">Shopping Mode turned OFF</string>
     <string name="ingredients">Ingredients</string>
     <string name="button_name">Add ingredient</string>
     <string name="name">Name</string>

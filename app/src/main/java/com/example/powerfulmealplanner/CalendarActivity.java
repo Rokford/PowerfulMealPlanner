@@ -247,7 +247,7 @@ public class CalendarActivity extends ActionBarActivity
 
                    if (recipes.size() > 0)
                    {
-                       caldroidFragment.setBackgroundResourceForDate(R.color.green, date);
+                       caldroidFragment.setBackgroundResourceForDate(R.color.lightest_bronze_old, date);
                    }
                 }
 
