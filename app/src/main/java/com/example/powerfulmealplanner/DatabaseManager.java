@@ -52,22 +52,29 @@ public class DatabaseManager
         // cursor.close();
     }
 
-    public void createItem(String item)
+    public void createItem(String item, boolean forUnit)
     {
-        database.execSQL("INSERT INTO " + databaseCreator.TABLE_ITEMS +
-                " (" + databaseCreator.COLUMN_ITEM + ") SELECT * FROM (SELECT '" + item + "') WHERE NOT EXISTS(SELECT " + databaseCreator.COLUMN_ITEM + " FROM " + databaseCreator.TABLE_ITEMS + " WHERE " + databaseCreator.COLUMN_ITEM + " = '" + item + "' )LIMIT 1; " );
+        String tableName = forUnit ? databaseCreator.TABLE_UNITS : databaseCreator.TABLE_ITEMS;
+
+        database.execSQL("INSERT INTO " + tableName +
+                " (" + databaseCreator.COLUMN_ITEM + ") SELECT * FROM (SELECT '" + item + "') WHERE NOT EXISTS(SELECT " + databaseCreator.COLUMN_ITEM + " FROM " + tableName + " WHERE " + databaseCreator.COLUMN_ITEM + " = '" + item + "' )LIMIT 1; " );
+
     }
 
-    public void deleteItem(String item)
+    public void deleteItem(String item, boolean forUnit)
     {
-        database.delete(databaseCreator.TABLE_ITEMS, databaseCreator.COLUMN_ITEM + " = " + "'" + item + "'", null);
+        String tableName = forUnit ? databaseCreator.TABLE_UNITS : databaseCreator.TABLE_ITEMS;
+
+        database.delete(tableName, databaseCreator.COLUMN_ITEM + " = " + "'" + item + "'", null);
     }
 
-    public ArrayList<String> getAllItems()
+    public ArrayList<String> getAllItems(boolean forUnit)
     {
+        String tableName = forUnit ? databaseCreator.TABLE_UNITS : databaseCreator.TABLE_ITEMS;
+
         ArrayList<String> items = new ArrayList<String>();
 
-        Cursor cursor = database.query(databaseCreator.TABLE_ITEMS, allItems, null, null, null, null, null);
+        Cursor cursor = database.query(tableName, allItems, null, null, null, null, null);
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast())

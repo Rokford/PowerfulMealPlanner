@@ -17,7 +17,7 @@ public class AddShoppingItemActivity extends ActionBarActivity
 {
     private AutoCompleteTextView nameEditText;
     private EditText quantityEditText;
-    private EditText unitEditText;
+    private AutoCompleteTextView unitEditText;
     private Bundle extras;
 
     @Override
@@ -32,7 +32,7 @@ public class AddShoppingItemActivity extends ActionBarActivity
 
         nameEditText = (AutoCompleteTextView) findViewById(R.id.nameEditText);
         quantityEditText = (EditText) findViewById(R.id.quantityEditText);
-        unitEditText = (EditText) findViewById(R.id.unitEditText);
+        unitEditText = (AutoCompleteTextView) findViewById(R.id.unitEditText);
 
         extras = getIntent().getExtras();
 
@@ -49,11 +49,20 @@ public class AddShoppingItemActivity extends ActionBarActivity
             unitEditText.setText(item.getUnit());
         }
 
-        ArrayList<String> allItems = manager.getAllItems();
+        ArrayList<String> allItems = manager.getAllItems(false);
+        ArrayList<String> allUnits = manager.getAllItems(true);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, allItems);
+        AutocompleteItemAdapter itemsAdapter = new AutocompleteItemAdapter(this, R.layout.autocomplete_textview_item, allItems);
+        AutocompleteItemAdapter unitsAdapter = new AutocompleteItemAdapter(this, R.layout.autocomplete_textview_item, allUnits);
 
-        nameEditText.setAdapter(adapter);
+        itemsAdapter.setItems(allItems);
+        itemsAdapter.setForUnit(false);
+
+        unitsAdapter.setItems(allUnits);
+        unitsAdapter.setForUnit(true);
+
+        nameEditText.setAdapter(itemsAdapter);
+        unitEditText.setAdapter(unitsAdapter);
 
         manager.close();
 
@@ -113,7 +122,8 @@ public class AddShoppingItemActivity extends ActionBarActivity
                     manager.createShoppingItem(name, quantity, unit);
                 }
 
-                manager.createItem(name);
+                manager.createItem(name, false);
+                manager.createItem(unit, true);
 
                 manager.close();
                 finish();

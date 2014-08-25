@@ -77,14 +77,14 @@
                     android:layout_height="wrap_content"
                     android:text="@string/unit"/>
 
-                <EditText
+                <AutoCompleteTextView
                     android:id="@+id/unitEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="@string/unit_hint">
 
-                </EditText>
+                </AutoCompleteTextView>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
