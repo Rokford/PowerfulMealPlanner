@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 
 public class AddRecipeItemActivity extends ActionBarActivity
 {
-    private EditText nameEditText;
+    private AutoCompleteTextView nameEditText;
     private Button addIngredientButton;
     private Bundle extras;
     private ShoppingListAdapter recipeIngredientsAdapter;
@@ -60,7 +61,7 @@ public class AddRecipeItemActivity extends ActionBarActivity
         ingredientItemsList = new ArrayList<ShoppingItem>();
         recipeIngredientsAdapter = new ShoppingListAdapter(this);
         recipeIngredientsAdapter.setShoppingItemsList(ingredientItemsList);
-        nameEditText = (EditText) findViewById(R.id.nameEditText);
+        nameEditText = (AutoCompleteTextView) findViewById(R.id.nameEditText);
         addIngredientButton = (Button) findViewById(R.id.addIngredientButton);
         ingredientsListView = (ListView) findViewById(R.id.ingredient_list);
         ingredientsListView.setAdapter(recipeIngredientsAdapter);

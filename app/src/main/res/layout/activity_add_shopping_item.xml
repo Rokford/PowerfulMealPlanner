@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/name"/>
 
-            <EditText
+            <AutoCompleteTextView
                 android:id="@+id/nameEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
                 android:hint="@string/name_hint">
 
                 <requestFocus/>
-            </EditText>
+            </AutoCompleteTextView>
         </LinearLayout>
 
         <LinearLayout

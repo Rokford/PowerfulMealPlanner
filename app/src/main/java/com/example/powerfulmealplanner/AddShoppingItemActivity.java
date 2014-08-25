@@ -6,6 +6,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -13,7 +15,7 @@ import java.util.ArrayList;
 
 public class AddShoppingItemActivity extends ActionBarActivity
 {
-    private EditText nameEditText;
+    private AutoCompleteTextView nameEditText;
     private EditText quantityEditText;
     private EditText unitEditText;
     private Bundle extras;
@@ -28,23 +30,32 @@ public class AddShoppingItemActivity extends ActionBarActivity
         getSupportActionBar().setIcon(R.drawable.ic_launcher);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
 
-        nameEditText = (EditText) findViewById(R.id.nameEditText);
+        nameEditText = (AutoCompleteTextView) findViewById(R.id.nameEditText);
         quantityEditText = (EditText) findViewById(R.id.quantityEditText);
         unitEditText = (EditText) findViewById(R.id.unitEditText);
 
         extras = getIntent().getExtras();
 
-        if (extras != null && extras.getString("for_recipe") == null)
+        DatabaseManager manager = new DatabaseManager(this);
+        manager.open();
+
+        if (extras != null && extras.getString("for_recipe" ) == null)
         {
-            DatabaseManager manager = new DatabaseManager(this);
-            manager.open();
             ArrayList<ShoppingItem> shoppingItemsList = manager.getAllShoppingItems();
-            manager.close();
-            ShoppingItem item = shoppingItemsList.get(extras.getInt("id"));
+
+            ShoppingItem item = shoppingItemsList.get(extras.getInt("id" ));
             nameEditText.setText(item.getItem());
             quantityEditText.setText(item.getQuantity());
             unitEditText.setText(item.getUnit());
         }
+
+        ArrayList<String> allItems = manager.getAllItems();
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, allItems);
+
+        nameEditText.setAdapter(adapter);
+
+        manager.close();
 
     }
 
@@ -80,7 +91,7 @@ public class AddShoppingItemActivity extends ActionBarActivity
                 manager.open();
                 if (extras != null)
                 {
-                    if (extras.getString("for_recipe") != null)
+                    if (extras.getString("for_recipe" ) != null)
                     {
                         Intent returnIntent = new Intent();
                         returnIntent.putExtra("name", name);
@@ -91,7 +102,7 @@ public class AddShoppingItemActivity extends ActionBarActivity
                     }
                     else
                     {
-                        int id = extras.getInt("id");
+                        int id = extras.getInt("id" );
                         id++;
                         manager.update_byID(id, name, quantity, unit);
                     }
@@ -101,6 +112,8 @@ public class AddShoppingItemActivity extends ActionBarActivity
                 {
                     manager.createShoppingItem(name, quantity, unit);
                 }
+
+                manager.createItem(name);
 
                 manager.close();
                 finish();
