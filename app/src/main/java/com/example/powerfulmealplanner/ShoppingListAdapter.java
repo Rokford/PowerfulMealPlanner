@@ -112,7 +112,24 @@ public class ShoppingListAdapter extends BaseAdapter
 
     public void setShoppingItemsList(ArrayList<ShoppingItem> shoppingItemsList)
     {
-        this.shoppingItemsList = shoppingItemsList;
+        ArrayList<ShoppingItem> shoppingItemsListSorted = new ArrayList<ShoppingItem>();
+
+        for (ShoppingItem s : shoppingItemsList) {
+            if (!s.isChecked()) {
+                shoppingItemsListSorted.add(s);
+            }
+        }
+
+
+        for (ShoppingItem s : shoppingItemsList) {
+            if (s.isChecked()) {
+                shoppingItemsListSorted.add(s);
+            }
+        }
+
+
+        this.shoppingItemsList = shoppingItemsListSorted;
+
     }
 
 }

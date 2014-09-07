@@ -122,25 +122,29 @@ public class ShoppingListActivity extends ActionBarActivity
             public void onItemClick(AdapterView<?> adapter2, View v, int position, long arg3)
             {
                 //String value = (String) adapter.getItem(position);
+                ShoppingListAdapter shoppingAdapter = (ShoppingListAdapter)adapter2.getAdapter();
+                ShoppingItem item = (ShoppingItem) shoppingAdapter.getItem(position);
+                long id = item.getId();
                 if (!shoppingModeOn)
                 {
                     Intent intent = new Intent(ShoppingListActivity.this, AddShoppingItemActivity.class);
-                    intent.putExtra("id", position);
+                    intent.putExtra("id", id);
                     startActivity(intent);
                 }
                 else
                 {
                     DatabaseManager manager = new DatabaseManager(ShoppingListActivity.this);
-
+                    int idForDatabase = (int) ++id;
                     manager.open();
-                    manager.updateCheckedMode_byID(++position);
+                    manager.updateCheckedMode_byID(idForDatabase);
+                   // ShoppingItem item = manager.getShoppingItemById(id);
+                   // manager.deleteShoppingItemById(id);
+                   // manager.createShoppingItemChecked(item.getItem(), item.getQuantity(), item.getUnit());
 
                     ArrayList<ShoppingItem> shoppingItemsList = manager.getAllShoppingItemsWithId();
                     manager.close();
 
                     adapter.setShoppingItemsList(shoppingItemsList);
-
-                    //                    shoppingListView.invalidateViews();
 
                     adapter.notifyDataSetChanged();
                 }

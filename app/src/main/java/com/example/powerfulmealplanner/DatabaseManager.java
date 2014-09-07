@@ -44,12 +44,21 @@ public class DatabaseManager
 
         long insertId = database.insert(databaseCreator.TABLE_SHOPPING_ITEMS, null, values);
 
-        // Cursor cursor = database.query(databaseCreator.TABLE_SHOPPING_ITEMS,
-        // allColumns, databaseCreator.COLUMN_ID + " = " + insertId, null, null,
-        // null, null);
-        // cursor.moveToFirst();
-        // ShoppingItem newShoppingItem = cursorToShoppingItem(cursor);
-        // cursor.close();
+
+    }
+
+
+    public void createShoppingItemChecked(String itemName, String quantity, String unit)
+    {
+        ContentValues values = new ContentValues();
+        values.put(databaseCreator.COLUMN_ITEM, itemName);
+        values.put(databaseCreator.COLUMN_QUANTITY, quantity);
+        values.put(databaseCreator.COLUMN_UNIT, unit);
+        values.put(databaseCreator.COLUMN_IS_CHECKED, "y" );
+
+        long insertId = database.insert(databaseCreator.TABLE_SHOPPING_ITEMS, null, values);
+
+
     }
 
     public void createItem(String item, boolean forUnit)
@@ -129,6 +138,13 @@ public class DatabaseManager
     public void deleteShoppingItem(ShoppingItem shoppingItem)
     {
         long id = shoppingItem.getId();
+
+        database.delete(databaseCreator.TABLE_SHOPPING_ITEMS, databaseCreator.COLUMN_ID + " = " + id, null);
+    }
+
+    public void deleteShoppingItemById(int id)
+    {
+
 
         database.delete(databaseCreator.TABLE_SHOPPING_ITEMS, databaseCreator.COLUMN_ID + " = " + id, null);
     }
@@ -319,6 +335,22 @@ public class DatabaseManager
         // make sure to close the cursor
         cursor.close();
         return shoppingItems;
+    }
+
+    public ShoppingItem getShoppingItemById (int id) {
+
+        Cursor cursor = database.query(databaseCreator.TABLE_SHOPPING_ITEMS, allColumnsWithId, databaseCreator.COLUMN_ID + " = " + id, null, null, null, null);
+        ShoppingItem item = null;
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast())
+        {
+            item = cursorToShoppingItemWithId(cursor);
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+        return item;
+
     }
 
 }
