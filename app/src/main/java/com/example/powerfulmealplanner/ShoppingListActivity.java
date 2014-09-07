@@ -128,13 +128,13 @@ public class ShoppingListActivity extends ActionBarActivity
                 if (!shoppingModeOn)
                 {
                     Intent intent = new Intent(ShoppingListActivity.this, AddShoppingItemActivity.class);
-                    intent.putExtra("id", id);
+                    intent.putExtra("id", (int)id);
                     startActivity(intent);
                 }
                 else
                 {
                     DatabaseManager manager = new DatabaseManager(ShoppingListActivity.this);
-                    int idForDatabase = (int) ++id;
+                    int idForDatabase = (int) id;
                     manager.open();
                     manager.updateCheckedMode_byID(idForDatabase);
                    // ShoppingItem item = manager.getShoppingItemById(id);

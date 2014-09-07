@@ -42,8 +42,15 @@ public class AddShoppingItemActivity extends ActionBarActivity
         if (extras != null && extras.getString("for_recipe" ) == null)
         {
             ArrayList<ShoppingItem> shoppingItemsList = manager.getAllShoppingItems();
+            int id = extras.getInt("id" );
+            ShoppingItem item = null;
+            for (ShoppingItem s : shoppingItemsList) {
+                if (s.getId() == id) {
+                    item = s;
+                }
+            }
 
-            ShoppingItem item = shoppingItemsList.get(extras.getInt("id" ));
+            //ShoppingItem item = shoppingItemsList.get(extras.getInt("id" ));
             nameEditText.setText(item.getItem());
             quantityEditText.setText(item.getQuantity());
             unitEditText.setText(item.getUnit());
@@ -112,7 +119,7 @@ public class AddShoppingItemActivity extends ActionBarActivity
                     else
                     {
                         int id = extras.getInt("id" );
-                        id++;
+                        //id++;
                         manager.update_byID(id, name, quantity, unit);
                     }
 
