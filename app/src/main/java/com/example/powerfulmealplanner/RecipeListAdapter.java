@@ -96,22 +96,6 @@ public class RecipeListAdapter extends BaseAdapter
         return convertView;
     }
 
-    //    public void toggleSelection(int position) {
-    //         selectView(position, !mSelectedItemsIds.get(position));
-    //    }
-    //
-    //    public void selectView(int position, boolean value) {
-    //        if (value)
-    //            mSelectedItemsIds.put(position, value);
-    //        else
-    //            mSelectedItemsIds.delete(position);
-    //        notifyDataSetChanged();
-    //    }
-
-    //    public SparseBooleanArray getSelectedIds() {
-    //        return mSelectedItemsIds;
-    //    }
-
     public static class ViewHolder
     {
         public TextView nameTextView;
@@ -128,6 +112,11 @@ public class RecipeListAdapter extends BaseAdapter
         this.recipeNamesList = recipeItemsList;
 
         checkedRecipes = new Boolean[recipeNamesList.size()];
+
+        for (Boolean b : checkedRecipes)
+        {
+            b = new Boolean(false);
+        }
     }
 
     public Boolean[] getCheckedRecipes()
