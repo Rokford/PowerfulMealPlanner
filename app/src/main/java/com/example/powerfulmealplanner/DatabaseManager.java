@@ -34,6 +34,9 @@ public class DatabaseManager
         databaseCreator.close();
     }
 
+    public void deleteAllShoppingItems () {
+        database.execSQL("delete from "+ databaseCreator.TABLE_SHOPPING_ITEMS);
+    }
     public void createShoppingItem(String itemName, String quantity, String unit)
     {
         ContentValues values = new ContentValues();

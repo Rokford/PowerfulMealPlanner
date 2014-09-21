@@ -1,6 +1,7 @@
 package com.example.powerfulmealplanner;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -182,6 +183,7 @@ public class CalendarActivity extends ActionBarActivity
                     // Get the layout inflater
                     LayoutInflater inflater = CalendarActivity.this.getLayoutInflater();
 
+
                     View dialogView = inflater.inflate(R.layout.calendar_dialog, null);
 
                     ListView listView = (ListView) dialogView.findViewById(R.id.calendarDialogListView);
@@ -336,6 +338,64 @@ public class CalendarActivity extends ActionBarActivity
             if (inSelectionMode)
             {
                 // TODO: get firstDate and LastDate here, create Shopping List for every day between them
+                ArrayList<Date> dates = new ArrayList<Date>();
+
+                Calendar cal1 = Calendar.getInstance();
+                cal1.setTime(firstDate);
+
+                Calendar cal2 = Calendar.getInstance();
+                cal2.setTime(lastDate);
+
+                while(!cal1.after(cal2))
+                {
+                    dates.add(cal1.getTime());
+                    cal1.add(Calendar.DATE, 1);
+                }
+
+                final DatabaseManager manager = new DatabaseManager(CalendarActivity.this);
+                manager.open();
+                ArrayList<String> recipes = new ArrayList<String>();
+                for (Date d: dates){
+                    recipes.addAll(manager.getRecipeNamesForDate(Utilities.formatDateforDB(d)));
+                }
+
+                final ArrayList<ShoppingItem> shoppingItems = new ArrayList<ShoppingItem>();
+                for(String r: recipes) {
+                    shoppingItems.addAll(manager.getAllShoppingItemsForRecipe(r));
+                }
+
+                //TODO usun powtorzenia i pododawaj skladniki here
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(CalendarActivity.this);
+
+                builder.setMessage("Do you want to clear previously created shopping list?");
+                builder.setPositiveButton("Add to old list", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        for(ShoppingItem si: shoppingItems) {
+                            manager.createShoppingItem(si.getItem(), si.getQuantity(), si.getUnit());
+                        }
+                        manager.close();
+
+                        Toast.makeText(CalendarActivity.this, "Shopping list generated successfully", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                builder.setNegativeButton("Create new one", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        manager.deleteAllShoppingItems();
+
+                        for(ShoppingItem si: shoppingItems) {
+                            manager.createShoppingItem(si.getItem(), si.getQuantity(), si.getUnit());
+                        }
+                        manager.close();
+
+                        Toast.makeText(CalendarActivity.this, "Shopping list generated successfully", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                builder.create().show();
             }
             else
             {
