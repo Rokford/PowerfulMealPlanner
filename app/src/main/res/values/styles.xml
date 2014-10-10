@@ -18,7 +18,15 @@
 
         <item name="android:actionMenuTextColor">@android:color/white</item>
         <item name="android:actionBarStyle">@style/MyActionBar</item>
+        <item name="android:actionModeStyle">@style/MyTheme.ActionMode</item>
 
+    </style>
+
+    <style name="MyTheme.ActionMode" parent="@android:style/Theme.Holo.Light">
+        <item name="android:height">?android:attr/actionBarSize</item>
+        <item name="android:background">@color/light_bronze</item>
+        <item name="android:backgroundSplit">@color/light_bronze</item>
+        <item name="android:actionModeBackground">@color/light_bronze</item>
 
     </style>
 
