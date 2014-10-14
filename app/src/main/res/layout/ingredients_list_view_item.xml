@@ -3,6 +3,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:padding="10dp"
+              android:clickable="false"
               android:gravity="center_vertical"
               android:orientation="horizontal"
               android:background="?android:attr/activatedBackgroundIndicator">
@@ -41,6 +42,13 @@
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:text="TextViewTextView"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:id="@+id/deleteImageView"
+        android:src="@android:drawable/ic_delete"/>
 
 
 

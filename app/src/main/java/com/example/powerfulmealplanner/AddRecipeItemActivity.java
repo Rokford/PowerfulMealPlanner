@@ -82,6 +82,8 @@ public class AddRecipeItemActivity extends ActionBarActivity
 
         }
 
+        recipeIngredientsAdapter.setRecipeName(recipeName);
+
         addIngredientButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
