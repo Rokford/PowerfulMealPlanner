@@ -207,6 +207,15 @@ public class CalendarActivity extends ActionBarActivity
 
                     calendarDialog = builder.create();
 
+                    calendarDialog.setOnDismissListener(new DialogInterface.OnDismissListener()
+                    {
+                        @Override
+                        public void onDismiss(DialogInterface dialog)
+                        {
+                            caldroidFragment.getCaldroidListener().onChangeMonth(displayedMonth, displayedYear);
+                        }
+                    });
+
                     calendarDialog.show();
 
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -434,13 +443,5 @@ public class CalendarActivity extends ActionBarActivity
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
         drawerToggle.syncState();
-    }
-
-    @Override
-    protected void onResume()
-    {
-        if (caldroidFragment != null)
-            caldroidFragment.refreshView();
-        super.onResume();
     }
 }
