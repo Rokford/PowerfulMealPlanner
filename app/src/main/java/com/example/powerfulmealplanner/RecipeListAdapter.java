@@ -116,9 +116,9 @@ public class RecipeListAdapter extends BaseAdapter
 
         checkedRecipes = new Boolean[recipeNamesList.size()];
 
-        for (Boolean b : checkedRecipes)
+        for (int i = 0; i < checkedRecipes.length; i++)
         {
-            b = new Boolean(false);
+            checkedRecipes[i] = new Boolean(false);
         }
     }
 
