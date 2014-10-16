@@ -286,6 +286,11 @@ public class DatabaseManager
         return recipes;
     }
 
+    public void deleteRecipeFromDate(String recipeName, String date)
+    {
+        database.delete(databaseCreator.TABLE_RECIPE_DATES, databaseCreator.COLUMN_RECIPE_DATE + " = " + date + " and " + databaseCreator.COLUMN_RECIPE_NAME + " = " + "'" + recipeName + "'", null);
+    }
+
     public ArrayList<ShoppingItem> getAllRecipeItems()
     {
         ArrayList<ShoppingItem> shoppingItems = new ArrayList<ShoppingItem>();

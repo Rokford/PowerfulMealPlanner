@@ -65,11 +65,14 @@ public class ShoppingListAdapter extends BaseAdapter
 
         ShoppingItem item = shoppingItemsList.get(position);
 
-        if(item.isChecked()) {
+        if (item.isChecked())
+        {
             holder.nameTextView.setTextColor(App.getContext().getResources().getColor(R.color.light_bronze));
             holder.quantityTextView.setTextColor(App.getContext().getResources().getColor(R.color.light_bronze));
             holder.unitTextView.setTextColor(App.getContext().getResources().getColor(R.color.light_bronze));
-        } else {
+        }
+        else
+        {
             holder.nameTextView.setTextColor(App.getContext().getResources().getColor(R.color.caldroid_black));
             holder.quantityTextView.setTextColor(App.getContext().getResources().getColor(R.color.caldroid_black));
             holder.unitTextView.setTextColor(App.getContext().getResources().getColor(R.color.caldroid_black));
@@ -81,13 +84,11 @@ public class ShoppingListAdapter extends BaseAdapter
         return convertView;
     }
 
-
     public static class ViewHolder
     {
         public TextView nameTextView;
         public TextView quantityTextView;
         public TextView unitTextView;
-
     }
 
     public ArrayList<ShoppingItem> getShoppingItemsList()
@@ -99,22 +100,22 @@ public class ShoppingListAdapter extends BaseAdapter
     {
         ArrayList<ShoppingItem> shoppingItemsListSorted = new ArrayList<ShoppingItem>();
 
-        for (ShoppingItem s : shoppingItemsList) {
-            if (!s.isChecked()) {
+        for (ShoppingItem s : shoppingItemsList)
+        {
+            if (!s.isChecked())
+            {
                 shoppingItemsListSorted.add(s);
             }
         }
 
-
-        for (ShoppingItem s : shoppingItemsList) {
-            if (s.isChecked()) {
+        for (ShoppingItem s : shoppingItemsList)
+        {
+            if (s.isChecked())
+            {
                 shoppingItemsListSorted.add(s);
             }
         }
-
 
         this.shoppingItemsList = shoppingItemsListSorted;
-
     }
-
 }

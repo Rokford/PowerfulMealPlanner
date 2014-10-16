@@ -3,6 +3,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:padding="15dp"
+              android:gravity="center"
               android:orientation="horizontal"
               android:background="?android:attr/activatedBackgroundIndicator">
 
@@ -12,6 +13,14 @@
         android:layout_height="wrap_content"
         android:layout_weight="3"
         android:text="TextView"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/deleteImageView"
+        android:src="@android:drawable/ic_delete"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
 
 
 </LinearLayout>

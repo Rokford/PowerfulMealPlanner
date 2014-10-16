@@ -199,6 +199,7 @@ public class CalendarActivity extends ActionBarActivity
                     manager.close();
 
                     calendarAdapter.setRecipeItemsList(recipes);
+                    calendarAdapter.setDate(Utilities.formatDateforDB(date));
 
                     listView.setAdapter(calendarAdapter);
 
@@ -433,5 +434,13 @@ public class CalendarActivity extends ActionBarActivity
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
         drawerToggle.syncState();
+    }
+
+    @Override
+    protected void onResume()
+    {
+        if (caldroidFragment != null)
+            caldroidFragment.refreshView();
+        super.onResume();
     }
 }
