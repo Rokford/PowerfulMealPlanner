@@ -45,7 +45,6 @@ public class CalendarActivity extends ActionBarActivity
     int displayedMonth;
     int displayedYear;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -113,7 +112,6 @@ public class CalendarActivity extends ActionBarActivity
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }
-
             }
         });
 
@@ -139,7 +137,6 @@ public class CalendarActivity extends ActionBarActivity
 
         Date date = new Date();
         final java.text.DateFormat formatter = android.text.format.DateFormat.getDateFormat(getApplicationContext());
-
 
         final CaldroidListener listener = new CaldroidListener()
         {
@@ -182,7 +179,6 @@ public class CalendarActivity extends ActionBarActivity
                     AlertDialog.Builder builder = new AlertDialog.Builder(CalendarActivity.this);
                     // Get the layout inflater
                     LayoutInflater inflater = CalendarActivity.this.getLayoutInflater();
-
 
                     View dialogView = inflater.inflate(R.layout.calendar_dialog, null);
 
@@ -236,9 +232,7 @@ public class CalendarActivity extends ActionBarActivity
                             }
                         }
                     });
-
                 }
-
             }
 
             @Override
@@ -255,21 +249,20 @@ public class CalendarActivity extends ActionBarActivity
 
                 for (Date date : dates)
                 {
-                   ArrayList<String> recipes = manager.getRecipeNamesForDate(Utilities.formatDateforDB(date));
+                    ArrayList<String> recipes = manager.getRecipeNamesForDate(Utilities.formatDateforDB(date));
 
-                   if (recipes.size() > 0)
-                   {
-                       caldroidFragment.setBackgroundResourceForDate(R.color.lightest_bronze_old, date);
-                   }
+                    if (recipes.size() > 0)
+                    {
+                        caldroidFragment.setBackgroundResourceForDate(R.color.lightest_bronze_old, date);
+                    }
                 }
 
                 manager.close();
 
                 caldroidFragment.refreshView();
 
-
-//                                String text = "month: " + month + " year: " + year;
-//                                Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+                //                                String text = "month: " + month + " year: " + year;
+                //                                Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -283,15 +276,12 @@ public class CalendarActivity extends ActionBarActivity
             {
 
             }
-
         };
 
         caldroidFragment.setCaldroidListener(listener);
 
-
         //        caldroidFragment.setSelectedDates();
     }
-
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
@@ -317,7 +307,6 @@ public class CalendarActivity extends ActionBarActivity
             }
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -356,7 +345,7 @@ public class CalendarActivity extends ActionBarActivity
                 Calendar cal2 = Calendar.getInstance();
                 cal2.setTime(lastDate);
 
-                while(!cal1.after(cal2))
+                while (!cal1.after(cal2))
                 {
                     dates.add(cal1.getTime());
                     cal1.add(Calendar.DATE, 1);
@@ -365,24 +354,54 @@ public class CalendarActivity extends ActionBarActivity
                 final DatabaseManager manager = new DatabaseManager(CalendarActivity.this);
                 manager.open();
                 ArrayList<String> recipes = new ArrayList<String>();
-                for (Date d: dates){
+                for (Date d : dates)
+                {
                     recipes.addAll(manager.getRecipeNamesForDate(Utilities.formatDateforDB(d)));
                 }
 
                 final ArrayList<ShoppingItem> shoppingItems = new ArrayList<ShoppingItem>();
-                for(String r: recipes) {
+                for (String r : recipes)
+                {
                     shoppingItems.addAll(manager.getAllShoppingItemsForRecipe(r));
                 }
 
-                //TODO usun powtorzenia i pododawaj skladniki here
+                final ArrayList<ShoppingItem> shoppingItemsWithoutDuplicates = new ArrayList<ShoppingItem>();
+
+                while (shoppingItems.size() > 0)
+                {
+                    ShoppingItem firstItem = shoppingItems.get(0);
+
+                    for (int i = 1; i < shoppingItems.size(); i++)
+                    {
+                        ShoppingItem iteratedItem = shoppingItems.get(i);
+
+                        if (iteratedItem.getItem().equals(firstItem.getItem()) && iteratedItem.getUnit().equals(firstItem.getUnit()))
+                        {
+                            Float f = Float.parseFloat(firstItem.getQuantity()) + Float.parseFloat(iteratedItem.getQuantity());
+
+                            if (f % 1 == 0)
+                                firstItem.setQuantity(Integer.valueOf(f.intValue()).toString());
+                            else
+                                firstItem.setQuantity(f.toString());
+
+                            shoppingItems.remove(iteratedItem);
+                        }
+                    }
+
+                    shoppingItemsWithoutDuplicates.add(firstItem);
+                    shoppingItems.remove(firstItem);
+                }
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(CalendarActivity.this);
 
                 builder.setMessage("Do you want to clear previously created shopping list?");
-                builder.setPositiveButton("Add to old list", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton("Add to old list", new DialogInterface.OnClickListener()
+                {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        for(ShoppingItem si: shoppingItems) {
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        for (ShoppingItem si : shoppingItemsWithoutDuplicates)
+                        {
                             manager.createShoppingItem(si.getItem(), si.getQuantity(), si.getUnit());
                         }
                         manager.close();
@@ -391,12 +410,15 @@ public class CalendarActivity extends ActionBarActivity
                     }
                 });
 
-                builder.setNegativeButton("Create new one", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton("Create new one", new DialogInterface.OnClickListener()
+                {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(DialogInterface dialog, int which)
+                    {
                         manager.deleteAllShoppingItems();
 
-                        for(ShoppingItem si: shoppingItems) {
+                        for (ShoppingItem si : shoppingItemsWithoutDuplicates)
+                        {
                             manager.createShoppingItem(si.getItem(), si.getQuantity(), si.getUnit());
                         }
                         manager.close();
