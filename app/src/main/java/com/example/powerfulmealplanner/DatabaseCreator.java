@@ -22,7 +22,7 @@ public class DatabaseCreator extends SQLiteOpenHelper
 
 
     private static final String DATABASE_NAME = "powerful_shopping_list.db";
-	private static final int DATABASE_VERSION = 16;
+	private static final int DATABASE_VERSION = 18;
 
 	private static final String DATABASE_CREATE = "create table " + TABLE_SHOPPING_ITEMS + "(" + COLUMN_ID + " integer primary key autoincrement, " + COLUMN_ITEM + " text not null," + COLUMN_QUANTITY + " text not null," + COLUMN_UNIT + " text not null," + COLUMN_IS_CHECKED +" text not null);";
     private static final String DATABASE_RECIPE_TABLE_NAME = "create table " + TABLE_RECIPE_ITEMS + "(" + COLUMN_ID + " integer primary key autoincrement, " + COLUMN_RECIPE_NAME + " text not null," + COLUMN_ITEM + " text not null," + COLUMN_QUANTITY + " text not null," + COLUMN_UNIT + " text not null);";

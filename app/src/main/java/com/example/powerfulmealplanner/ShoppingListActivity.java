@@ -322,8 +322,6 @@ public class ShoppingListActivity extends ActionBarActivity
 
             ArrayList<ShoppingItem> shoppingItemsList = manager.getAllShoppingItems();
 
-            Collections.sort(shoppingItemsList);
-
             manager.deleteAllShoppingItems();
             shoppingItemsList = Utilities.removeDuplicatesFormShoppingItemsList(shoppingItemsList);
 
@@ -355,10 +353,10 @@ public class ShoppingListActivity extends ActionBarActivity
                 manager.createShoppingItem(si.getItem(), si.getQuantity(), si.getUnit());
             }
 
+            shoppingItemsList = manager.getAllShoppingItemsWithId();
+
             manager.close();
             adapter = new ShoppingListAdapter(this);
-
-            Collections.sort(shoppingItemsList);
 
             adapter.setShoppingItemsList(shoppingItemsList);
             shoppingListView.setAdapter(adapter);
