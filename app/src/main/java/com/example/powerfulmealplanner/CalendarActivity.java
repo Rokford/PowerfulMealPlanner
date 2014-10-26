@@ -57,7 +57,7 @@ public class CalendarActivity extends ActionBarActivity
 
         drawerList.setAdapter(new NavigationDrawerAdapter(this));
 
-        getSupportActionBar().setTitle(getResources().getString(R.string.shopping_list));
+        getSupportActionBar().setTitle(getResources().getString(R.string.callendar));
 
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer, R.string.yes, R.string.no)
         {
@@ -173,6 +173,12 @@ public class CalendarActivity extends ActionBarActivity
                             lastDate = firstDate;
                             firstDate = date;
                         }
+                        else
+                        {
+                            caldroidFragment.setSelectedDates(date, date);
+                            lastDate = date;
+                        }
+
 
                         caldroidFragment.refreshView();
                     }

@@ -7,7 +7,7 @@
     <string name="no">no</string>
     <string name="new_recipe">New Recipe</string>
     <string name="recipies_list">Recipies List</string>
-    <string name="callendar">Callendar</string>
+    <string name="callendar">Calendar</string>
     <string name="shopping_list">Shopping List</string>
     <string name="title_activity_shopping_list">ShoppingListActivity</string>
     <string name="title_activity_recipe_list">RecipeListActivity</string>
@@ -40,7 +40,7 @@
     <string name="create_list">Generate List</string>
     <string name="select_the_first_day">Select the first day</string>
     <string name="select_the_last_day">Select the last day</string>
-    <string name="title_activity_help">HelpActivity</string>
+    <string name="title_activity_help">Help</string>
     <string name="help_2">help 2 text</string>
     <string name="help_1">help 1 text</string>
     <string name="help">Help</string>
