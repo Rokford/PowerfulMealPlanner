@@ -15,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -39,7 +38,7 @@ public class ShoppingListActivity extends ActionBarActivity
 
     SparseBooleanArray selected;
 
-    @SuppressLint("NewApi" )
+    @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -123,13 +122,13 @@ public class ShoppingListActivity extends ActionBarActivity
             public void onItemClick(AdapterView<?> adapter2, View v, int position, long arg3)
             {
                 //String value = (String) adapter.getItem(position);
-                ShoppingListAdapter shoppingAdapter = (ShoppingListAdapter)adapter2.getAdapter();
+                ShoppingListAdapter shoppingAdapter = (ShoppingListAdapter) adapter2.getAdapter();
                 ShoppingItem item = (ShoppingItem) shoppingAdapter.getItem(position);
                 long id = item.getId();
                 if (!shoppingModeOn)
                 {
                     Intent intent = new Intent(ShoppingListActivity.this, AddShoppingItemActivity.class);
-                    intent.putExtra("id", (int)id);
+                    intent.putExtra("id", (int) id);
                     startActivity(intent);
                 }
                 else
@@ -138,9 +137,9 @@ public class ShoppingListActivity extends ActionBarActivity
                     int idForDatabase = (int) id;
                     manager.open();
                     manager.updateCheckedMode_byID(idForDatabase);
-                   // ShoppingItem item = manager.getShoppingItemById(id);
-                   // manager.deleteShoppingItemById(id);
-                   // manager.createShoppingItemChecked(item.getItem(), item.getQuantity(), item.getUnit());
+                    // ShoppingItem item = manager.getShoppingItemById(id);
+                    // manager.deleteShoppingItemById(id);
+                    // manager.createShoppingItemChecked(item.getItem(), item.getQuantity(), item.getUnit());
 
                     ArrayList<ShoppingItem> shoppingItemsList = manager.getAllShoppingItemsWithId();
                     manager.close();
@@ -160,7 +159,7 @@ public class ShoppingListActivity extends ActionBarActivity
             public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked)
             {
                 final int checkedCount = shoppingListView.getCheckedItemCount();
-                mode.setTitle(checkedCount + " Selected" );
+                mode.setTitle(checkedCount + " Selected");
                 //                selected = new SparseBooleanArray();
                 //                if (!selected.get(position))
                 //                    selected.put(position, !selected.get(position));
@@ -220,10 +219,8 @@ public class ShoppingListActivity extends ActionBarActivity
 
     public void selectView(int position, boolean value, SparseBooleanArray mSelectedItemsIds)
     {
-        if (value)
-            mSelectedItemsIds.put(position, value);
-        else
-            mSelectedItemsIds.delete(position);
+        if (value) mSelectedItemsIds.put(position, value);
+        else mSelectedItemsIds.delete(position);
         adapter.notifyDataSetChanged();
     }
 
@@ -281,10 +278,8 @@ public class ShoppingListActivity extends ActionBarActivity
     {
         if (item.getItemId() == android.R.id.home)
         {
-            if (drawerLayout.isDrawerOpen(Gravity.LEFT))
-                drawerLayout.closeDrawers();
-            else
-                drawerLayout.openDrawer(Gravity.LEFT);
+            if (drawerLayout.isDrawerOpen(Gravity.LEFT)) drawerLayout.closeDrawers();
+            else drawerLayout.openDrawer(Gravity.LEFT);
         }
         else if (item.getItemId() == R.id.menu_add)
         {
@@ -329,7 +324,13 @@ public class ShoppingListActivity extends ActionBarActivity
 
             Collections.sort(shoppingItemsList);
 
-//            shoppingItemsList = Utilities.removeDuplicatesFormShoppingItemsList(shoppingItemsList);
+            manager.deleteAllShoppingItems();
+            shoppingItemsList = Utilities.removeDuplicatesFormShoppingItemsList(shoppingItemsList);
+
+            for (ShoppingItem si : shoppingItemsList)
+            {
+                manager.createShoppingItem(si.getItem(), si.getQuantity(), si.getUnit());
+            }
 
             adapter = new ShoppingListAdapter(this);
             adapter.setShoppingItemsList(shoppingItemsList);
@@ -346,7 +347,13 @@ public class ShoppingListActivity extends ActionBarActivity
 
             ArrayList<ShoppingItem> shoppingItemsList = manager.getAllShoppingItemsWithId();
 
-//            shoppingItemsList = Utilities.removeDuplicatesFormShoppingItemsList(shoppingItemsList);
+            manager.deleteAllShoppingItems();
+            shoppingItemsList = Utilities.removeDuplicatesFormShoppingItemsList(shoppingItemsList);
+
+            for (ShoppingItem si : shoppingItemsList)
+            {
+                manager.createShoppingItem(si.getItem(), si.getQuantity(), si.getUnit());
+            }
 
             manager.close();
             adapter = new ShoppingListAdapter(this);
