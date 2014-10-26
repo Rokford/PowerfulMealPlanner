@@ -10,6 +10,7 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class RecipeListAdapter extends BaseAdapter
 {
@@ -109,13 +110,15 @@ public class RecipeListAdapter extends BaseAdapter
 
     public void setRecipeItemsList(ArrayList<String> recipeItemsList)
     {
+        Collections.sort(recipeItemsList);
+
         this.recipeNamesList = recipeItemsList;
 
         checkedRecipes = new Boolean[recipeNamesList.size()];
 
-        for (Boolean b : checkedRecipes)
+        for (int i = 0; i < checkedRecipes.length; i++)
         {
-            b = new Boolean(false);
+            checkedRecipes[i] = new Boolean(false);
         }
     }
 

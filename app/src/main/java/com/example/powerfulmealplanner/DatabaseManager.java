@@ -148,13 +148,17 @@ public class DatabaseManager
     public void deleteShoppingItemById(int id)
     {
 
-
         database.delete(databaseCreator.TABLE_SHOPPING_ITEMS, databaseCreator.COLUMN_ID + " = " + id, null);
     }
 
     public void deleteRecipeItem(String recipeName)
     {
         database.delete(databaseCreator.TABLE_RECIPE_ITEMS, databaseCreator.COLUMN_RECIPE_NAME + " = '" + recipeName + "'", null);
+    }
+
+    public void deleteRecipeingredient(String recipeName, String ingredientname)
+    {
+        database.delete(databaseCreator.TABLE_RECIPE_ITEMS, databaseCreator.COLUMN_RECIPE_NAME + " = '" + recipeName + "'" + "and " + databaseCreator.COLUMN_ITEM + " = '" + ingredientname + "'", null);
     }
 
     public ArrayList<ShoppingItem> getAllShoppingItems()
@@ -280,6 +284,11 @@ public class DatabaseManager
         cursor.close();
 
         return recipes;
+    }
+
+    public void deleteRecipeFromDate(String recipeName, String date)
+    {
+        database.delete(databaseCreator.TABLE_RECIPE_DATES, databaseCreator.COLUMN_RECIPE_DATE + " = " + date + " and " + databaseCreator.COLUMN_RECIPE_NAME + " = " + "'" + recipeName + "'", null);
     }
 
     public ArrayList<ShoppingItem> getAllRecipeItems()

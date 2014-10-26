@@ -20,7 +20,7 @@ public class AddRecipeItemActivity extends ActionBarActivity
     private EditText nameEditText;
     private Button addIngredientButton;
     private Bundle extras;
-    private ShoppingListAdapter recipeIngredientsAdapter;
+    private IngredientsForRecipeListAdapter recipeIngredientsAdapter;
     private ListView ingredientsListView;
     private ArrayList<ShoppingItem> ingredientItemsList;
     private String recipeName;
@@ -59,7 +59,7 @@ public class AddRecipeItemActivity extends ActionBarActivity
         getSupportActionBar().setDisplayShowTitleEnabled(true);
 
         ingredientItemsList = new ArrayList<ShoppingItem>();
-        recipeIngredientsAdapter = new ShoppingListAdapter(this);
+        recipeIngredientsAdapter = new IngredientsForRecipeListAdapter(this);
         recipeIngredientsAdapter.setShoppingItemsList(ingredientItemsList);
         nameEditText = (EditText) findViewById(R.id.nameEditText);
         addIngredientButton = (Button) findViewById(R.id.addIngredientButton);
@@ -81,6 +81,8 @@ public class AddRecipeItemActivity extends ActionBarActivity
             recipeIngredientsAdapter.notifyDataSetChanged();
 
         }
+
+        recipeIngredientsAdapter.setRecipeName(recipeName);
 
         addIngredientButton.setOnClickListener(new View.OnClickListener()
         {

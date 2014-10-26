@@ -1,25 +1,28 @@
 package com.example.powerfulmealplanner;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class ShoppingListAdapter extends BaseAdapter
+public class IngredientsForRecipeListAdapter extends BaseAdapter
 {
     private ArrayList<ShoppingItem> shoppingItemsList;
     private ViewHolder holder;
     private LayoutInflater inflater;
-    // private SparseBooleanArray mSelectedItemsIds;
+    private String recipeName;
+    private Context context;
 
-    public ShoppingListAdapter(Context context)
+    public IngredientsForRecipeListAdapter(Context context)
     {
-        // mSelectedItemsIds = new SparseBooleanArray();
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.context = context;
     }
 
     @Override
@@ -50,11 +53,12 @@ public class ShoppingListAdapter extends BaseAdapter
         {
             holder = new ViewHolder();
 
-            convertView = inflater.inflate(R.layout.shopping_list_view_item, null);
+            convertView = inflater.inflate(R.layout.ingredients_list_view_item, null);
 
             holder.nameTextView = (TextView) convertView.findViewById(R.id.nameTextView);
             holder.quantityTextView = (TextView) convertView.findViewById(R.id.quantityTextView);
             holder.unitTextView = (TextView) convertView.findViewById(R.id.unitTextView);
+            holder.deleteImageView = (ImageView) convertView.findViewById(R.id.deleteImageView);
 
             convertView.setTag(holder);
         }
@@ -65,21 +69,38 @@ public class ShoppingListAdapter extends BaseAdapter
 
         ShoppingItem item = shoppingItemsList.get(position);
 
-        if (item.isChecked())
-        {
-            holder.nameTextView.setTextColor(App.getContext().getResources().getColor(R.color.light_bronze));
-            holder.quantityTextView.setTextColor(App.getContext().getResources().getColor(R.color.light_bronze));
-            holder.unitTextView.setTextColor(App.getContext().getResources().getColor(R.color.light_bronze));
-        }
-        else
-        {
-            holder.nameTextView.setTextColor(App.getContext().getResources().getColor(R.color.caldroid_black));
-            holder.quantityTextView.setTextColor(App.getContext().getResources().getColor(R.color.caldroid_black));
-            holder.unitTextView.setTextColor(App.getContext().getResources().getColor(R.color.caldroid_black));
-        }
         holder.nameTextView.setText(item.getItem());
         holder.quantityTextView.setText(item.getQuantity());
         holder.unitTextView.setText(item.getUnit());
+
+        holder.deleteImageView.setTag(holder.nameTextView.getText());
+
+        holder.deleteImageView.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+
+                if (recipeName != null)
+                {
+                    //remove item from database
+                    DatabaseManager manager = new DatabaseManager(context);
+                    manager.open();
+                    manager.deleteRecipeingredient(recipeName, v.getTag().toString());
+                    manager.close();
+                }
+                    //remove item from the list
+                    for (ShoppingItem item : shoppingItemsList)
+                    {
+                        if (v.getTag().toString().equals(item.getItem()))
+                        {
+                            shoppingItemsList.remove(item);
+                            notifyDataSetChanged();
+                            break;
+                        }
+                    }
+            }
+        });
 
         return convertView;
     }
@@ -89,6 +110,7 @@ public class ShoppingListAdapter extends BaseAdapter
         public TextView nameTextView;
         public TextView quantityTextView;
         public TextView unitTextView;
+        public ImageView deleteImageView;
     }
 
     public ArrayList<ShoppingItem> getShoppingItemsList()
@@ -98,24 +120,18 @@ public class ShoppingListAdapter extends BaseAdapter
 
     public void setShoppingItemsList(ArrayList<ShoppingItem> shoppingItemsList)
     {
-        ArrayList<ShoppingItem> shoppingItemsListSorted = new ArrayList<ShoppingItem>();
 
-        for (ShoppingItem s : shoppingItemsList)
-        {
-            if (!s.isChecked())
-            {
-                shoppingItemsListSorted.add(s);
-            }
-        }
+        this.shoppingItemsList = shoppingItemsList;
+    }
 
-        for (ShoppingItem s : shoppingItemsList)
-        {
-            if (s.isChecked())
-            {
-                shoppingItemsListSorted.add(s);
-            }
-        }
+    @Override
+    public boolean isEnabled(int position)
+    {
+        return false;
+    }
 
-        this.shoppingItemsList = shoppingItemsListSorted;
+    public void setRecipeName(String recipeName)
+    {
+        this.recipeName = recipeName;
     }
 }
