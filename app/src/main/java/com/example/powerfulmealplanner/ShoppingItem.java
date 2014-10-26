@@ -1,6 +1,6 @@
 package com.example.powerfulmealplanner;
 
-public class ShoppingItem
+public class ShoppingItem implements Comparable<ShoppingItem>
 {
 	private long id;
 	private String item;
@@ -79,5 +79,11 @@ public class ShoppingItem
     public void setUnit(String unit)
     {
         this.unit = unit;
+    }
+
+    @Override
+    public int compareTo(ShoppingItem another)
+    {
+        return this.getItem().compareTo(another.getItem());
     }
 }

@@ -14,7 +14,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -299,8 +298,7 @@ public class CalendarActivity extends ActionBarActivity
                 //                String result = data.getStringExtra("result");
                 if (caldroidFragment != null)
                 {
-                    if (calendarDialog != null)
-                        calendarDialog.dismiss();
+                    if (calendarDialog != null) calendarDialog.dismiss();
 
                     caldroidFragment.getCaldroidListener().onChangeMonth(displayedMonth, displayedYear);
 
@@ -333,10 +331,8 @@ public class CalendarActivity extends ActionBarActivity
     {
         if (item.getItemId() == android.R.id.home)
         {
-            if (drawerLayout.isDrawerOpen(Gravity.LEFT))
-                drawerLayout.closeDrawers();
-            else
-                drawerLayout.openDrawer(Gravity.LEFT);
+            if (drawerLayout.isDrawerOpen(Gravity.LEFT)) drawerLayout.closeDrawers();
+            else drawerLayout.openDrawer(Gravity.LEFT);
         }
         else if (item.getItemId() == R.id.generate)
         {
@@ -365,48 +361,30 @@ public class CalendarActivity extends ActionBarActivity
                     recipes.addAll(manager.getRecipeNamesForDate(Utilities.formatDateforDB(d)));
                 }
 
-                final ArrayList<ShoppingItem> shoppingItems = new ArrayList<ShoppingItem>();
+                ArrayList<ShoppingItem> shoppingItems = new ArrayList<ShoppingItem>();
                 for (String r : recipes)
                 {
                     shoppingItems.addAll(manager.getAllShoppingItemsForRecipe(r));
                 }
 
-                final ArrayList<ShoppingItem> shoppingItemsWithoutDuplicates = new ArrayList<ShoppingItem>();
-
-                while (shoppingItems.size() > 0)
-                {
-                    ShoppingItem firstItem = shoppingItems.get(0);
-
-                    for (int i = 1; i < shoppingItems.size(); i++)
-                    {
-                        ShoppingItem iteratedItem = shoppingItems.get(i);
-
-                        if (iteratedItem.getItem().equals(firstItem.getItem()) && iteratedItem.getUnit().equals(firstItem.getUnit()))
-                        {
-                            Float f = Float.parseFloat(firstItem.getQuantity()) + Float.parseFloat(iteratedItem.getQuantity());
-
-                            if (f % 1 == 0)
-                                firstItem.setQuantity(Integer.valueOf(f.intValue()).toString());
-                            else
-                                firstItem.setQuantity(f.toString());
-
-                            shoppingItems.remove(iteratedItem);
-                        }
-                    }
-
-                    shoppingItemsWithoutDuplicates.add(firstItem);
-                    shoppingItems.remove(firstItem);
-                }
-
                 AlertDialog.Builder builder = new AlertDialog.Builder(CalendarActivity.this);
 
                 builder.setMessage("Do you want to clear previously created shopping list?");
+                final ArrayList<ShoppingItem> finalShoppingItems = shoppingItems;
                 builder.setPositiveButton("Add to old list", new DialogInterface.OnClickListener()
                 {
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
-                        for (ShoppingItem si : shoppingItemsWithoutDuplicates)
+                        ArrayList<ShoppingItem> existingShoppingItems = manager.getAllShoppingItems();
+
+                        finalShoppingItems.addAll(existingShoppingItems);
+
+                        ArrayList<ShoppingItem> itemsWithoutDuplicates = Utilities.removeDuplicatesFormShoppingItemsList(finalShoppingItems);
+
+                        manager.deleteAllShoppingItems();
+
+                        for (ShoppingItem si : itemsWithoutDuplicates)
                         {
                             manager.createShoppingItem(si.getItem(), si.getQuantity(), si.getUnit());
                         }
@@ -416,6 +394,7 @@ public class CalendarActivity extends ActionBarActivity
                     }
                 });
 
+                final ArrayList<ShoppingItem> finalShoppingItems1 = shoppingItems;
                 builder.setNegativeButton("Create new one", new DialogInterface.OnClickListener()
                 {
                     @Override
@@ -423,7 +402,9 @@ public class CalendarActivity extends ActionBarActivity
                     {
                         manager.deleteAllShoppingItems();
 
-                        for (ShoppingItem si : shoppingItemsWithoutDuplicates)
+                        ArrayList<ShoppingItem> itemsWithoutDuplicates = Utilities.removeDuplicatesFormShoppingItemsList(finalShoppingItems);
+
+                        for (ShoppingItem si : itemsWithoutDuplicates)
                         {
                             manager.createShoppingItem(si.getItem(), si.getQuantity(), si.getUnit());
                         }
@@ -459,10 +440,8 @@ public class CalendarActivity extends ActionBarActivity
     @Override
     public void onBackPressed()
     {
-        if (inSelectionMode)
-            leaveSelectionMode();
-        else
-            super.onBackPressed();
+        if (inSelectionMode) leaveSelectionMode();
+        else super.onBackPressed();
     }
 
     @Override

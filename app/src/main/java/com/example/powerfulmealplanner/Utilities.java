@@ -71,4 +71,34 @@ public class Utilities
 
         return dates;
     }
+
+    public static ArrayList<ShoppingItem> removeDuplicatesFormShoppingItemsList(ArrayList<ShoppingItem> shoppingItems)
+    {
+        final ArrayList<ShoppingItem> shoppingItemsWithoutDuplicates = new ArrayList<ShoppingItem>();
+
+        while (shoppingItems.size() > 0)
+        {
+            ShoppingItem firstItem = shoppingItems.get(0);
+
+            for (int i = 1; i < shoppingItems.size(); i++)
+            {
+                ShoppingItem iteratedItem = shoppingItems.get(i);
+
+                if (iteratedItem.getItem().equals(firstItem.getItem()) && iteratedItem.getUnit().equals(firstItem.getUnit()))
+                {
+                    Float f = Float.parseFloat(firstItem.getQuantity()) + Float.parseFloat(iteratedItem.getQuantity());
+
+                    if (f % 1 == 0) firstItem.setQuantity(Integer.valueOf(f.intValue()).toString());
+                    else firstItem.setQuantity(f.toString());
+
+                    shoppingItems.remove(iteratedItem);
+                }
+            }
+
+            shoppingItemsWithoutDuplicates.add(firstItem);
+            shoppingItems.remove(firstItem);
+        }
+
+        return shoppingItemsWithoutDuplicates;
+    }
 }

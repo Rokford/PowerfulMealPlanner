@@ -20,6 +20,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ShoppingListActivity extends ActionBarActivity
 {
@@ -326,6 +327,10 @@ public class ShoppingListActivity extends ActionBarActivity
 
             ArrayList<ShoppingItem> shoppingItemsList = manager.getAllShoppingItems();
 
+            Collections.sort(shoppingItemsList);
+
+//            shoppingItemsList = Utilities.removeDuplicatesFormShoppingItemsList(shoppingItemsList);
+
             adapter = new ShoppingListAdapter(this);
             adapter.setShoppingItemsList(shoppingItemsList);
 
@@ -340,8 +345,14 @@ public class ShoppingListActivity extends ActionBarActivity
             manager.open();
 
             ArrayList<ShoppingItem> shoppingItemsList = manager.getAllShoppingItemsWithId();
+
+//            shoppingItemsList = Utilities.removeDuplicatesFormShoppingItemsList(shoppingItemsList);
+
             manager.close();
             adapter = new ShoppingListAdapter(this);
+
+            Collections.sort(shoppingItemsList);
+
             adapter.setShoppingItemsList(shoppingItemsList);
             shoppingListView.setAdapter(adapter);
 

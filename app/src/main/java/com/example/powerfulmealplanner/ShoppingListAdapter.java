@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ShoppingListAdapter extends BaseAdapter
 {
@@ -108,13 +109,19 @@ public class ShoppingListAdapter extends BaseAdapter
             }
         }
 
+        Collections.sort(shoppingItemsListSorted);
+
+        ArrayList<ShoppingItem> checkedItems = new ArrayList<ShoppingItem>();
         for (ShoppingItem s : shoppingItemsList)
         {
             if (s.isChecked())
             {
-                shoppingItemsListSorted.add(s);
+                checkedItems.add(s);
             }
         }
+
+        Collections.sort(checkedItems);
+        shoppingItemsListSorted.addAll(checkedItems);
 
         this.shoppingItemsList = shoppingItemsListSorted;
     }
