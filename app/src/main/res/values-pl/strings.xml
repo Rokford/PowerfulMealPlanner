@@ -41,8 +41,14 @@
     <string name="select_the_first_day">Wybierz początkowy dzień</string>
     <string name="select_the_last_day">Wybierz ostatni dzień</string>
     <string name="title_activity_help">Pomoc</string>
-    <string name="help_2">help 2 text</string>
-    <string name="help_1">help 1 text</string>
+    <string name="help_1">Application is divided into four main sections - Shopping List, Recipes List, Calendar and Help.\nYou can quickly access them by tapping the icon in the upper - left corner of the screen.</string>
+    <string name="help_2">Shopping List has two modes - shopping mode (turned on by default) and edit mode.\nShopping mode is designed as an interactive version of traditional shopping list. Tapping at item makes it "checked" - it will instantly appear grayed out and moved to the bottom of the list.\nTap the items as you put them in your shopping cart!</string>
+    <string name="help_3">While you are still on Shopping List screen, tap the "Shopping Mode OFF" option in upper-right corner to enter Edit mode. Now, you can edit any item by tapping it.\nTo go back to the Shopping Mode, tap "Shopping Mode ON" option, again in upper-right corner of the screen.</string>
+    <string name="help_4">Recipes List contains the list of your recipes.\nTap "New" to create a new recipe. Remember to save it after naming it and adding all the ingredients.
+</string>
+    <string name="help_5">You can always delete any recipe (on Recipes List screen) or shopping item (on Shopping List screen) by pressing the item and holding for a while. Mark the items you want to delete, then press "Delete".</string>
+    <string name="help_6">Calendar allows you to plan your meals for any day, and then automatically generate the shopping list!\nPress any day to access menu which lets you assign any existing recipe to this day, or create a new one.</string>
+    <string name="help_7">When you already assigned recipes to the days, you can generate the shopping list.\nTap the "Select days for list" option in upper-right corner of the screen. Now, you can just select the first day and last day, then tap "Generate List" (again, in upper-right corner of the screen).\nIt is done! Just navigate back to Shopping List screen to see all the things you have to buy.</string>
     <string name="help">Help</string>
 
 </resources>
