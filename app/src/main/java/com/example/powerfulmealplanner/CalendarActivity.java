@@ -386,7 +386,7 @@ public class CalendarActivity extends ActionBarActivity
 
                         for (ShoppingItem si : itemsWithoutDuplicates)
                         {
-                            manager.createShoppingItem(si.getItem(), si.getQuantity(), si.getUnit());
+                            manager.createShoppingItem(si.getItem(), si.getQuantity(), si.getUnit(), false);
                         }
                         manager.close();
 
@@ -406,7 +406,7 @@ public class CalendarActivity extends ActionBarActivity
 
                         for (ShoppingItem si : itemsWithoutDuplicates)
                         {
-                            manager.createShoppingItem(si.getItem(), si.getQuantity(), si.getUnit());
+                            manager.createShoppingItem(si.getItem(), si.getQuantity(), si.getUnit(), false);
                         }
                         manager.close();
 

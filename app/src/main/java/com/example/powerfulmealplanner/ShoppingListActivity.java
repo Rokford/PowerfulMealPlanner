@@ -327,7 +327,7 @@ public class ShoppingListActivity extends ActionBarActivity
 
             for (ShoppingItem si : shoppingItemsList)
             {
-                manager.createShoppingItem(si.getItem(), si.getQuantity(), si.getUnit());
+                manager.createShoppingItem(si.getItem(), si.getQuantity(), si.getUnit(), false);
             }
 
             adapter = new ShoppingListAdapter(this);
@@ -350,7 +350,7 @@ public class ShoppingListActivity extends ActionBarActivity
 
             for (ShoppingItem si : shoppingItemsList)
             {
-                manager.createShoppingItem(si.getItem(), si.getQuantity(), si.getUnit());
+                manager.createShoppingItem(si.getItem(), si.getQuantity(), si.getUnit(), si.isChecked() ? true : false);
             }
 
             shoppingItemsList = manager.getAllShoppingItemsWithId();

@@ -126,7 +126,7 @@ public class AddShoppingItemActivity extends ActionBarActivity
                 }
                 else
                 {
-                    manager.createShoppingItem(name, quantity, unit);
+                    manager.createShoppingItem(name, quantity, unit, false);
                 }
 
                 manager.createItem(name, false);

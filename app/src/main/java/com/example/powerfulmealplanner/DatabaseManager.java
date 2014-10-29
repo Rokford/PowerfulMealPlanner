@@ -37,32 +37,32 @@ public class DatabaseManager
     public void deleteAllShoppingItems () {
         database.execSQL("delete from "+ databaseCreator.TABLE_SHOPPING_ITEMS);
     }
-    public void createShoppingItem(String itemName, String quantity, String unit)
+    public void createShoppingItem(String itemName, String quantity, String unit, boolean checked)
     {
         ContentValues values = new ContentValues();
         values.put(databaseCreator.COLUMN_ITEM, itemName);
         values.put(databaseCreator.COLUMN_QUANTITY, quantity);
         values.put(databaseCreator.COLUMN_UNIT, unit);
-        values.put(databaseCreator.COLUMN_IS_CHECKED, "n" );
+        if (checked)
+            values.put(databaseCreator.COLUMN_IS_CHECKED, "y" );
+        else
+            values.put(databaseCreator.COLUMN_IS_CHECKED, "n" );
 
         long insertId = database.insert(databaseCreator.TABLE_SHOPPING_ITEMS, null, values);
-
-
     }
 
-
-    public void createShoppingItemChecked(String itemName, String quantity, String unit)
-    {
-        ContentValues values = new ContentValues();
-        values.put(databaseCreator.COLUMN_ITEM, itemName);
-        values.put(databaseCreator.COLUMN_QUANTITY, quantity);
-        values.put(databaseCreator.COLUMN_UNIT, unit);
-        values.put(databaseCreator.COLUMN_IS_CHECKED, "y" );
-
-        long insertId = database.insert(databaseCreator.TABLE_SHOPPING_ITEMS, null, values);
-
-
-    }
+//    public void createShoppingItemChecked(String itemName, String quantity, String unit)
+//    {
+//        ContentValues values = new ContentValues();
+//        values.put(databaseCreator.COLUMN_ITEM, itemName);
+//        values.put(databaseCreator.COLUMN_QUANTITY, quantity);
+//        values.put(databaseCreator.COLUMN_UNIT, unit);
+//        values.put(databaseCreator.COLUMN_IS_CHECKED, "y" );
+//
+//        long insertId = database.insert(databaseCreator.TABLE_SHOPPING_ITEMS, null, values);
+//
+//
+//    }
 
     public void createItem(String item, boolean forUnit)
     {
