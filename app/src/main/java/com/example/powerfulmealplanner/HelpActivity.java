@@ -183,8 +183,13 @@ public class HelpActivity extends ActionBarActivity
 
     private void initScreens()
     {
-        addPage(getResources().getDrawable(R.drawable.help2), getString(R.string.help_1));
-        addPage(getResources().getDrawable(R.drawable.help3), getString(R.string.help_2));
+        addPage(getResources().getDrawable(R.drawable.help1), getString(R.string.help_1));
+        addPage(getResources().getDrawable(R.drawable.help2), getString(R.string.help_2));
+        addPage(getResources().getDrawable(R.drawable.help3), getString(R.string.help_3));
+        addPage(getResources().getDrawable(R.drawable.help4), getString(R.string.help_4));
+        addPage(getResources().getDrawable(R.drawable.help5), getString(R.string.help_5));
+        addPage(getResources().getDrawable(R.drawable.help6), getString(R.string.help_6));
+        addPage(getResources().getDrawable(R.drawable.help7), getString(R.string.help_7));
     }
 
     @Override
