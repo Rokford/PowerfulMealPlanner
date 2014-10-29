@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Powerful Meal Planner</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+    <string name="new_recipe">Neues Rezept</string>
+    <string name="recipies_list">Rezepte -Liste</string>
+    <string name="callendar">Kalender</string>
+    <string name="shopping_list">Einkaufszettel</string>
+    <string name="title_activity_shopping_list">ShoppingListActivity</string>
+    <string name="title_activity_recipe_list">RecipeListActivity</string>
+    <string name="title_activity_add_shopping_item">AddShoppingItemActivity</string>
+    <string name="title_activity_add_recipe_item">AddRecipeItemActivity</string>
+    <string name="add">Anfügen</string>
+    <string name="change_mode">Einkaufen ON</string>
+    <string name="change_mode_off">Einkaufen OFF</string>
+    <string name="shopping_mode_on_toast">Shopping-Modus eingeschaltet</string>
+    <string name="shopping_mode_off_toast">Shopping-Modus ausgeschaltet</string>
+    <string name="ingredients">Zutaten</string>
+    <string name="button_name">Neue Zutat</string>
+    <string name="name">Name</string>
+    <string name="quantity">Menge</string>
+    <string name="unit">Maßeinheit</string>
+    <string name="name_hint">Geben Sie den Namen für dieses Produkt</string>
+    <string name="quantity_hint">Wie viele ?</string>
+    <string name="unit_hint">Welche Maßeinheit ?</string>
+    <string name="add_item">Anfügen</string>
+    <string name="save">Speichern</string>
+    <string name="delete">Löschen</string>
+    <string name="edit">Redigieren</string>
+    <string name="fields_cannot_be_empty">Felder können nicht leer sein</string>
+    <string name="title_activity_calendar">CalendarActivity</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="generate">Ausgewählten Tagen für Liste</string>
+    <string name="add_a_recipe_from_list">Fügen Rezept von Liste</string>
+    <string name="new_">Neu</string>
+    <string name="add_checked">Markiert hinzufügen</string>
+    <string name="create_list">Liste erzeugen</string>
+    <string name="select_the_first_day">Wählen Sie den ersten Tag</string>
+    <string name="select_the_last_day">Wählen Sie den letzten Tag</string>
+    <string name="title_activity_help">Hilfe</string>
+    <string name="help_2">help 2 text</string>
+    <string name="help_1">help 1 text</string>
+    <string name="help">Help</string>
+
+</resources>
