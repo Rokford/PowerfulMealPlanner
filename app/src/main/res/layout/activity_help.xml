@@ -31,8 +31,8 @@
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
                 android:gravity="left"
-                android:maxLines="7"
-                android:minLines="3"
+                android:maxLines="12"
+                android:minLines="12"
                 android:text="TextView"
                 android:textColor="@android:color/white"
                 android:textSize="14dp"/>
