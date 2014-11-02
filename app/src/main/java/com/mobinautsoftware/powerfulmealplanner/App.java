@@ -1,4 +1,4 @@
-package com.example.powerfulmealplanner;
+package com.mobinautsoftware.powerfulmealplanner;
 
 import android.app.Application;
 import android.content.Context;

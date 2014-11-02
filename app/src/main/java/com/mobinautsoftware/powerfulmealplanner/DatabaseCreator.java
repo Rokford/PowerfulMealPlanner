@@ -1,4 +1,4 @@
-package com.example.powerfulmealplanner;
+package com.mobinautsoftware.powerfulmealplanner;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

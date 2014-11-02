@@ -1,4 +1,4 @@
-package com.example.powerfulmealplanner;
+package com.mobinautsoftware.powerfulmealplanner;
 
 public class ShoppingItem implements Comparable<ShoppingItem>
 {

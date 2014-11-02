@@ -1,4 +1,4 @@
-package com.example.powerfulmealplanner;
+package com.mobinautsoftware.powerfulmealplanner;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -19,7 +19,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class ShoppingListActivity extends ActionBarActivity
 {

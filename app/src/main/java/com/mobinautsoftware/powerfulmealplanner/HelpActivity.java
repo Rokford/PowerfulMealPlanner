@@ -1,4 +1,4 @@
-package com.example.powerfulmealplanner;
+package com.mobinautsoftware.powerfulmealplanner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
