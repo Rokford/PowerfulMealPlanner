@@ -6,6 +6,7 @@ import java.util.HashSet;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 
 public class DatabaseManager
@@ -68,16 +69,20 @@ public class DatabaseManager
     {
         String tableName = forUnit ? databaseCreator.TABLE_UNITS : databaseCreator.TABLE_ITEMS;
 
+        item = DatabaseUtils.sqlEscapeString(item);
+
         database.execSQL("INSERT INTO " + tableName +
-                " (" + databaseCreator.COLUMN_ITEM + ") SELECT * FROM (SELECT '" + item + "') WHERE NOT EXISTS(SELECT " + databaseCreator.COLUMN_ITEM + " FROM " + tableName + " WHERE " + databaseCreator.COLUMN_ITEM + " = '" + item + "' )LIMIT 1; " );
+                " (" + databaseCreator.COLUMN_ITEM + ") SELECT * FROM (SELECT " + item + ") WHERE NOT EXISTS(SELECT " + databaseCreator.COLUMN_ITEM + " FROM " + tableName + " WHERE " + databaseCreator.COLUMN_ITEM + " = " + item + " )LIMIT 1; " );
 
     }
 
     public void deleteItem(String item, boolean forUnit)
     {
+        item = DatabaseUtils.sqlEscapeString(item);
+
         String tableName = forUnit ? databaseCreator.TABLE_UNITS : databaseCreator.TABLE_ITEMS;
 
-        database.delete(tableName, databaseCreator.COLUMN_ITEM + " = " + "'" + item + "'", null);
+        database.delete(tableName, databaseCreator.COLUMN_ITEM + " = " + item, null);
     }
 
     public ArrayList<String> getAllItems(boolean forUnit)
@@ -153,12 +158,17 @@ public class DatabaseManager
 
     public void deleteRecipeItem(String recipeName)
     {
-        database.delete(databaseCreator.TABLE_RECIPE_ITEMS, databaseCreator.COLUMN_RECIPE_NAME + " = '" + recipeName + "'", null);
+        recipeName = DatabaseUtils.sqlEscapeString(recipeName);
+
+        database.delete(databaseCreator.TABLE_RECIPE_ITEMS, databaseCreator.COLUMN_RECIPE_NAME + " = " + recipeName, null);
     }
 
     public void deleteRecipeingredient(String recipeName, String ingredientname)
     {
-        database.delete(databaseCreator.TABLE_RECIPE_ITEMS, databaseCreator.COLUMN_RECIPE_NAME + " = '" + recipeName + "'" + "and " + databaseCreator.COLUMN_ITEM + " = '" + ingredientname + "'", null);
+        recipeName = DatabaseUtils.sqlEscapeString(recipeName);
+        ingredientname = DatabaseUtils.sqlEscapeString(ingredientname);
+
+        database.delete(databaseCreator.TABLE_RECIPE_ITEMS, databaseCreator.COLUMN_RECIPE_NAME + " = " + recipeName + " and " + databaseCreator.COLUMN_ITEM + " = " + ingredientname, null);
     }
 
     public ArrayList<ShoppingItem> getAllShoppingItems()
@@ -260,6 +270,8 @@ public class DatabaseManager
 
     public void addRecipeToDateTable(String recipeName, String date)
     {
+//        recipeName = DatabaseUtils.sqlEscapeString(recipeName);
+
         ContentValues values = new ContentValues();
         values.put(databaseCreator.COLUMN_RECIPE_NAME, recipeName);
         values.put(databaseCreator.COLUMN_RECIPE_DATE, date);
@@ -288,7 +300,9 @@ public class DatabaseManager
 
     public void deleteRecipeFromDate(String recipeName, String date)
     {
-        database.delete(databaseCreator.TABLE_RECIPE_DATES, databaseCreator.COLUMN_RECIPE_DATE + " = " + date + " and " + databaseCreator.COLUMN_RECIPE_NAME + " = " + "'" + recipeName + "'", null);
+        recipeName = DatabaseUtils.sqlEscapeString(recipeName);
+
+        database.delete(databaseCreator.TABLE_RECIPE_DATES, databaseCreator.COLUMN_RECIPE_DATE + " = ? AND " + databaseCreator.COLUMN_RECIPE_NAME + " = ?", new String[] {date, recipeName});
     }
 
     public ArrayList<ShoppingItem> getAllRecipeItems()
@@ -334,7 +348,9 @@ public class DatabaseManager
     {
         ArrayList<ShoppingItem> shoppingItems = new ArrayList<ShoppingItem>();
 
-        Cursor cursor = database.query(databaseCreator.TABLE_RECIPE_ITEMS, allColumnsAndRecipies, databaseCreator.COLUMN_RECIPE_NAME + " = '" + recipeName + "'", null, null, null, null);
+        recipeName = DatabaseUtils.sqlEscapeString(recipeName);
+
+        Cursor cursor = database.query(databaseCreator.TABLE_RECIPE_ITEMS, allColumnsAndRecipies, databaseCreator.COLUMN_RECIPE_NAME + " = " + recipeName, null, null, null, null);
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast())

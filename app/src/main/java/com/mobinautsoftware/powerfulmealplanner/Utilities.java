@@ -44,10 +44,10 @@ public class Utilities
 
         int currentMonth;
 
-        if (month > 0)
+//        if (month > 0)
             currentMonth = month;
-        else
-            currentMonth = calendar.get(Calendar.MONTH) + 1;
+//        else
+//            currentMonth = calendar.get(Calendar.MONTH) + 1;
 
         int currentYear = calendar.get(Calendar.YEAR);
 
