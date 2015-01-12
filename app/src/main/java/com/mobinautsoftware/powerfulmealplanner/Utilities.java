@@ -86,7 +86,7 @@ public class Utilities
 
                 if (iteratedItem.getItem().equals(firstItem.getItem()) && iteratedItem.getUnit().equals(firstItem.getUnit()))
                 {
-                    Float f = Float.parseFloat(firstItem.getQuantity()) + Float.parseFloat(iteratedItem.getQuantity());
+                    Float f = Float.parseFloat((firstItem.getQuantity().length() > 0 ? firstItem.getQuantity() : "0") + Float.parseFloat((iteratedItem.getQuantity().length() > 0 ? iteratedItem.getQuantity() : "0")));
 
                     if (f % 1 == 0) firstItem.setQuantity(Integer.valueOf(f.intValue()).toString());
                     else firstItem.setQuantity(f.toString());
