@@ -270,8 +270,6 @@ public class DatabaseManager
 
     public void addRecipeToDateTable(String recipeName, String date)
     {
-//        recipeName = DatabaseUtils.sqlEscapeString(recipeName);
-
         ContentValues values = new ContentValues();
         values.put(databaseCreator.COLUMN_RECIPE_NAME, recipeName);
         values.put(databaseCreator.COLUMN_RECIPE_DATE, date);
@@ -300,9 +298,7 @@ public class DatabaseManager
 
     public void deleteRecipeFromDate(String recipeName, String date)
     {
-        recipeName = DatabaseUtils.sqlEscapeString(recipeName);
-
-        database.delete(databaseCreator.TABLE_RECIPE_DATES, databaseCreator.COLUMN_RECIPE_DATE + " = ? AND " + databaseCreator.COLUMN_RECIPE_NAME + " = ?", new String[] {date, recipeName});
+        database.delete(databaseCreator.TABLE_RECIPE_DATES, databaseCreator.COLUMN_RECIPE_DATE + " = ? AND " + databaseCreator.COLUMN_RECIPE_NAME + " = ?", new String[] {String.valueOf(date), String.valueOf(recipeName)});
     }
 
     public ArrayList<ShoppingItem> getAllRecipeItems()
