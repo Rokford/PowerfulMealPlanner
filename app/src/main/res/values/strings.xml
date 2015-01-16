@@ -50,4 +50,9 @@
     <string name="help_6">While you are still on Shopping List screen, tap the "Shopping Mode OFF" option in upper-right corner to enter Edit mode.\nNow, you can edit any item by tapping it.\n\nTo go back to the Shopping Mode, tap "Shopping Mode ON" option, again in upper-right corner of the screen.</string>
     <string name="help_7">You can always delete any recipe (on Recipes List screen) or shopping item (on Shopping List screen) by pressing the item and holding for a while.\n\nSelect the items you want to delete, then press "Delete".</string>
 
+    <string name="export">Export/Import</string>
+    <string name="export_option">Export</string>
+    <string name="import_option">Import</string>
+    <string name="export_message">You can export or import your recipes.\n\nExport:\nTap the Export option below. Your recipes will be exported to a file. You will be asked if you would like to email this file right away. Then just visit your email inbox on another device and download attached file. Alternatively, you can find this file in "Download" folder on your device and copy it manually. Finally, launch Powerful Meal Planner on another device and press Import/Export there to import recipes.\n\nImport:\nMake sure you have the file with exported recipes in "Download" folder on your device. Then, just tap the Import option below.</string>
+
 </resources>

@@ -1,11 +1,16 @@
 package com.mobinautsoftware.powerfulmealplanner;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.Gravity;
 import android.view.Menu;
@@ -15,10 +20,32 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.drive.Drive;
+import com.google.android.gms.drive.DriveApi;
+import com.google.android.gms.drive.DriveContents;
+import com.google.android.gms.drive.DriveFolder;
+import com.google.android.gms.drive.MetadataChangeSet;
+import com.google.android.gms.drive.DriveApi.DriveContentsResult;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 
-public class RecipeListActivity extends ActionBarActivity
+public class RecipeListActivity extends ActionBarActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
 {
 
     private DrawerLayout drawerLayout;
@@ -31,7 +58,11 @@ public class RecipeListActivity extends ActionBarActivity
 
     private RecipeListAdapter adapter;
 
+    GoogleApiClient mGoogleApiClient;
+
     private boolean forCalendar = false;
+
+    private final static int RESOLVE_CONNECTION_REQUEST_CODE = 5;
 
     //SparseBooleanArray selected;
 
@@ -79,8 +110,7 @@ public class RecipeListActivity extends ActionBarActivity
         drawerList.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
-            public void onItemClick(AdapterView<?> adapter, View v, int position,
-                                    long arg3)
+            public void onItemClick(AdapterView<?> adapter, View v, int position, long arg3)
             {
                 String value = (String) adapter.getItemAtPosition(position);
                 if (value == getResources().getString(R.string.recipies_list))
@@ -107,7 +137,6 @@ public class RecipeListActivity extends ActionBarActivity
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }
-
             }
         });
 
@@ -118,8 +147,7 @@ public class RecipeListActivity extends ActionBarActivity
         recipeListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
-            public void onItemClick(AdapterView<?> adapter2, View v, int position,
-                                    long arg3)
+            public void onItemClick(AdapterView<?> adapter2, View v, int position, long arg3)
             {
                 //String value = (String) adapter.getItem(position);
                 Intent intent = new Intent(RecipeListActivity.this, AddRecipeItemActivity.class);
@@ -135,8 +163,7 @@ public class RecipeListActivity extends ActionBarActivity
         {
 
             @Override
-            public void onItemCheckedStateChanged(ActionMode mode, int position,
-                                                  long id, boolean checked)
+            public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked)
             {
                 final int checkedCount = recipeListView.getCheckedItemCount();
                 mode.setTitle(checkedCount + " Selected");
@@ -157,6 +184,7 @@ public class RecipeListActivity extends ActionBarActivity
                         return false;
                 }
             }
+
             @Override
             public boolean onCreateActionMode(ActionMode mode, Menu menu)
             {
@@ -192,7 +220,8 @@ public class RecipeListActivity extends ActionBarActivity
 
         if (!forCalendar)
         {
-            menu.getItem(1).setVisible(false);
+            //            menu.getItem(1).setVisible(false);
+            menu.getItem(1).setTitle(getResources().getString(R.string.export));
         }
 
         return super.onCreateOptionsMenu(menu);
@@ -223,29 +252,127 @@ public class RecipeListActivity extends ActionBarActivity
         }
         else if (item.getItemId() == R.id.menu_add_checked)
         {
-            Boolean[] checkedRecipes = adapter.getCheckedRecipes();
-
-            DatabaseManager manager = new DatabaseManager(RecipeListActivity.this);
-
-            manager.open();
-
-            for (int i = 0; i < checkedRecipes.length; i++)
+            if (forCalendar)
             {
-                if (checkedRecipes[i])
+                Boolean[] checkedRecipes = adapter.getCheckedRecipes();
+
+                DatabaseManager manager = new DatabaseManager(RecipeListActivity.this);
+
+                manager.open();
+
+                for (int i = 0; i < checkedRecipes.length; i++)
                 {
-                    manager.addRecipeToDateTable(adapter.getItem(i), getIntent().getStringExtra("dateFromCalendar"));
+                    if (checkedRecipes[i])
+                    {
+                        manager.addRecipeToDateTable(adapter.getItem(i), getIntent().getStringExtra("dateFromCalendar"));
+                    }
                 }
+
+                manager.close();
+
+                Intent returnIntent = new Intent();
+                //            returnIntent.putExtra("result",result);
+                setResult(RESULT_OK, returnIntent);
+                finish();
             }
+            else
+            {
+                mGoogleApiClient = new GoogleApiClient.Builder(this).addApi(Drive.API).addScope(Drive.SCOPE_FILE).addConnectionCallbacks(this).addOnConnectionFailedListener(this).build();
 
-            manager.close();
+                AlertDialog.Builder builder = new AlertDialog.Builder(RecipeListActivity.this);
 
-            Intent returnIntent = new Intent();
-//            returnIntent.putExtra("result",result);
-            setResult(RESULT_OK, returnIntent);
-            finish();
+                builder.setMessage("Import or export... TBC");
+                builder.setPositiveButton(getString(R.string.export_option), new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+
+                        mGoogleApiClient.connect();
+
+                        Toast.makeText(RecipeListActivity.this, "Shopping list generated successfully", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                builder.setNegativeButton(getString(R.string.import_option), new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                    }
+                });
+
+                builder.create().show();
+            }
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private String exportRecipesToJSONString()
+    {
+        DatabaseManager manager = new DatabaseManager(this);
+
+        manager.open();
+
+        ArrayList<String> recipeNames = manager.getAllRecipeNames();
+
+        if (recipeNames.size() > 0)
+        {
+            try
+            {
+                JSONObject outerJSONObject = new JSONObject();
+                JSONArray recipesJSONArray = new JSONArray();
+
+                for (String recipeName : recipeNames)
+                {
+                    ArrayList<ShoppingItem> shoppingItems = manager.getAllShoppingItemsForRecipe(recipeName);
+
+                    for (ShoppingItem item : shoppingItems)
+                    {
+                        JSONObject itemJSONObject = new JSONObject();
+
+                        itemJSONObject.put("item", item.getItem());
+                        itemJSONObject.put("name", item.getItem());
+                        itemJSONObject.put("quantity", item.getQuantity());
+                        itemJSONObject.put("recipeName", item.getRecipeName());
+
+                        recipesJSONArray.put(itemJSONObject);
+                    }
+
+                    outerJSONObject.put("recipes", recipesJSONArray);
+                }
+
+                String recipesJSONString = outerJSONObject.toString();
+
+                //                File file = new File(path + "/Download");
+                //
+                //                if (!file.exists())
+                //                    file.mkdir();
+                //
+                //                file = new File(path + "/Download/recipes_PMP.json");
+                //
+                //                FileOutputStream stream = new FileOutputStream(file);
+                //                try
+                //                {
+                //                    stream.write(recipesJSONString.getBytes());
+                //                }
+                //                finally
+                //                {
+                //                    stream.close();
+                //                }
+
+                return recipesJSONString;
+            }
+
+            catch (Exception e)
+            {
+                e.printStackTrace();
+                return "";
+            }
+        }
+        else
+            return "";
     }
 
     @Override
@@ -286,4 +413,101 @@ public class RecipeListActivity extends ActionBarActivity
         }
         manager.close();
     }
+
+    @Override
+    public void onConnected(Bundle bundle)
+    {
+        Drive.DriveApi.newDriveContents(mGoogleApiClient).setResultCallback(new ResultCallback<DriveContentsResult>()
+        {
+            @Override
+            public void onResult(DriveContentsResult driveContentsResult)
+            {
+                if (!driveContentsResult.getStatus().isSuccess())
+                {
+                    Toast.makeText(RecipeListActivity.this, "Error while trying to create new file contents", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                final DriveContents driveContents = driveContentsResult.getDriveContents();
+
+                String recipesJSONString = exportRecipesToJSONString();
+
+                if (recipesJSONString.length() > 0)
+                {
+                    OutputStream outputStream = driveContents.getOutputStream();
+                    Writer writer = new OutputStreamWriter(outputStream);
+                    try
+                    {
+                        writer.write(recipesJSONString);
+                        writer.close();
+                    }
+                    catch (IOException e)
+                    {
+                    }
+
+                    MetadataChangeSet changeSet = new MetadataChangeSet.Builder().setTitle("Powerful Meal Planner recipes").setMimeType("text/plain").setStarred(false).build();
+
+                    // create a file on root folder
+                    Drive.DriveApi.getRootFolder(mGoogleApiClient).createFile(mGoogleApiClient, changeSet, driveContents).setResultCallback(fileCallback);
+                }
+                else
+                {
+                    Toast.makeText(RecipeListActivity.this, "Could not write JSON", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onConnectionSuspended(int i)
+    {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult)
+    {
+        if (connectionResult.hasResolution())
+        {
+            try
+            {
+                connectionResult.startResolutionForResult(this, RESOLVE_CONNECTION_REQUEST_CODE);
+            }
+            catch (IntentSender.SendIntentException e)
+            {
+                // Unable to resolve, message user appropriately
+            }
+        }
+        else
+        {
+            GooglePlayServicesUtil.getErrorDialog(connectionResult.getErrorCode(), this, 0).show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data)
+    {
+        switch (requestCode)
+        {
+            case RESOLVE_CONNECTION_REQUEST_CODE:
+                if (resultCode == RESULT_OK)
+                {
+                    mGoogleApiClient.connect();
+                }
+                break;
+        }
+    }
+
+    final private ResultCallback<DriveFolder.DriveFileResult> fileCallback = new ResultCallback<DriveFolder.DriveFileResult>()
+    {
+        @Override
+        public void onResult(DriveFolder.DriveFileResult result)
+        {
+            if (!result.getStatus().isSuccess())
+            {
+                Toast.makeText(RecipeListActivity.this, "Error while trying to create the file", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            Toast.makeText(RecipeListActivity.this, "Created a file with content: " + result.getDriveFile().getDriveId(), Toast.LENGTH_SHORT).show();
+        }
+    };
 }
