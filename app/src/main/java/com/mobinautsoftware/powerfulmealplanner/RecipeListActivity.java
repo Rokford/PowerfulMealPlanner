@@ -26,6 +26,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.drive.DriveApi;
 import com.google.android.gms.drive.DriveContents;
@@ -431,10 +432,6 @@ public class RecipeListActivity extends ActionBarActivity implements GoogleApiCl
         Query query = new Query.Builder().addFilter(Filters.eq(SearchableField.TITLE, "Powerful Meal Planner recipes")).build();
 
         Drive.DriveApi.query(mGoogleApiClient, query).setResultCallback(metadataCallback);
-
-        //        DriveFile file = Drive.DriveApi.getFile(mGoogleApiClient, tempDriveID);
-        //
-        //        file.open(mGoogleApiClient, DriveFile.MODE_READ_ONLY, null).setResultCallback(contentsOpenedCallback);
     }
 
     final private ResultCallback<DriveApi.MetadataBufferResult> metadataCallback = new ResultCallback<DriveApi.MetadataBufferResult>()
@@ -455,7 +452,7 @@ public class RecipeListActivity extends ActionBarActivity implements GoogleApiCl
                 Metadata metadata = mbr.get(0);
                 DriveId driveIDofRecipeFile = metadata.getDriveId();
 
-                Drive.DriveApi.getFile(mGoogleApiClient, driveIDofRecipeFile).open(mGoogleApiClient, DriveFile.MODE_READ_ONLY, null).setResultCallback(contentsOpenedCallback);
+                Drive.DriveApi.getFile(mGoogleApiClient, driveIDofRecipeFile).open(mGoogleApiClient, DriveFile.MODE_WRITE_ONLY, null).setResultCallback(contentsOpenedToWriteCallback);
             }
             else
             {
@@ -504,22 +501,7 @@ public class RecipeListActivity extends ActionBarActivity implements GoogleApiCl
         }
     }
 
-    final private ResultCallback<DriveFolder.DriveFileResult> fileCallback = new ResultCallback<DriveFolder.DriveFileResult>()
-    {
-        @Override
-        public void onResult(DriveFolder.DriveFileResult result)
-        {
-            if (!result.getStatus().isSuccess())
-            {
-                Toast.makeText(RecipeListActivity.this, "Error while trying to create the file", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            Toast.makeText(RecipeListActivity.this, "Created a file with content: " + result.getDriveFile().getDriveId(), Toast.LENGTH_SHORT).show();
-            tempDriveID = result.getDriveFile().getDriveId();
-        }
-    };
-
-    ResultCallback<DriveApi.DriveContentsResult> contentsOpenedCallback = new ResultCallback<DriveApi.DriveContentsResult>()
+    ResultCallback<DriveApi.DriveContentsResult> contentsOpenedToReadCallback = new ResultCallback<DriveApi.DriveContentsResult>()
     {
         @Override
         public void onResult(DriveApi.DriveContentsResult result)
@@ -548,6 +530,60 @@ public class RecipeListActivity extends ActionBarActivity implements GoogleApiCl
             }
             String contentsAsString = builder.toString();
             Log.e("RESULT:", contentsAsString);
+        }
+    };
+
+    ResultCallback<DriveApi.DriveContentsResult> contentsOpenedToWriteCallback = new ResultCallback<DriveApi.DriveContentsResult>()
+    {
+        @Override
+        public void onResult(DriveApi.DriveContentsResult result)
+        {
+            if (!result.getStatus().isSuccess())
+            {
+                Log.e("Error:", "No se puede abrir el archivo o no se encuentra");
+                return;
+            }
+            // DriveContents object contains pointers
+            // to the actual byte stream
+            DriveContents driveContents = result.getDriveContents();
+
+            String recipesJSONString = exportRecipesToJSONString();
+
+            if (recipesJSONString.length() > 0)
+            {
+                OutputStream outputStream = driveContents.getOutputStream();
+                Writer writer = new OutputStreamWriter(outputStream);
+                try
+                {
+                    writer.write(recipesJSONString);
+                    writer.close();
+                }
+                catch (IOException e)
+                {
+                }
+
+                driveContents.commit(mGoogleApiClient, null).setResultCallback(new ResultCallback<Status>()
+                {
+                    @Override
+                    public void onResult(Status result)
+                    {
+                        if (!result.getStatus().isSuccess())
+                        {
+                            Toast.makeText(RecipeListActivity.this, "Error while trying to commit changes to the file", Toast.LENGTH_SHORT).show();
+
+                            return;
+                        }
+                        else
+                        {
+                            Toast.makeText(RecipeListActivity.this, "Updated the recipe file", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+            else
+            {
+                Toast.makeText(RecipeListActivity.this, "Could not write JSON", Toast.LENGTH_SHORT).show();
+            }
         }
     };
 
@@ -592,4 +628,19 @@ public class RecipeListActivity extends ActionBarActivity implements GoogleApiCl
             }
         });
     }
+
+    final private ResultCallback<DriveFolder.DriveFileResult> fileCallback = new ResultCallback<DriveFolder.DriveFileResult>()
+    {
+        @Override
+        public void onResult(DriveFolder.DriveFileResult result)
+        {
+            if (!result.getStatus().isSuccess())
+            {
+                Toast.makeText(RecipeListActivity.this, "Error while trying to create the file", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            Toast.makeText(RecipeListActivity.this, "Created a file with content: " + result.getDriveFile().getDriveId(), Toast.LENGTH_SHORT).show();
+            tempDriveID = result.getDriveFile().getDriveId();
+        }
+    };
 }
