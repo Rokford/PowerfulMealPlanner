@@ -72,7 +72,7 @@ public class RecipeListActivity extends ActionBarActivity implements GoogleApiCl
 
     private boolean forCalendar = false;
 
-    private DriveId tempDriveID;
+    private boolean shouldExport;
 
     private final static int RESOLVE_CONNECTION_REQUEST_CODE = 5;
 
@@ -300,9 +300,8 @@ public class RecipeListActivity extends ActionBarActivity implements GoogleApiCl
                     public void onClick(DialogInterface dialog, int which)
                     {
 
+                        shouldExport = true;
                         mGoogleApiClient.connect();
-
-                        Toast.makeText(RecipeListActivity.this, "Shopping list generated successfully", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -311,6 +310,8 @@ public class RecipeListActivity extends ActionBarActivity implements GoogleApiCl
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
+                        shouldExport = false;
+                        mGoogleApiClient.connect();
                     }
                 });
 
@@ -344,7 +345,7 @@ public class RecipeListActivity extends ActionBarActivity implements GoogleApiCl
                     {
                         JSONObject itemJSONObject = new JSONObject();
 
-                        itemJSONObject.put("item", item.getItem());
+                        itemJSONObject.put("unit", item.getUnit());
                         itemJSONObject.put("name", item.getItem());
                         itemJSONObject.put("quantity", item.getQuantity());
                         itemJSONObject.put("recipeName", item.getRecipeName());
@@ -357,23 +358,6 @@ public class RecipeListActivity extends ActionBarActivity implements GoogleApiCl
 
                 String recipesJSONString = outerJSONObject.toString();
 
-                //                File file = new File(path + "/Download");
-                //
-                //                if (!file.exists())
-                //                    file.mkdir();
-                //
-                //                file = new File(path + "/Download/recipes_PMP.json");
-                //
-                //                FileOutputStream stream = new FileOutputStream(file);
-                //                try
-                //                {
-                //                    stream.write(recipesJSONString.getBytes());
-                //                }
-                //                finally
-                //                {
-                //                    stream.close();
-                //                }
-
                 return recipesJSONString;
             }
 
@@ -385,6 +369,70 @@ public class RecipeListActivity extends ActionBarActivity implements GoogleApiCl
         }
         else
             return "";
+    }
+
+    private void getRecipesFromJSONAndAddThemToDatabase(String contentsAsString)
+    {
+        try
+        {
+            JSONObject outerJSONObject = new JSONObject(contentsAsString);
+
+            JSONArray recipesArray = outerJSONObject.getJSONArray("recipes");
+
+            DatabaseManager manager = new DatabaseManager(this);
+
+            manager.open();
+
+            for (int i = 0; i < recipesArray.length(); i++)
+            {
+                JSONObject recipeObject = recipesArray.getJSONObject(i);
+
+                manager.createRecipeItem(recipeObject.getString("recipeName"), recipeObject.getString("name"), recipeObject.getString("quantity"), recipeObject.getString("unit"));
+
+            }
+
+            manager.close();
+
+            onResume();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        //        try
+        //        {
+        //            JSONObject outerJSONObject = new JSONObject();
+        //            JSONArray recipesJSONArray = new JSONArray();
+        //
+        //            for (String recipeName : recipeNames)
+        //            {
+        //                ArrayList<ShoppingItem> shoppingItems = manager.getAllShoppingItemsForRecipe(recipeName);
+        //
+        //                for (ShoppingItem item : shoppingItems)
+        //                {
+        //                    JSONObject itemJSONObject = new JSONObject();
+        //
+        //                    itemJSONObject.put("item", item.getItem());
+        //                    itemJSONObject.put("name", item.getItem());
+        //                    itemJSONObject.put("quantity", item.getQuantity());
+        //                    itemJSONObject.put("recipeName", item.getRecipeName());
+        //
+        //                    recipesJSONArray.put(itemJSONObject);
+        //                }
+        //
+        //                outerJSONObject.put("recipes", recipesJSONArray);
+        //            }
+        //
+        //            String recipesJSONString = outerJSONObject.toString();
+        //
+        //            return recipesJSONString;
+        //        }
+        //
+        //        catch (Exception e)
+        //        {
+        //            e.printStackTrace();
+        //            return "";
+        //        }
     }
 
     @Override
@@ -441,23 +489,42 @@ public class RecipeListActivity extends ActionBarActivity implements GoogleApiCl
         {
             if (!result.getStatus().isSuccess())
             {
-                //                showMessage("Problem while retrieving results");
+                Toast.makeText(RecipeListActivity.this, "Error while trying to find the recipe file", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             MetadataBuffer mbr = result.getMetadataBuffer();
 
-            if (mbr.getCount() > 0)
+            if (shouldExport)
             {
-                Metadata metadata = mbr.get(0);
-                DriveId driveIDofRecipeFile = metadata.getDriveId();
+                if (mbr.getCount() > 0)
+                {
+                    Metadata metadata = mbr.get(0);
+                    DriveId driveIDofRecipeFile = metadata.getDriveId();
 
-                Drive.DriveApi.getFile(mGoogleApiClient, driveIDofRecipeFile).open(mGoogleApiClient, DriveFile.MODE_WRITE_ONLY, null).setResultCallback(contentsOpenedToWriteCallback);
+                    Drive.DriveApi.getFile(mGoogleApiClient, driveIDofRecipeFile).open(mGoogleApiClient, DriveFile.MODE_WRITE_ONLY, null).setResultCallback(contentsOpenedToWriteCallback);
+                }
+                else
+                {
+                    createNewRecipeFileOnGoogleDrive();
+                }
             }
             else
             {
-                createNewRecipeFileOnGoogleDrive();
+                if (mbr.getCount() > 0)
+                {
+                    Metadata metadata = mbr.get(0);
+                    DriveId driveIDofRecipeFile = metadata.getDriveId();
+
+                    Drive.DriveApi.getFile(mGoogleApiClient, driveIDofRecipeFile).open(mGoogleApiClient, DriveFile.MODE_READ_ONLY, null).setResultCallback(contentsOpenedToReadCallback);
+                }
+                else
+                {
+                    Toast.makeText(RecipeListActivity.this, "There is no recipes file on your Google Drive!", Toast.LENGTH_SHORT).show();
+                }
             }
+
+            mbr.release();
         }
     };
 
@@ -529,7 +596,10 @@ public class RecipeListActivity extends ActionBarActivity implements GoogleApiCl
                 e.printStackTrace();
             }
             String contentsAsString = builder.toString();
-            Log.e("RESULT:", contentsAsString);
+
+            getRecipesFromJSONAndAddThemToDatabase(contentsAsString);
+
+            Toast.makeText(RecipeListActivity.this, "Recipes have been imported succesfully.", Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -640,7 +710,6 @@ public class RecipeListActivity extends ActionBarActivity implements GoogleApiCl
                 return;
             }
             Toast.makeText(RecipeListActivity.this, "Created a file with content: " + result.getDriveFile().getDriveId(), Toast.LENGTH_SHORT).show();
-            tempDriveID = result.getDriveFile().getDriveId();
         }
     };
 }
