@@ -29,17 +29,26 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.drive.DriveApi;
 import com.google.android.gms.drive.DriveContents;
+import com.google.android.gms.drive.DriveFile;
 import com.google.android.gms.drive.DriveFolder;
+import com.google.android.gms.drive.DriveId;
+import com.google.android.gms.drive.Metadata;
+import com.google.android.gms.drive.MetadataBuffer;
 import com.google.android.gms.drive.MetadataChangeSet;
 import com.google.android.gms.drive.DriveApi.DriveContentsResult;
+import com.google.android.gms.drive.query.Filters;
+import com.google.android.gms.drive.query.Query;
+import com.google.android.gms.drive.query.SearchableField;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -61,6 +70,8 @@ public class RecipeListActivity extends ActionBarActivity implements GoogleApiCl
     GoogleApiClient mGoogleApiClient;
 
     private boolean forCalendar = false;
+
+    private DriveId tempDriveID;
 
     private final static int RESOLVE_CONNECTION_REQUEST_CODE = 5;
 
@@ -417,45 +428,41 @@ public class RecipeListActivity extends ActionBarActivity implements GoogleApiCl
     @Override
     public void onConnected(Bundle bundle)
     {
-        Drive.DriveApi.newDriveContents(mGoogleApiClient).setResultCallback(new ResultCallback<DriveContentsResult>()
-        {
-            @Override
-            public void onResult(DriveContentsResult driveContentsResult)
-            {
-                if (!driveContentsResult.getStatus().isSuccess())
-                {
-                    Toast.makeText(RecipeListActivity.this, "Error while trying to create new file contents", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                final DriveContents driveContents = driveContentsResult.getDriveContents();
+        Query query = new Query.Builder().addFilter(Filters.eq(SearchableField.TITLE, "Powerful Meal Planner recipes")).build();
 
-                String recipesJSONString = exportRecipesToJSONString();
+        Drive.DriveApi.query(mGoogleApiClient, query).setResultCallback(metadataCallback);
 
-                if (recipesJSONString.length() > 0)
-                {
-                    OutputStream outputStream = driveContents.getOutputStream();
-                    Writer writer = new OutputStreamWriter(outputStream);
-                    try
-                    {
-                        writer.write(recipesJSONString);
-                        writer.close();
-                    }
-                    catch (IOException e)
-                    {
-                    }
-
-                    MetadataChangeSet changeSet = new MetadataChangeSet.Builder().setTitle("Powerful Meal Planner recipes").setMimeType("text/plain").setStarred(false).build();
-
-                    // create a file on root folder
-                    Drive.DriveApi.getRootFolder(mGoogleApiClient).createFile(mGoogleApiClient, changeSet, driveContents).setResultCallback(fileCallback);
-                }
-                else
-                {
-                    Toast.makeText(RecipeListActivity.this, "Could not write JSON", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        //        DriveFile file = Drive.DriveApi.getFile(mGoogleApiClient, tempDriveID);
+        //
+        //        file.open(mGoogleApiClient, DriveFile.MODE_READ_ONLY, null).setResultCallback(contentsOpenedCallback);
     }
+
+    final private ResultCallback<DriveApi.MetadataBufferResult> metadataCallback = new ResultCallback<DriveApi.MetadataBufferResult>()
+    {
+        @Override
+        public void onResult(DriveApi.MetadataBufferResult result)
+        {
+            if (!result.getStatus().isSuccess())
+            {
+                //                showMessage("Problem while retrieving results");
+                return;
+            }
+
+            MetadataBuffer mbr = result.getMetadataBuffer();
+
+            if (mbr.getCount() > 0)
+            {
+                Metadata metadata = mbr.get(0);
+                DriveId driveIDofRecipeFile = metadata.getDriveId();
+
+                Drive.DriveApi.getFile(mGoogleApiClient, driveIDofRecipeFile).open(mGoogleApiClient, DriveFile.MODE_READ_ONLY, null).setResultCallback(contentsOpenedCallback);
+            }
+            else
+            {
+                createNewRecipeFileOnGoogleDrive();
+            }
+        }
+    };
 
     @Override
     public void onConnectionSuspended(int i)
@@ -508,6 +515,81 @@ public class RecipeListActivity extends ActionBarActivity implements GoogleApiCl
                 return;
             }
             Toast.makeText(RecipeListActivity.this, "Created a file with content: " + result.getDriveFile().getDriveId(), Toast.LENGTH_SHORT).show();
+            tempDriveID = result.getDriveFile().getDriveId();
         }
     };
+
+    ResultCallback<DriveApi.DriveContentsResult> contentsOpenedCallback = new ResultCallback<DriveApi.DriveContentsResult>()
+    {
+        @Override
+        public void onResult(DriveApi.DriveContentsResult result)
+        {
+            if (!result.getStatus().isSuccess())
+            {
+                Log.e("Error:", "No se puede abrir el archivo o no se encuentra");
+                return;
+            }
+            // DriveContents object contains pointers
+            // to the actual byte stream
+            DriveContents contents = result.getDriveContents();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(contents.getInputStream()));
+            StringBuilder builder = new StringBuilder();
+            String line;
+            try
+            {
+                while ((line = reader.readLine()) != null)
+                {
+                    builder.append(line);
+                }
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+            String contentsAsString = builder.toString();
+            Log.e("RESULT:", contentsAsString);
+        }
+    };
+
+    private void createNewRecipeFileOnGoogleDrive()
+    {
+        Drive.DriveApi.newDriveContents(mGoogleApiClient).setResultCallback(new ResultCallback<DriveContentsResult>()
+        {
+            @Override
+            public void onResult(DriveContentsResult driveContentsResult)
+            {
+                if (!driveContentsResult.getStatus().isSuccess())
+                {
+                    Toast.makeText(RecipeListActivity.this, "Error while trying to create new file contents", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                final DriveContents driveContents = driveContentsResult.getDriveContents();
+
+                String recipesJSONString = exportRecipesToJSONString();
+
+                if (recipesJSONString.length() > 0)
+                {
+                    OutputStream outputStream = driveContents.getOutputStream();
+                    Writer writer = new OutputStreamWriter(outputStream);
+                    try
+                    {
+                        writer.write(recipesJSONString);
+                        writer.close();
+                    }
+                    catch (IOException e)
+                    {
+                    }
+
+                    MetadataChangeSet changeSet = new MetadataChangeSet.Builder().setTitle("Powerful Meal Planner recipes").setMimeType("text/plain").setStarred(false).build();
+
+                    // create a file on root folder
+                    Drive.DriveApi.getRootFolder(mGoogleApiClient).createFile(mGoogleApiClient, changeSet, driveContents).setResultCallback(fileCallback);
+                }
+                else
+                {
+                    Toast.makeText(RecipeListActivity.this, "Could not write JSON", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
 }
