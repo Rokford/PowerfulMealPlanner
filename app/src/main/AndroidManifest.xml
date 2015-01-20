@@ -33,6 +33,7 @@
         </activity>
         <activity
             android:name=".AddRecipeItemActivity"
+            android:windowSoftInputMode="stateHidden"
             android:label="@string/title_activity_add_recipe_item">
         </activity>
         <activity

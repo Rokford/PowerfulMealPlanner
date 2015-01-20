@@ -34,7 +34,6 @@
                 android:ems="10"
                 android:hint="@string/name_hint">
 
-                <requestFocus/>
             </EditText>
         </LinearLayout>
 
