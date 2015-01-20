@@ -48,6 +48,11 @@
     <string name="help_5">Shopping list has two modes - shopping mode (turned on by default) and edit mode.\n\nShopping mode is designed as an interactive version of traditional shopping list. Tapping at item makes it "checked" - it will instantly appear grayed out and moved to the bottom of the list, so you can clearly see what is left to get.\n\nTap the items as you put them in your shopping cart!</string>
     <string name="help_6">While you are still on Shopping List screen, tap the "Shopping Mode OFF" option in upper-right corner to enter Edit mode.\nNow, you can edit any item by tapping it.\n\nTo go back to the Shopping Mode, tap "Shopping Mode ON" option, again in upper-right corner of the screen.</string>
     <string name="help_7">You can always delete any recipe (on Recipes List screen) or shopping item (on Shopping List screen) by pressing the item and holding for a while.\n\nSelect the items you want to delete, then press "Delete".</string>
+    <string name="help_8">NEW! Export and Import lets you effortlessly upload your recipes to your Google Drive (Export) and then, download it on any another Android device with Powerful Meal Planner installed (Import).\nThis feature requires Google Drive access - your existing Google Drive content will not be altered in any way.\nImported recipes will be added as new one, without changing or deleting your current ones.</string>
     <string name="help">Help</string>
+    <string name="export">Export/Import</string>
+    <string name="export_option">Eksport</string>
+    <string name="import_option">Import</string>
+    <string name="export_message">Eksport i Import wymaga dostępu do Google Drive.\n\nPo wyeksportowaniu przepisów można zaimportować je na każdym urządzeniu z systemem Android na którym zainstalowany jest Powerful Meal Planner.\n\nWięcej informacji znajduje się w sekcji Pomoc.</string>
 
 </resources>
