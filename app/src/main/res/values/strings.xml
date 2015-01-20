@@ -49,10 +49,10 @@
     <string name="help_5">Shopping list has two modes - shopping mode (turned on by default) and edit mode.\n\nShopping mode is designed as an interactive version of traditional shopping list. Tapping at item makes it "checked" - it will instantly appear grayed out and moved to the bottom of the list, so you can clearly see what is left to get.\n\nTap the items as you put them in your shopping cart!</string>
     <string name="help_6">While you are still on Shopping List screen, tap the "Shopping Mode OFF" option in upper-right corner to enter Edit mode.\nNow, you can edit any item by tapping it.\n\nTo go back to the Shopping Mode, tap "Shopping Mode ON" option, again in upper-right corner of the screen.</string>
     <string name="help_7">You can always delete any recipe (on Recipes List screen) or shopping item (on Shopping List screen) by pressing the item and holding for a while.\n\nSelect the items you want to delete, then press "Delete".</string>
-
+    <string name="help_8">NEW! Export and Import lets you effortlessly upload your recipes to your Google Drive (Export) and then, download it on any another Android device with Powerful Meal Planner installed (Import).\nThis feature requires Google Drive access - your existing Google Drive content will not be altered in any way.\nImported recipes will be added as new one, without changing or deleting your current ones.</string>
     <string name="export">Export/Import</string>
     <string name="export_option">Export</string>
     <string name="import_option">Import</string>
-    <string name="export_message">You can export or import your recipes.\n\nExport:\nTap the Export option below. Your recipes will be exported to a file. You will be asked if you would like to email this file right away. Then just visit your email inbox on another device and download attached file. Alternatively, you can find this file in "Download" folder on your device and copy it manually. Finally, launch Powerful Meal Planner on another device and press Import/Export there to import recipes.\n\nImport:\nMake sure you have the file with exported recipes in "Download" folder on your device. Then, just tap the Import option below.</string>
+    <string name="export_message">Export and Import requires Google Drive access.\n\nAfter exporting your recipes, you will be able to import them on any other Android device with Powerful Meal Planner installed.\n\nTo learn more about this feature, please visit in-app Help section.</string>
 
 </resources>

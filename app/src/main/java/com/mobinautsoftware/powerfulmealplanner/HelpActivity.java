@@ -189,6 +189,7 @@ public class HelpActivity extends ActionBarActivity
         addPage(getResources().getDrawable(R.drawable.help5), getString(R.string.help_5));
         addPage(getResources().getDrawable(R.drawable.help6), getString(R.string.help_6));
         addPage(getResources().getDrawable(R.drawable.help7), getString(R.string.help_7));
+        addPage(getResources().getDrawable(R.drawable.help8), getString(R.string.help_8));
     }
 
     @Override

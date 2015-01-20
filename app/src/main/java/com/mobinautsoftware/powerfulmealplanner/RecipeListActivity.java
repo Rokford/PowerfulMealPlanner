@@ -293,7 +293,7 @@ public class RecipeListActivity extends ActionBarActivity implements GoogleApiCl
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(RecipeListActivity.this);
 
-                builder.setMessage("Import or export... TBC");
+                builder.setMessage(getString(R.string.export_message));
                 builder.setPositiveButton(getString(R.string.export_option), new DialogInterface.OnClickListener()
                 {
                     @Override
@@ -387,7 +387,10 @@ public class RecipeListActivity extends ActionBarActivity implements GoogleApiCl
             {
                 JSONObject recipeObject = recipesArray.getJSONObject(i);
 
-                manager.createRecipeItem(recipeObject.getString("recipeName"), recipeObject.getString("name"), recipeObject.getString("quantity"), recipeObject.getString("unit"));
+                if (manager.getAllShoppingItemsForRecipe(recipeObject.getString("recipeName")).size() == 0)
+                {
+                    manager.createRecipeItem(recipeObject.getString("recipeName"), recipeObject.getString("name"), recipeObject.getString("quantity"), recipeObject.getString("unit"));
+                }
 
             }
 
@@ -399,40 +402,6 @@ public class RecipeListActivity extends ActionBarActivity implements GoogleApiCl
         {
             e.printStackTrace();
         }
-        //        try
-        //        {
-        //            JSONObject outerJSONObject = new JSONObject();
-        //            JSONArray recipesJSONArray = new JSONArray();
-        //
-        //            for (String recipeName : recipeNames)
-        //            {
-        //                ArrayList<ShoppingItem> shoppingItems = manager.getAllShoppingItemsForRecipe(recipeName);
-        //
-        //                for (ShoppingItem item : shoppingItems)
-        //                {
-        //                    JSONObject itemJSONObject = new JSONObject();
-        //
-        //                    itemJSONObject.put("item", item.getItem());
-        //                    itemJSONObject.put("name", item.getItem());
-        //                    itemJSONObject.put("quantity", item.getQuantity());
-        //                    itemJSONObject.put("recipeName", item.getRecipeName());
-        //
-        //                    recipesJSONArray.put(itemJSONObject);
-        //                }
-        //
-        //                outerJSONObject.put("recipes", recipesJSONArray);
-        //            }
-        //
-        //            String recipesJSONString = outerJSONObject.toString();
-        //
-        //            return recipesJSONString;
-        //        }
-        //
-        //        catch (Exception e)
-        //        {
-        //            e.printStackTrace();
-        //            return "";
-        //        }
     }
 
     @Override
@@ -489,7 +458,7 @@ public class RecipeListActivity extends ActionBarActivity implements GoogleApiCl
         {
             if (!result.getStatus().isSuccess())
             {
-                Toast.makeText(RecipeListActivity.this, "Error while trying to find the recipe file", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RecipeListActivity.this, "Error while trying to find the recipe file on Google Drive", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -545,7 +514,7 @@ public class RecipeListActivity extends ActionBarActivity implements GoogleApiCl
             }
             catch (IntentSender.SendIntentException e)
             {
-                // Unable to resolve, message user appropriately
+                Toast.makeText(RecipeListActivity.this, "Connection with Google Drive failed.", Toast.LENGTH_SHORT).show();
             }
         }
         else
@@ -575,7 +544,7 @@ public class RecipeListActivity extends ActionBarActivity implements GoogleApiCl
         {
             if (!result.getStatus().isSuccess())
             {
-                Log.e("Error:", "No se puede abrir el archivo o no se encuentra");
+                Toast.makeText(RecipeListActivity.this, "Cannot open recipes file.", Toast.LENGTH_SHORT).show();
                 return;
             }
             // DriveContents object contains pointers
@@ -599,7 +568,7 @@ public class RecipeListActivity extends ActionBarActivity implements GoogleApiCl
 
             getRecipesFromJSONAndAddThemToDatabase(contentsAsString);
 
-            Toast.makeText(RecipeListActivity.this, "Recipes have been imported succesfully.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(RecipeListActivity.this, "Recipes have been imported successfully.", Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -610,7 +579,7 @@ public class RecipeListActivity extends ActionBarActivity implements GoogleApiCl
         {
             if (!result.getStatus().isSuccess())
             {
-                Log.e("Error:", "No se puede abrir el archivo o no se encuentra");
+                Toast.makeText(RecipeListActivity.this, "Cannot open recipes file.", Toast.LENGTH_SHORT).show();
                 return;
             }
             // DriveContents object contains pointers
@@ -652,7 +621,7 @@ public class RecipeListActivity extends ActionBarActivity implements GoogleApiCl
             }
             else
             {
-                Toast.makeText(RecipeListActivity.this, "Could not write JSON", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RecipeListActivity.this, "Could not create recipes file.", Toast.LENGTH_SHORT).show();
             }
         }
     };
@@ -693,7 +662,7 @@ public class RecipeListActivity extends ActionBarActivity implements GoogleApiCl
                 }
                 else
                 {
-                    Toast.makeText(RecipeListActivity.this, "Could not write JSON", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RecipeListActivity.this, "Could not update recipes file.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -709,7 +678,6 @@ public class RecipeListActivity extends ActionBarActivity implements GoogleApiCl
                 Toast.makeText(RecipeListActivity.this, "Error while trying to create the file", Toast.LENGTH_SHORT).show();
                 return;
             }
-            Toast.makeText(RecipeListActivity.this, "Created a file with content: " + result.getDriveFile().getDriveId(), Toast.LENGTH_SHORT).show();
         }
     };
 }
