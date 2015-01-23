@@ -69,7 +69,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:orientation="vertical">
 
                 <TextView
@@ -85,6 +85,27 @@
                     android:hint="@string/unit_hint">
 
                 </AutoCompleteTextView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_height="match_parent"
+                        android:text="Tap to choose:"/>
+
+
+                </LinearLayout>
+
+                <ListView
+                    android:id="@+id/commonUnitsListView"
+                    android:layout_width="match_parent"
+                    android:divider="@color/lightest_bronze"
+                    android:layout_height="wrap_content"></ListView>
+
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

@@ -19,6 +19,7 @@ public class DatabaseManager
     private String[] allColumnsAndRecipies = {databaseCreator.COLUMN_ID, databaseCreator.COLUMN_RECIPE_NAME, databaseCreator.COLUMN_ITEM, databaseCreator.COLUMN_QUANTITY, databaseCreator.COLUMN_UNIT};
     private String[] allRecipeColumnsNames = {databaseCreator.COLUMN_RECIPE_NAME};
     private String[] allItems = {databaseCreator.COLUMN_ITEM};
+    private String[] unitCounters = {databaseCreator.COLUMN_UNIT_COUNT};
 
     public DatabaseManager(Context context)
     {
@@ -104,6 +105,53 @@ public class DatabaseManager
         cursor.close();
         return items;
     }
+
+    public void addToUnitCounter(String unit)
+    {
+        unit = DatabaseUtils.sqlEscapeString(unit);
+
+        Cursor cursor = database.query(databaseCreator.TABLE_UNITS, unitCounters, databaseCreator.COLUMN_ITEM + " = " + unit, null, null, null, null);
+
+        int counter = 0;
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast())
+        {
+            counter = cursor.getInt(0);
+            cursor.moveToNext();
+        }
+
+        // make sure to close the cursor
+        cursor.close();
+
+        counter++;
+
+        ContentValues values = new ContentValues();
+        values.put(databaseCreator.COLUMN_UNIT_COUNT, counter);
+
+        long insertId = database.update(databaseCreator.TABLE_UNITS, values, databaseCreator.COLUMN_ITEM + " = " + unit, null);
+    }
+
+    public int getCountForUnit(String unit)
+    {
+        unit = DatabaseUtils.sqlEscapeString(unit);
+
+        Cursor cursor = database.query(databaseCreator.TABLE_UNITS, unitCounters, databaseCreator.COLUMN_ITEM + " = " + unit, null, null, null, null);
+
+        int counter = 0;
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast())
+        {
+            counter = cursor.getInt(0);
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+
+        return counter;
+    }
+
 
 
     public void update_byID(int id, String v1, String v2, String v3)
