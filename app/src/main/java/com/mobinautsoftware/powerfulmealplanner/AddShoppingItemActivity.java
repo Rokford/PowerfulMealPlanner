@@ -1,13 +1,14 @@
 package com.mobinautsoftware.powerfulmealplanner;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -16,7 +17,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -75,10 +75,8 @@ public class AddShoppingItemActivity extends ActionBarActivity
                 @Override
                 public int compare(String lhs, String rhs)
                 {
-                    if (manager.getCountForUnit(lhs) > manager.getCountForUnit(rhs))
-                        return -1;
-                    else
-                        return 1;
+                    if (manager.getCountForUnit(lhs) > manager.getCountForUnit(rhs)) return -1;
+                    else return 1;
                 }
             });
         }
@@ -183,5 +181,17 @@ public class AddShoppingItemActivity extends ActionBarActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onPause()
+    {
+        View view = this.getCurrentFocus();
+        if (view != null)
+        {
+            InputMethodManager inputManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+        super.onPause();
     }
 }
