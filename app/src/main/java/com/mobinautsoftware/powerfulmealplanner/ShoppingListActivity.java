@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.util.SparseBooleanArray;
@@ -20,7 +21,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class ShoppingListActivity extends ActionBarActivity
+public class ShoppingListActivity extends ActionBarActivity implements ShoppingItemSwipeFragment.OnFragmentInteractionListener
 {
 
     private DrawerLayout drawerLayout;
@@ -30,6 +31,8 @@ public class ShoppingListActivity extends ActionBarActivity
     private ListView drawerList;
 
     private ListView shoppingListView;
+
+    private ViewPager viewPager;
 
     private ShoppingListAdapter adapter;
 
@@ -112,6 +115,8 @@ public class ShoppingListActivity extends ActionBarActivity
         getSupportActionBar().setIcon(R.drawable.ic_launcher);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
+
+        viewPager = (ViewPager) findViewById(R.id.pager);
 
         shoppingListView = (ListView) findViewById(R.id.shoppingListView);
         shoppingListView.setAdapter(adapter);
@@ -366,5 +371,9 @@ public class ShoppingListActivity extends ActionBarActivity
         super.onResume();
     }
 
+    @Override
+    public void onFragmentInteraction(String id)
+    {
 
+    }
 }

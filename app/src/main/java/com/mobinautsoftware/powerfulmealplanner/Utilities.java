@@ -7,10 +7,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class Utilities
 {
     public static String[] navigationItemsArray = {App.getContext().getResources().getString(R.string.shopping_list), App.getContext().getResources().getString(R.string.recipies_list), App.getContext().getResources().getString(R.string.callendar), App.getContext().getResources().getString(R.string.help)};
+
+    public static String[] shoppingListTabsItemsArray = {"Fruits", "Meat", "Alcohol"};
 
     public static String formatDateforDB(Date date)
     {
