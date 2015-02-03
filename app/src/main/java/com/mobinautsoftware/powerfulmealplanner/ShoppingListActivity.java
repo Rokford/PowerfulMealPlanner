@@ -4,8 +4,10 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
@@ -297,6 +299,11 @@ public class ShoppingListActivity extends ActionBarActivity implements ShoppingI
             if (shoppingModeOn == true)
             {
                 shoppingModeOn = false;
+
+                shoppingListView.setVisibility(View.VISIBLE);
+                viewPager.setVisibility(View.GONE);
+
+                getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
             }
             else
             {
@@ -309,11 +316,18 @@ public class ShoppingListActivity extends ActionBarActivity implements ShoppingI
                 adapter.setShoppingItemsList(shoppingItemsList);
 
                 adapter.notifyDataSetChanged();
+
+                shoppingListView.setVisibility(View.GONE);
+                viewPager.setVisibility(View.VISIBLE);
+
+                getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
             }
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
     @Override
     protected void onResume()
@@ -340,6 +354,11 @@ public class ShoppingListActivity extends ActionBarActivity implements ShoppingI
             shoppingListView.setAdapter(adapter);
 
             manager.close();
+
+            getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+
+            shoppingListView.setVisibility(View.VISIBLE);
+            viewPager.setVisibility(View.GONE);
         }
         else
         {
@@ -360,11 +379,68 @@ public class ShoppingListActivity extends ActionBarActivity implements ShoppingI
             shoppingItemsList = manager.getAllShoppingItemsWithId();
 
             manager.close();
+
+            ShoppingListSwipeAdapter shoppingListSwipeAdapter = new ShoppingListSwipeAdapter(getSupportFragmentManager());
+
+            viewPager.setAdapter(shoppingListSwipeAdapter);
+
             adapter = new ShoppingListAdapter(this);
 
             adapter.setShoppingItemsList(shoppingItemsList);
             shoppingListView.setAdapter(adapter);
 
+            getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+            ActionBar.TabListener tabListener = new ActionBar.TabListener() {
+                @Override
+                public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction)
+                {
+                    viewPager.setCurrentItem(tab.getPosition());
+                }
+
+                @Override
+                public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction)
+                {
+
+                }
+
+                @Override
+                public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction)
+                {
+
+                }
+            };
+
+            getSupportActionBar().removeAllTabs();
+
+            for (int i = 0; i < Utilities.shoppingListTabsItemsArray.length; i++)
+            {
+                getSupportActionBar().addTab(getSupportActionBar().newTab().setText(Utilities.shoppingListTabsItemsArray[i]).setTabListener(tabListener));
+            }
+
+            viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener()
+            {
+                @Override
+                public void onPageScrolled(int i, float v, int i2)
+                {
+
+                }
+
+                @Override
+                public void onPageSelected(int i)
+                {
+                    getSupportActionBar().setSelectedNavigationItem(i);
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int i)
+                {
+
+                }
+            });
+
+            shoppingListView.setVisibility(View.GONE);
+            viewPager.setVisibility(View.VISIBLE);
         }
 
 
