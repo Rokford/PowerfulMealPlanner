@@ -45,6 +45,7 @@ public class DatabaseManager
         values.put(databaseCreator.COLUMN_ITEM, itemName);
         values.put(databaseCreator.COLUMN_QUANTITY, quantity);
         values.put(databaseCreator.COLUMN_UNIT, unit);
+//        values.put(databaseCreator.COLUMN_CATEGORY, category);
         if (checked)
             values.put(databaseCreator.COLUMN_IS_CHECKED, "y" );
         else
@@ -52,19 +53,6 @@ public class DatabaseManager
 
         long insertId = database.insert(databaseCreator.TABLE_SHOPPING_ITEMS, null, values);
     }
-
-//    public void createShoppingItemChecked(String itemName, String quantity, String unit)
-//    {
-//        ContentValues values = new ContentValues();
-//        values.put(databaseCreator.COLUMN_ITEM, itemName);
-//        values.put(databaseCreator.COLUMN_QUANTITY, quantity);
-//        values.put(databaseCreator.COLUMN_UNIT, unit);
-//        values.put(databaseCreator.COLUMN_IS_CHECKED, "y" );
-//
-//        long insertId = database.insert(databaseCreator.TABLE_SHOPPING_ITEMS, null, values);
-//
-//
-//    }
 
     public void createItem(String item, boolean forUnit)
     {

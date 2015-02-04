@@ -46,7 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:orientation="vertical">
 
                 <TextView
@@ -63,6 +63,71 @@
                     android:inputType="numberDecimal">
 
                 </EditText>
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:textSize="12sp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/category1"
+                        android:drawablePadding="10dp"
+                        android:drawableLeft="@drawable/shopping_list"/>
+
+                    <RadioButton
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:textSize="12sp"
+
+                        android:drawablePadding="10dp"
+                        android:text="@string/category2"
+                        android:drawableLeft="@drawable/shopping_list"/>
+
+                    <RadioButton
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/category3"
+                        android:drawablePadding="10dp"
+                        android:layout_marginTop="10dp"
+                        android:textSize="12sp"
+
+                        android:drawableLeft="@drawable/shopping_list"/>
+
+                    <RadioButton
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/category4"
+                        android:drawablePadding="10dp"
+                        android:layout_marginTop="10dp"
+                        android:textSize="12sp"
+
+                        android:drawableLeft="@drawable/shopping_list"/>
+
+                    <RadioButton
+                        android:layout_width="match_parent"
+                        android:drawablePadding="10dp"
+                        android:layout_marginTop="10dp"
+                        android:textSize="12sp"
+
+                        android:layout_height="wrap_content"
+                        android:text="@string/category5"
+                        android:drawableLeft="@drawable/shopping_list"/>
+
+                    <RadioButton
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="10dp"
+                        android:layout_marginTop="10dp"
+                        android:textSize="12sp"
+
+                        android:text="@string/category6"
+                        android:drawableLeft="@drawable/shopping_list"/>
+                </RadioGroup>
+
             </LinearLayout>
 
             <LinearLayout
@@ -88,6 +153,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
                     android:layout_height="wrap_content">
 
                     <TextView

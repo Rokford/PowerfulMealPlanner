@@ -415,7 +415,7 @@ public class ShoppingListActivity extends ActionBarActivity implements ShoppingI
 
             for (int i = 0; i < Utilities.shoppingListTabsItemsArray.length; i++)
             {
-                getSupportActionBar().addTab(getSupportActionBar().newTab().setText(Utilities.shoppingListTabsItemsArray[i]).setTabListener(tabListener));
+                getSupportActionBar().addTab(getSupportActionBar().newTab().setIcon(getResources().getDrawable(Utilities.iconForTabString(Utilities.shoppingListTabsItemsArray[i]))).setTabListener(tabListener));
             }
 
             viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener()

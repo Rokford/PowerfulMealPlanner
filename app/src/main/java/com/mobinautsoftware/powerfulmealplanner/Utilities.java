@@ -13,7 +13,14 @@ public class Utilities
 {
     public static String[] navigationItemsArray = {App.getContext().getResources().getString(R.string.shopping_list), App.getContext().getResources().getString(R.string.recipies_list), App.getContext().getResources().getString(R.string.callendar), App.getContext().getResources().getString(R.string.help)};
 
-    public static String[] shoppingListTabsItemsArray = {"Fruits", "Meat", "Alcohol"};
+    public static final String CATEGORY_MEAT = "Meats & fish";
+    public static final String CATEGORY_DIARY = "Dairy & bread";
+    public static final String CATEGORY_FRUITS = "Fruits & vegetables";
+    public static final String CATEGORY_CEREALS = "Cereals & spices";
+    public static final String CATEGORY_TINNED = "Tinned & frozen";
+    public static final String CATEGORY_OTHER = "Other";
+
+    public static String[] shoppingListTabsItemsArray = {CATEGORY_MEAT, CATEGORY_DIARY, CATEGORY_FRUITS, CATEGORY_CEREALS, CATEGORY_TINNED, CATEGORY_OTHER};
 
     public static String formatDateforDB(Date date)
     {
@@ -103,5 +110,22 @@ public class Utilities
         }
 
         return shoppingItemsWithoutDuplicates;
+    }
+
+    public static int iconForTabString(String tabString)
+    {
+        //TODO: proper icons
+        if (tabString.equals("Meats & fish"))
+            return R.drawable.shopping_list;
+        else if (tabString.equals("Dairy & bread"))
+            return R.drawable.shopping_list;
+        else if (tabString.equals("Fruits & vegetables"))
+            return R.drawable.shopping_list;
+        else if (tabString.equals("Cereals & spices"))
+            return R.drawable.shopping_list;
+        else if (tabString.equals("Tinned & frozen"))
+            return R.drawable.shopping_list;
+        else
+            return R.drawable.shopping_list;
     }
 }

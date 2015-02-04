@@ -55,4 +55,11 @@
     <string name="import_option">Import</string>
     <string name="export_message">Export and Import requires Google Drive access.\n\nAfter exporting your recipes, you will be able to import them on any other Android device with Powerful Meal Planner installed.\n\nTo learn more about this feature, please visit in-app Help section.</string>
 
+    <string name="category1">Meats &amp; fish</string>
+    <string name="category2">Dairy &amp; bread</string>
+    <string name="category3">Fruits &amp; vegetables</string>
+    <string name="category4">Cereals &amp; spices</string>
+    <string name="category5">Tinned &amp; frozen</string>
+    <string name="category6">Other</string>
+
 </resources>

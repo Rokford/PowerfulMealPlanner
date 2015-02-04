@@ -15,6 +15,7 @@ public class DatabaseCreator extends SQLiteOpenHelper
     public static final String COLUMN_RECIPE_NAME = "recipe_name";
 	public static final String COLUMN_ID = "_id";
 	public static final String COLUMN_ITEM = "item";
+    public static final String COLUMN_CATEGORY = "category";
 	public static final String COLUMN_QUANTITY = "quantity";
 	public static final String COLUMN_UNIT = "unit";
     public static final String COLUMN_UNIT_COUNT = "count";
@@ -23,15 +24,19 @@ public class DatabaseCreator extends SQLiteOpenHelper
 
 
     private static final String DATABASE_NAME = "powerful_shopping_list.db";
-	private static final int DATABASE_VERSION = 19;
+	private static final int DATABASE_VERSION = 20;
 
-	private static final String DATABASE_CREATE = "create table " + TABLE_SHOPPING_ITEMS + "(" + COLUMN_ID + " integer primary key autoincrement, " + COLUMN_ITEM + " text not null," + COLUMN_QUANTITY + " text not null," + COLUMN_UNIT + " text not null," + COLUMN_IS_CHECKED +" text not null);";
-    private static final String DATABASE_RECIPE_TABLE_NAME = "create table " + TABLE_RECIPE_ITEMS + "(" + COLUMN_ID + " integer primary key autoincrement, " + COLUMN_RECIPE_NAME + " text not null," + COLUMN_ITEM + " text not null," + COLUMN_QUANTITY + " text not null," + COLUMN_UNIT + " text not null);";
+	private static final String DATABASE_CREATE = "create table " + TABLE_SHOPPING_ITEMS + "(" + COLUMN_ID + " integer primary key autoincrement, " + COLUMN_ITEM + " text not null," + COLUMN_QUANTITY + " text not null," + COLUMN_UNIT + " text not null," + COLUMN_CATEGORY + " text not null," + COLUMN_IS_CHECKED +" text not null);";
+    private static final String DATABASE_RECIPE_TABLE_NAME = "create table " + TABLE_RECIPE_ITEMS + "(" + COLUMN_ID + " integer primary key autoincrement, " + COLUMN_RECIPE_NAME + " text not null," + COLUMN_ITEM + " text not null," + COLUMN_QUANTITY + " text not null," + COLUMN_CATEGORY + " text not null," + COLUMN_UNIT + " text not null);";
     private static final String DATABASE_RECIPE_TABLE_DATES = "create table " + TABLE_RECIPE_DATES + "(" + COLUMN_ID + " integer primary key autoincrement, " + COLUMN_RECIPE_DATE + " text not null," + COLUMN_RECIPE_NAME + " text not null);";
     private static final String DATABASE_ITEMS = "create table " + TABLE_ITEMS + "(" + COLUMN_ID + " integer primary key autoincrement, " + COLUMN_ITEM + " text not null);";
     private static final String DATABASE_UNITS = "create table " + TABLE_UNITS + "(" + COLUMN_ID + " integer primary key autoincrement, " + COLUMN_ITEM + " text not null," + COLUMN_UNIT_COUNT + " integer);";
 
     private static final String DATABASE_UNITS_ALTER = "alter table " + TABLE_UNITS + " add " + COLUMN_UNIT_COUNT + " integer;";
+
+    private static final String DATABASE_SHOPPING_ITEMS_ALTER = "alter table " + TABLE_SHOPPING_ITEMS + " add " + COLUMN_CATEGORY + " text not null default 'Other';";
+
+    private static final String DATABASE_RECIPE_ITEMS_ALTER = "alter table " + TABLE_RECIPE_ITEMS + " add " + COLUMN_CATEGORY + " text not null default 'Other';";
 
     private static DatabaseCreator mInstance = null;
 
@@ -69,6 +74,10 @@ public class DatabaseCreator extends SQLiteOpenHelper
             {
                 case 19:
                     db.execSQL(DATABASE_UNITS_ALTER);
+                    break;
+                case 20:
+                    db.execSQL(DATABASE_SHOPPING_ITEMS_ALTER);
+                    db.execSQL(DATABASE_RECIPE_ITEMS_ALTER);
                     break;
             }
             upgradeTo++;
