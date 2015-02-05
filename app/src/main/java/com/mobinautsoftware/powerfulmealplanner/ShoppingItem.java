@@ -7,6 +7,7 @@ public class ShoppingItem implements Comparable<ShoppingItem>
 	private String quantity;
 	private String unit;
     private String recipeName;
+    private String category;
     private boolean isChecked = false;
 
     public boolean isChecked() {
@@ -85,5 +86,15 @@ public class ShoppingItem implements Comparable<ShoppingItem>
     public int compareTo(ShoppingItem another)
     {
         return this.getItem().compareTo(another.getItem());
+    }
+
+    public String getCategory()
+    {
+        return category;
+    }
+
+    public void setCategory(String category)
+    {
+        this.category = category;
     }
 }

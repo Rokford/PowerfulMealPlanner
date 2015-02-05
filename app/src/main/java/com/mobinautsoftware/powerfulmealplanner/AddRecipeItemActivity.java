@@ -122,7 +122,7 @@ public class AddRecipeItemActivity extends ActionBarActivity
                     for (int i = 0; i < ingredientItemsList.size(); i++)
                     {
                         ShoppingItem shoppingItem = ingredientItemsList.get(i);
-                        manager.createRecipeItem(recipeNameTextBox, shoppingItem.getItem(), shoppingItem.getQuantity(), shoppingItem.getUnit());
+                        manager.createRecipeItem(recipeNameTextBox, shoppingItem.getItem(), shoppingItem.getQuantity(), shoppingItem.getUnit(), shoppingItem.getCategory());
                     }
                     finish();
                 }
@@ -131,7 +131,7 @@ public class AddRecipeItemActivity extends ActionBarActivity
                     for (int i = 0; i < ingredientItemsList.size(); i++)
                     {
                         ShoppingItem shoppingItem = ingredientItemsList.get(i);
-                        manager.createRecipeItem(recipeNameTextBox, shoppingItem.getItem(), shoppingItem.getQuantity(), shoppingItem.getUnit());
+                        manager.createRecipeItem(recipeNameTextBox, shoppingItem.getItem(), shoppingItem.getQuantity(), shoppingItem.getUnit(), shoppingItem.getCategory());
                     }
                 }
                 manager.close();

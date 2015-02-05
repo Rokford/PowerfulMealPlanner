@@ -128,8 +128,10 @@ public class ShoppingListActivity extends ActionBarActivity implements ShoppingI
             public void onItemClick(AdapterView<?> adapter2, View v, int position, long arg3)
             {
                 //String value = (String) adapter.getItem(position);
-                ShoppingListAdapter shoppingAdapter = (ShoppingListAdapter) adapter2.getAdapter();
-                ShoppingItem item = (ShoppingItem) shoppingAdapter.getItem(position);
+//                ShoppingListAdapter shoppingAdapter = (ShoppingListAdapter) adapter2.getAdapter();
+//                ShoppingItem item = (ShoppingItem) shoppingAdapter.getItem(position);
+
+                ShoppingItem item = (ShoppingItem) adapter.getItem(position);
                 long id = item.getId();
                 if (!shoppingModeOn)
                 {
@@ -345,11 +347,11 @@ public class ShoppingListActivity extends ActionBarActivity implements ShoppingI
 
             for (ShoppingItem si : shoppingItemsList)
             {
-                manager.createShoppingItem(si.getItem(), si.getQuantity(), si.getUnit(), false);
+                manager.createShoppingItem(si.getItem(), si.getQuantity(), si.getUnit(), false, si.getCategory());
             }
 
             adapter = new ShoppingListAdapter(this);
-            adapter.setShoppingItemsList(shoppingItemsList);
+            adapter.setShoppingItemsList(manager.getAllShoppingItems());
 
             shoppingListView.setAdapter(adapter);
 
@@ -373,7 +375,7 @@ public class ShoppingListActivity extends ActionBarActivity implements ShoppingI
 
             for (ShoppingItem si : shoppingItemsList)
             {
-                manager.createShoppingItem(si.getItem(), si.getQuantity(), si.getUnit(), si.isChecked() ? true : false);
+                manager.createShoppingItem(si.getItem(), si.getQuantity(), si.getUnit(), si.isChecked() ? true : false, si.getCategory());
             }
 
             shoppingItemsList = manager.getAllShoppingItemsWithId();

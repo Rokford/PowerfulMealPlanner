@@ -349,6 +349,7 @@ public class RecipeListActivity extends ActionBarActivity implements GoogleApiCl
                         itemJSONObject.put("name", item.getItem());
                         itemJSONObject.put("quantity", item.getQuantity());
                         itemJSONObject.put("recipeName", item.getRecipeName());
+                        itemJSONObject.put("category", item.getCategory());
 
                         recipesJSONArray.put(itemJSONObject);
                     }
@@ -397,7 +398,7 @@ public class RecipeListActivity extends ActionBarActivity implements GoogleApiCl
 
                 if (manager.getAllShoppingItemsForRecipe(recipeName).size() == 0 || skipRecipeCheck)
                 {
-                    manager.createRecipeItem(recipeObject.getString("recipeName"), recipeObject.getString("name"), recipeObject.getString("quantity"), recipeObject.getString("unit"));
+                    manager.createRecipeItem(recipeObject.getString("recipeName"), recipeObject.getString("name"), recipeObject.getString("quantity"), recipeObject.getString("unit"), recipeObject.isNull("category") ? Utilities.CATEGORY_OTHER : recipeObject.getString("category"));
                     skipRecipeCheck = true;
                     oldRecipeName = recipeName;
                 }

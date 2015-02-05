@@ -14,9 +14,9 @@ public class DatabaseManager
     private SQLiteDatabase database;
     private DatabaseCreator databaseCreator;
 
-    private String[] allColumns = {databaseCreator.COLUMN_ID, databaseCreator.COLUMN_ITEM, databaseCreator.COLUMN_QUANTITY, databaseCreator.COLUMN_UNIT};
-    private String[] allColumnsWithId = {databaseCreator.COLUMN_ID, databaseCreator.COLUMN_ITEM, databaseCreator.COLUMN_QUANTITY, databaseCreator.COLUMN_UNIT, databaseCreator.COLUMN_IS_CHECKED};
-    private String[] allColumnsAndRecipies = {databaseCreator.COLUMN_ID, databaseCreator.COLUMN_RECIPE_NAME, databaseCreator.COLUMN_ITEM, databaseCreator.COLUMN_QUANTITY, databaseCreator.COLUMN_UNIT};
+    private String[] allColumns = {databaseCreator.COLUMN_ID, databaseCreator.COLUMN_ITEM, databaseCreator.COLUMN_QUANTITY, databaseCreator.COLUMN_UNIT, DatabaseCreator.COLUMN_CATEGORY};
+    private String[] allColumnsWithId = {databaseCreator.COLUMN_ID, databaseCreator.COLUMN_ITEM, databaseCreator.COLUMN_QUANTITY, databaseCreator.COLUMN_UNIT, databaseCreator.COLUMN_IS_CHECKED, DatabaseCreator.COLUMN_CATEGORY};
+    private String[] allColumnsAndRecipies = {databaseCreator.COLUMN_ID, databaseCreator.COLUMN_RECIPE_NAME, databaseCreator.COLUMN_ITEM, databaseCreator.COLUMN_QUANTITY, databaseCreator.COLUMN_UNIT, DatabaseCreator.COLUMN_CATEGORY};
     private String[] allRecipeColumnsNames = {databaseCreator.COLUMN_RECIPE_NAME};
     private String[] allItems = {databaseCreator.COLUMN_ITEM};
     private String[] unitCounters = {databaseCreator.COLUMN_UNIT_COUNT};
@@ -39,13 +39,13 @@ public class DatabaseManager
     public void deleteAllShoppingItems () {
         database.execSQL("delete from "+ databaseCreator.TABLE_SHOPPING_ITEMS);
     }
-    public void createShoppingItem(String itemName, String quantity, String unit, boolean checked)
+    public void createShoppingItem(String itemName, String quantity, String unit, boolean checked, String category)
     {
         ContentValues values = new ContentValues();
         values.put(databaseCreator.COLUMN_ITEM, itemName);
         values.put(databaseCreator.COLUMN_QUANTITY, quantity);
         values.put(databaseCreator.COLUMN_UNIT, unit);
-//        values.put(databaseCreator.COLUMN_CATEGORY, category);
+        values.put(databaseCreator.COLUMN_CATEGORY, category);
         if (checked)
             values.put(databaseCreator.COLUMN_IS_CHECKED, "y" );
         else
@@ -142,12 +142,13 @@ public class DatabaseManager
 
 
 
-    public void update_byID(int id, String v1, String v2, String v3)
+    public void update_byID(int id, String v1, String v2, String v3, String category)
     {
         ContentValues values = new ContentValues();
         values.put(databaseCreator.COLUMN_ITEM, v1);
         values.put(databaseCreator.COLUMN_QUANTITY, v2);
         values.put(databaseCreator.COLUMN_UNIT, v3);
+        values.put(databaseCreator.COLUMN_CATEGORY, category);
         long insertId = database.update(databaseCreator.TABLE_SHOPPING_ITEMS, values, databaseCreator.COLUMN_ID + " = " + id, null);
     }
 
@@ -260,6 +261,7 @@ public class DatabaseManager
         {
             shoppingItem.setChecked(false);
         }
+        shoppingItem.setCategory(cursor.getString(5));
         return shoppingItem;
     }
 
@@ -270,6 +272,7 @@ public class DatabaseManager
         shoppingItem.setItem(cursor.getString(1));
         shoppingItem.setQuantity(cursor.getString(2));
         shoppingItem.setUnit(cursor.getString(3));
+        shoppingItem.setCategory(cursor.getString(4));
 
         return shoppingItem;
     }
@@ -282,6 +285,7 @@ public class DatabaseManager
         shoppingItem.setItem(cursor.getString(2));
         shoppingItem.setQuantity(cursor.getString(3));
         shoppingItem.setUnit(cursor.getString(4));
+        shoppingItem.setCategory(cursor.getString(5));
 
         return shoppingItem;
     }
@@ -293,13 +297,14 @@ public class DatabaseManager
         return recipeName;
     }
 
-    public void createRecipeItem(String recipeName, String itemName, String quantity, String unit)
+    public void createRecipeItem(String recipeName, String itemName, String quantity, String unit, String category)
     {
         ContentValues values = new ContentValues();
         values.put(databaseCreator.COLUMN_RECIPE_NAME, recipeName);
         values.put(databaseCreator.COLUMN_ITEM, itemName);
         values.put(databaseCreator.COLUMN_QUANTITY, quantity);
         values.put(databaseCreator.COLUMN_UNIT, unit);
+        values.put(databaseCreator.COLUMN_CATEGORY, category);
 
         long insertId = database.insert(databaseCreator.TABLE_RECIPE_ITEMS, null, values);
     }

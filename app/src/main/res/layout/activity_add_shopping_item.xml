@@ -66,6 +66,7 @@
 
                 <RadioGroup
                     android:layout_width="match_parent"
+                    android:id="@+id/radioGroup"
                     android:layout_height="wrap_content">
 
                     <RadioButton

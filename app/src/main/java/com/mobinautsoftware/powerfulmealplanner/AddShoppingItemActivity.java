@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class AddShoppingItemActivity extends ActionBarActivity
     private EditText quantityEditText;
     private AutoCompleteTextView unitEditText;
     private Bundle extras;
+    private RadioGroup radioGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -40,6 +42,8 @@ public class AddShoppingItemActivity extends ActionBarActivity
         nameEditText = (AutoCompleteTextView) findViewById(R.id.nameEditText);
         quantityEditText = (EditText) findViewById(R.id.quantityEditText);
         unitEditText = (AutoCompleteTextView) findViewById(R.id.unitEditText);
+
+        radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
 
         extras = getIntent().getExtras();
 
@@ -63,6 +67,10 @@ public class AddShoppingItemActivity extends ActionBarActivity
             nameEditText.setText(item.getItem());
             quantityEditText.setText(item.getQuantity());
             unitEditText.setText(item.getUnit());
+
+            String categoryName = item.getCategory();
+
+            radioGroup.check(getIdOfCategory(categoryName));
         }
 
         ArrayList<String> allItems = manager.getAllItems(false);
@@ -138,6 +146,7 @@ public class AddShoppingItemActivity extends ActionBarActivity
             String name = nameEditText.getText().toString();
             String quantity = quantityEditText.getText().toString();
             String unit = unitEditText.getText().toString();
+            String category = Utilities.shoppingListTabsItemsArray[radioGroup.getCheckedRadioButtonId() - 1];
 
             if (name.length() == 0 || quantity.length() == 0 || unit.length() == 0)
             {
@@ -155,6 +164,7 @@ public class AddShoppingItemActivity extends ActionBarActivity
                         returnIntent.putExtra("name", name);
                         returnIntent.putExtra("quantity", quantity);
                         returnIntent.putExtra("unit", unit);
+                        returnIntent.putExtra("category", category);
                         setResult(RESULT_OK, returnIntent);
                         finish();
                     }
@@ -162,12 +172,12 @@ public class AddShoppingItemActivity extends ActionBarActivity
                     {
                         int id = extras.getInt("id");
                         //id++;
-                        manager.update_byID(id, name, quantity, unit);
+                        manager.update_byID(id, name, quantity, unit, category);
                     }
                 }
                 else
                 {
-                    manager.createShoppingItem(name, quantity, unit, false);
+                    manager.createShoppingItem(name, quantity, unit, false, category);
                 }
 
                 manager.createItem(name, false);
@@ -194,4 +204,21 @@ public class AddShoppingItemActivity extends ActionBarActivity
         }
         super.onPause();
     }
+
+    protected int getIdOfCategory(String categoryName)
+    {
+        int categoryId = 0;
+
+        for (int i = 0; i < Utilities.shoppingListTabsItemsArray.length; i++)
+        {
+            if (categoryName.equals(Utilities.shoppingListTabsItemsArray[i]))
+            {
+                categoryId = i;
+                break;
+            }
+        }
+
+        return categoryId;
+    }
+
 }
