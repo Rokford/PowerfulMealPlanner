@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -133,6 +134,7 @@ public class ShoppingListActivity extends ActionBarActivity implements ShoppingI
 
                 ShoppingItem item = (ShoppingItem) adapter.getItem(position);
                 long id = item.getId();
+
                 if (!shoppingModeOn)
                 {
                     Intent intent = new Intent(ShoppingListActivity.this, AddShoppingItemActivity.class);
@@ -145,9 +147,6 @@ public class ShoppingListActivity extends ActionBarActivity implements ShoppingI
                     int idForDatabase = (int) id;
                     manager.open();
                     manager.updateCheckedMode_byID(idForDatabase);
-                    // ShoppingItem item = manager.getShoppingItemById(id);
-                    // manager.deleteShoppingItemById(id);
-                    // manager.createShoppingItemChecked(item.getItem(), item.getQuantity(), item.getUnit());
 
                     ArrayList<ShoppingItem> shoppingItemsList = manager.getAllShoppingItemsWithId();
                     manager.close();
@@ -452,8 +451,50 @@ public class ShoppingListActivity extends ActionBarActivity implements ShoppingI
     }
 
     @Override
-    public void onFragmentInteraction(String id)
+    public void onFragmentInteraction(String categoryName, long tappedItemId)
     {
+        DatabaseManager manager = new DatabaseManager(ShoppingListActivity.this);
+        int idForDatabase = (int) tappedItemId;
 
+//        manager.open();
+//        manager.updateCheckedMode_byID(idForDatabase);
+//
+//        ArrayList<ShoppingItem> allShoppingItems = manager.getAllShoppingItemsWithId();
+//
+//        manager.close();
+
+        manager.open();
+
+        ArrayList<ShoppingItem> shoppingItemsList = manager.getAllShoppingItemsWithId();
+
+        manager.deleteAllShoppingItems();
+        shoppingItemsList = Utilities.removeDuplicatesFormShoppingItemsList(shoppingItemsList);
+
+        for (ShoppingItem si : shoppingItemsList)
+        {
+            manager.createShoppingItem(si.getItem(), si.getQuantity(), si.getUnit(), si.isChecked() ? true : false, si.getCategory());
+        }
+
+        shoppingItemsList = manager.getAllShoppingItemsWithId();
+
+        manager.close();
+
+        ArrayList<ShoppingItem> shoppingItemsForCategory = new ArrayList<ShoppingItem>();
+
+        for (ShoppingItem item : shoppingItemsList)
+        {
+            if (item.getCategory().equals(categoryName))
+            {
+                shoppingItemsForCategory.add(item);
+            }
+        }
+
+        ShoppingListSwipeAdapter swipeAdapter = (ShoppingListSwipeAdapter) viewPager.getAdapter();
+
+        ShoppingItemSwipeFragment currentSwipeFragment = (ShoppingItemSwipeFragment) swipeAdapter.getItem(viewPager.getCurrentItem());
+
+        currentSwipeFragment.setShoppingItems(shoppingItemsForCategory);
+
+        currentSwipeFragment.adapter.notifyDataSetChanged();
     }
 }

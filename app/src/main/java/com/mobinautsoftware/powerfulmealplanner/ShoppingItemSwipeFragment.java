@@ -24,6 +24,8 @@ public class ShoppingItemSwipeFragment extends ListFragment
 {
     private ArrayList<ShoppingItem> shoppingItems;
 
+    ShoppingListAdapter adapter;
+
     private static final String ARG_PARAM1 = "param1";
 
     // TODO: Rename and change types of parameters
@@ -59,10 +61,7 @@ public class ShoppingItemSwipeFragment extends ListFragment
             mParam1 = getArguments().getString(ARG_PARAM1);
         }
 
-//        // TODO: Change Adapter to display your content
-//        setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.ITEMS));
-
-        ShoppingListAdapter adapter = new ShoppingListAdapter(getActivity());
+        adapter = new ShoppingListAdapter(getActivity());
 
         adapter.setShoppingItemsList(shoppingItems);
 
@@ -97,16 +96,19 @@ public class ShoppingItemSwipeFragment extends ListFragment
 
         if (null != mListener)
         {
+            ShoppingItem item = (ShoppingItem) adapter.getItem(position);
+            long itemId = item.getId();
+
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
-//            mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
+            mListener.onFragmentInteraction(mParam1, itemId);
         }
     }
 
     public interface OnFragmentInteractionListener
     {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(String id);
+        public void onFragmentInteraction(String categoryName, long tappedItemId);
     }
 
     public ArrayList<ShoppingItem> getShoppingItems()
