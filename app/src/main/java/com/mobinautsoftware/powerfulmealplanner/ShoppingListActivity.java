@@ -384,6 +384,8 @@ public class ShoppingListActivity extends ActionBarActivity implements ShoppingI
 
             ShoppingListSwipeAdapter shoppingListSwipeAdapter = new ShoppingListSwipeAdapter(getSupportFragmentManager());
 
+            shoppingListSwipeAdapter.setAllShoppingItems(shoppingItemsList);
+
             viewPager.setAdapter(shoppingListSwipeAdapter);
 
             adapter = new ShoppingListAdapter(this);
