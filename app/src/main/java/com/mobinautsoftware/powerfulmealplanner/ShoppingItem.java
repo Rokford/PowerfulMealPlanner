@@ -7,7 +7,7 @@ public class ShoppingItem implements Comparable<ShoppingItem>
 	private String quantity;
 	private String unit;
     private String recipeName;
-    private String category;
+    private String category = Utilities.CATEGORY_OTHER;
     private boolean isChecked = false;
 
     public boolean isChecked() {

@@ -72,6 +72,8 @@ public class AddShoppingItemActivity extends ActionBarActivity
 
             radioGroup.check(getIdOfCategory(categoryName));
         }
+        else
+            radioGroup.check(getIdOfCategory(Utilities.CATEGORY_OTHER));
 
         ArrayList<String> allItems = manager.getAllItems(false);
         ArrayList<String> allUnits = manager.getAllItems(true);
@@ -146,7 +148,17 @@ public class AddShoppingItemActivity extends ActionBarActivity
             String name = nameEditText.getText().toString();
             String quantity = quantityEditText.getText().toString();
             String unit = unitEditText.getText().toString();
-            String category = Utilities.shoppingListTabsItemsArray[radioGroup.getCheckedRadioButtonId() - 1];
+
+            String category = Utilities.CATEGORY_OTHER;
+
+            for (String categoryName : Utilities.shoppingListTabsItemsArray)
+            {
+                if (getIdOfCategory(categoryName) == radioGroup.getCheckedRadioButtonId())
+                {
+                    category = categoryName;
+                    break;
+                }
+            }
 
             if (name.length() == 0 || quantity.length() == 0 || unit.length() == 0)
             {
@@ -207,16 +219,18 @@ public class AddShoppingItemActivity extends ActionBarActivity
 
     protected int getIdOfCategory(String categoryName)
     {
-        int categoryId = 0;
+        int categoryId = R.id.otherRadioButton;
 
-        for (int i = 0; i < Utilities.shoppingListTabsItemsArray.length; i++)
-        {
-            if (categoryName.equals(Utilities.shoppingListTabsItemsArray[i]))
-            {
-                categoryId = i;
-                break;
-            }
-        }
+        if (categoryName.equals(Utilities.CATEGORY_CEREALS))
+            categoryId = R.id.cerealsRadioButton;
+        if (categoryName.equals(Utilities.CATEGORY_DIARY))
+            categoryId = R.id.dairyRadioButton;
+        if (categoryName.equals(Utilities.CATEGORY_FRUITS))
+            categoryId = R.id.fruitsRadioButton;
+        if (categoryName.equals(Utilities.CATEGORY_MEAT))
+            categoryId = R.id.meatRadioButton;
+        if (categoryName.equals(Utilities.CATEGORY_TINNED))
+            categoryId = R.id.tinnedRadioButton;
 
         return categoryId;
     }
