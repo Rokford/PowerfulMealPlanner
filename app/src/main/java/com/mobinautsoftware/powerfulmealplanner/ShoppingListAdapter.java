@@ -15,6 +15,8 @@ public class ShoppingListAdapter extends BaseAdapter
     private ArrayList<ShoppingItem> shoppingItemsList;
     private ViewHolder holder;
     private LayoutInflater inflater;
+    private boolean ignoreChecked;
+
     // private SparseBooleanArray mSelectedItemsIds;
 
     public ShoppingListAdapter(Context context)
@@ -66,17 +68,20 @@ public class ShoppingListAdapter extends BaseAdapter
 
         ShoppingItem item = shoppingItemsList.get(position);
 
-        if (item.isChecked())
+        if (!ignoreChecked)
         {
-            holder.nameTextView.setTextColor(App.getContext().getResources().getColor(R.color.light_bronze));
-            holder.quantityTextView.setTextColor(App.getContext().getResources().getColor(R.color.light_bronze));
-            holder.unitTextView.setTextColor(App.getContext().getResources().getColor(R.color.light_bronze));
-        }
-        else
-        {
-            holder.nameTextView.setTextColor(App.getContext().getResources().getColor(R.color.caldroid_black));
-            holder.quantityTextView.setTextColor(App.getContext().getResources().getColor(R.color.caldroid_black));
-            holder.unitTextView.setTextColor(App.getContext().getResources().getColor(R.color.caldroid_black));
+            if (item.isChecked())
+            {
+                holder.nameTextView.setTextColor(App.getContext().getResources().getColor(R.color.light_bronze));
+                holder.quantityTextView.setTextColor(App.getContext().getResources().getColor(R.color.light_bronze));
+                holder.unitTextView.setTextColor(App.getContext().getResources().getColor(R.color.light_bronze));
+            }
+            else
+            {
+                holder.nameTextView.setTextColor(App.getContext().getResources().getColor(R.color.caldroid_black));
+                holder.quantityTextView.setTextColor(App.getContext().getResources().getColor(R.color.caldroid_black));
+                holder.unitTextView.setTextColor(App.getContext().getResources().getColor(R.color.caldroid_black));
+            }
         }
         holder.nameTextView.setText(item.getItem());
         holder.quantityTextView.setText(item.getQuantity());
@@ -101,28 +106,46 @@ public class ShoppingListAdapter extends BaseAdapter
     {
         ArrayList<ShoppingItem> shoppingItemsListSorted = new ArrayList<ShoppingItem>();
 
-        for (ShoppingItem s : shoppingItemsList)
+        if (!ignoreChecked)
         {
-            if (!s.isChecked())
+            for (ShoppingItem s : shoppingItemsList)
             {
-                shoppingItemsListSorted.add(s);
+                if (!s.isChecked())
+                {
+                    shoppingItemsListSorted.add(s);
+                }
             }
+
+            Collections.sort(shoppingItemsListSorted);
+
+            ArrayList<ShoppingItem> checkedItems = new ArrayList<ShoppingItem>();
+            for (ShoppingItem s : shoppingItemsList)
+            {
+                if (s.isChecked())
+                {
+                    checkedItems.add(s);
+                }
+            }
+
+            Collections.sort(checkedItems);
+            shoppingItemsListSorted.addAll(checkedItems);
         }
-
-        Collections.sort(shoppingItemsListSorted);
-
-        ArrayList<ShoppingItem> checkedItems = new ArrayList<ShoppingItem>();
-        for (ShoppingItem s : shoppingItemsList)
+        else
         {
-            if (s.isChecked())
-            {
-                checkedItems.add(s);
-            }
+            shoppingItemsListSorted = shoppingItemsList;
+            Collections.sort(shoppingItemsListSorted);
         }
-
-        Collections.sort(checkedItems);
-        shoppingItemsListSorted.addAll(checkedItems);
 
         this.shoppingItemsList = shoppingItemsListSorted;
+    }
+
+    public boolean isIgnoreChecked()
+    {
+        return ignoreChecked;
+    }
+
+    public void setIgnoreChecked(boolean ignoreChecked)
+    {
+        this.ignoreChecked = ignoreChecked;
     }
 }

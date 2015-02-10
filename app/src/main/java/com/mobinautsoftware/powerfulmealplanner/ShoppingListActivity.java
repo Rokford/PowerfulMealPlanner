@@ -342,18 +342,20 @@ public class ShoppingListActivity extends ActionBarActivity implements ShoppingI
 
             manager.open();
 
-            ArrayList<ShoppingItem> shoppingItemsList = manager.getAllShoppingItems();
+            ArrayList<ShoppingItem> shoppingItemsList = manager.getAllShoppingItemsWithId();
 
             manager.deleteAllShoppingItems();
             shoppingItemsList = Utilities.removeDuplicatesFormShoppingItemsList(shoppingItemsList);
 
             for (ShoppingItem si : shoppingItemsList)
             {
-                manager.createShoppingItem(si.getItem(), si.getQuantity(), si.getUnit(), false, si.getCategory());
+                manager.createShoppingItem(si.getItem(), si.getQuantity(), si.getUnit(), si.isChecked() ? true : false, si.getCategory());
             }
 
             adapter = new ShoppingListAdapter(this);
-            adapter.setShoppingItemsList(manager.getAllShoppingItems());
+
+            adapter.setIgnoreChecked(true);
+            adapter.setShoppingItemsList(manager.getAllShoppingItemsWithId());
 
             shoppingListView.setAdapter(adapter);
 
@@ -411,7 +413,10 @@ public class ShoppingListActivity extends ActionBarActivity implements ShoppingI
 
             adapter = new ShoppingListAdapter(this);
 
+            adapter.setIgnoreChecked(true);
+
             adapter.setShoppingItemsList(shoppingItemsList);
+
             shoppingListView.setAdapter(adapter);
 
             getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
