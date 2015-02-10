@@ -4,12 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
-import com.mobinautsoftware.powerfulmealplanner.R;
-
-import com.mobinautsoftware.powerfulmealplanner.dummy.DummyContent;
 
 import java.util.ArrayList;
 
@@ -28,8 +23,13 @@ public class ShoppingItemSwipeFragment extends ListFragment
 
     private static final String ARG_PARAM1 = "param1";
 
+    public String getCategory()
+    {
+        return category;
+    }
+
     // TODO: Rename and change types of parameters
-    private String mParam1;
+    private String category;
 
     private OnFragmentInteractionListener mListener;
 
@@ -58,7 +58,7 @@ public class ShoppingItemSwipeFragment extends ListFragment
 
         if (getArguments() != null)
         {
-            mParam1 = getArguments().getString(ARG_PARAM1);
+            category = getArguments().getString(ARG_PARAM1);
         }
 
         adapter = new ShoppingListAdapter(getActivity());
@@ -101,14 +101,14 @@ public class ShoppingItemSwipeFragment extends ListFragment
 
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
-            mListener.onFragmentInteraction(mParam1, itemId);
+            mListener.onFragmentInteraction(category, itemId, this);
         }
     }
 
     public interface OnFragmentInteractionListener
     {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(String categoryName, long tappedItemId);
+        public void onFragmentInteraction(String categoryName, long tappedItemId, ShoppingItemSwipeFragment fragment);
     }
 
     public ArrayList<ShoppingItem> getShoppingItems()
@@ -119,5 +119,8 @@ public class ShoppingItemSwipeFragment extends ListFragment
     public void setShoppingItems(ArrayList<ShoppingItem> shoppingItems)
     {
         this.shoppingItems = shoppingItems;
+
+        if (adapter != null)
+            adapter.setShoppingItemsList(shoppingItems);
     }
 }

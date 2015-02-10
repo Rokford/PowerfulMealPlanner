@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.Gravity;
@@ -40,6 +41,8 @@ public class ShoppingListActivity extends ActionBarActivity implements ShoppingI
     private ShoppingListAdapter adapter;
 
     private boolean shoppingModeOn;
+
+    ShoppingListSwipeAdapter shoppingListSwipeAdapter;
 
     SparseBooleanArray selected;
 
@@ -111,7 +114,6 @@ public class ShoppingListActivity extends ActionBarActivity implements ShoppingI
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }
-
             }
         });
 
@@ -121,6 +123,8 @@ public class ShoppingListActivity extends ActionBarActivity implements ShoppingI
 
         viewPager = (ViewPager) findViewById(R.id.pager);
 
+        shoppingListSwipeAdapter = new ShoppingListSwipeAdapter(getSupportFragmentManager());
+
         shoppingListView = (ListView) findViewById(R.id.shoppingListView);
         shoppingListView.setAdapter(adapter);
         shoppingListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -129,8 +133,8 @@ public class ShoppingListActivity extends ActionBarActivity implements ShoppingI
             public void onItemClick(AdapterView<?> adapter2, View v, int position, long arg3)
             {
                 //String value = (String) adapter.getItem(position);
-//                ShoppingListAdapter shoppingAdapter = (ShoppingListAdapter) adapter2.getAdapter();
-//                ShoppingItem item = (ShoppingItem) shoppingAdapter.getItem(position);
+                //                ShoppingListAdapter shoppingAdapter = (ShoppingListAdapter) adapter2.getAdapter();
+                //                ShoppingItem item = (ShoppingItem) shoppingAdapter.getItem(position);
 
                 ShoppingItem item = (ShoppingItem) adapter.getItem(position);
                 long id = item.getId();
@@ -226,8 +230,10 @@ public class ShoppingListActivity extends ActionBarActivity implements ShoppingI
 
     public void selectView(int position, boolean value, SparseBooleanArray mSelectedItemsIds)
     {
-        if (value) mSelectedItemsIds.put(position, value);
-        else mSelectedItemsIds.delete(position);
+        if (value)
+            mSelectedItemsIds.put(position, value);
+        else
+            mSelectedItemsIds.delete(position);
         adapter.notifyDataSetChanged();
     }
 
@@ -259,15 +265,12 @@ public class ShoppingListActivity extends ActionBarActivity implements ShoppingI
         {
             menu.getItem(1).setTitle(getString(R.string.change_mode_off));
             Toast.makeText(getApplicationContext(), getResources().getString(R.string.shopping_mode_on_toast), Toast.LENGTH_SHORT).show();
-
         }
         else
         {
             menu.getItem(1).setTitle(getString(R.string.change_mode));
             Toast.makeText(getApplicationContext(), getResources().getString(R.string.shopping_mode_off_toast), Toast.LENGTH_SHORT).show();
-
         }
-
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -285,8 +288,10 @@ public class ShoppingListActivity extends ActionBarActivity implements ShoppingI
     {
         if (item.getItemId() == android.R.id.home)
         {
-            if (drawerLayout.isDrawerOpen(Gravity.LEFT)) drawerLayout.closeDrawers();
-            else drawerLayout.openDrawer(Gravity.LEFT);
+            if (drawerLayout.isDrawerOpen(Gravity.LEFT))
+                drawerLayout.closeDrawers();
+            else
+                drawerLayout.openDrawer(Gravity.LEFT);
         }
         else if (item.getItemId() == R.id.menu_add)
         {
@@ -327,8 +332,6 @@ public class ShoppingListActivity extends ActionBarActivity implements ShoppingI
 
         return super.onOptionsItemSelected(item);
     }
-
-
 
     @Override
     protected void onResume()
@@ -381,11 +384,30 @@ public class ShoppingListActivity extends ActionBarActivity implements ShoppingI
 
             manager.close();
 
-            ShoppingListSwipeAdapter shoppingListSwipeAdapter = new ShoppingListSwipeAdapter(getSupportFragmentManager());
-
             shoppingListSwipeAdapter.setAllShoppingItems(shoppingItemsList);
 
             viewPager.setAdapter(shoppingListSwipeAdapter);
+
+            for (int j = 0; j < viewPager.getChildCount(); j++)
+            {
+
+                if (shoppingListSwipeAdapter.getMapWithFragments().get(j) != null)
+                {
+                    ArrayList<ShoppingItem> shoppingItemsForCategory = new ArrayList<ShoppingItem>();
+
+                    for (ShoppingItem item : shoppingItemsList)
+                    {
+                        if (item.getCategory().equals(shoppingListSwipeAdapter.getMapWithFragments().get(j).getCategory()))
+                        {
+                            shoppingItemsForCategory.add(item);
+                        }
+                    }
+
+                    shoppingListSwipeAdapter.getMapWithFragments().get(j).setShoppingItems(shoppingItemsForCategory);
+
+                    shoppingListSwipeAdapter.getMapWithFragments().get(j).adapter.notifyDataSetChanged();
+                }
+            }
 
             adapter = new ShoppingListAdapter(this);
 
@@ -394,7 +416,8 @@ public class ShoppingListActivity extends ActionBarActivity implements ShoppingI
 
             getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-            ActionBar.TabListener tabListener = new ActionBar.TabListener() {
+            ActionBar.TabListener tabListener = new ActionBar.TabListener()
+            {
                 @Override
                 public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction)
                 {
@@ -433,6 +456,31 @@ public class ShoppingListActivity extends ActionBarActivity implements ShoppingI
                 public void onPageSelected(int i)
                 {
                     getSupportActionBar().setSelectedNavigationItem(i);
+
+                    DatabaseManager manager = new DatabaseManager(ShoppingListActivity.this);
+
+                    manager.open();
+
+                    ArrayList<ShoppingItem> shoppingItemsList = manager.getAllShoppingItemsWithId();
+
+                    manager.close();
+
+                    if (shoppingListSwipeAdapter.getMapWithFragments().get(i) != null)
+                    {
+                        ArrayList<ShoppingItem> shoppingItemsForCategory = new ArrayList<ShoppingItem>();
+
+                        for (ShoppingItem item : shoppingItemsList)
+                        {
+                            if (item.getCategory().equals(shoppingListSwipeAdapter.getMapWithFragments().get(i).getCategory()))
+                            {
+                                shoppingItemsForCategory.add(item);
+                            }
+                        }
+
+                        shoppingListSwipeAdapter.getMapWithFragments().get(i).setShoppingItems(shoppingItemsForCategory);
+
+                        shoppingListSwipeAdapter.getMapWithFragments().get(i).adapter.notifyDataSetChanged();
+                    }
                 }
 
                 @Override
@@ -446,36 +494,20 @@ public class ShoppingListActivity extends ActionBarActivity implements ShoppingI
             viewPager.setVisibility(View.VISIBLE);
         }
 
-
         super.onResume();
     }
 
     @Override
-    public void onFragmentInteraction(String categoryName, long tappedItemId)
+    public void onFragmentInteraction(String categoryName, long tappedItemId, ShoppingItemSwipeFragment currentFragment)
     {
         DatabaseManager manager = new DatabaseManager(ShoppingListActivity.this);
         int idForDatabase = (int) tappedItemId;
 
-//        manager.open();
-//        manager.updateCheckedMode_byID(idForDatabase);
-//
-//        ArrayList<ShoppingItem> allShoppingItems = manager.getAllShoppingItemsWithId();
-//
-//        manager.close();
-
         manager.open();
 
+        manager.updateCheckedMode_byID(idForDatabase);
+
         ArrayList<ShoppingItem> shoppingItemsList = manager.getAllShoppingItemsWithId();
-
-        manager.deleteAllShoppingItems();
-        shoppingItemsList = Utilities.removeDuplicatesFormShoppingItemsList(shoppingItemsList);
-
-        for (ShoppingItem si : shoppingItemsList)
-        {
-            manager.createShoppingItem(si.getItem(), si.getQuantity(), si.getUnit(), si.isChecked() ? true : false, si.getCategory());
-        }
-
-        shoppingItemsList = manager.getAllShoppingItemsWithId();
 
         manager.close();
 
@@ -489,12 +521,10 @@ public class ShoppingListActivity extends ActionBarActivity implements ShoppingI
             }
         }
 
-        ShoppingListSwipeAdapter swipeAdapter = (ShoppingListSwipeAdapter) viewPager.getAdapter();
+        currentFragment.setShoppingItems(shoppingItemsForCategory);
 
-        ShoppingItemSwipeFragment currentSwipeFragment = (ShoppingItemSwipeFragment) swipeAdapter.getItem(viewPager.getCurrentItem());
+        currentFragment.adapter.setShoppingItemsList(shoppingItemsForCategory);
 
-        currentSwipeFragment.setShoppingItems(shoppingItemsForCategory);
-
-        currentSwipeFragment.adapter.notifyDataSetChanged();
+        currentFragment.adapter.notifyDataSetChanged();
     }
 }
