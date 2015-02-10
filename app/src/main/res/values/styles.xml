@@ -32,6 +32,7 @@
 
     <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
         <item name="android:background">@color/dark_blue</item>
+        <item name="android:backgroundStacked">@color/light_blue</item>
         <item name="android:titleTextStyle">@style/MyTheme.ActionBar.TitleTextStyle</item>
     </style>
 
