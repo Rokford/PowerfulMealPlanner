@@ -13,6 +13,15 @@ android {
         }
     }
     productFlavors {
+
+            debug_flavor {
+                applicationId 'com.mobinautsoftware.powerfulshoppinglist_debug'
+            }
+
+            release_flavor {
+                applicationId 'com.mobinautsoftware.powerfulshoppinglist'
+            }
+
     }
 }
 
