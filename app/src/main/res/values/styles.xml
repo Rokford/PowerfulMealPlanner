@@ -19,6 +19,8 @@
         <item name="android:actionMenuTextColor">@android:color/white</item>
         <item name="android:actionBarStyle">@style/MyActionBar</item>
         <item name="android:actionModeStyle">@style/MyTheme.ActionMode</item>
+        <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.Pmp</item>
+
 
     </style>
 
@@ -40,6 +42,9 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
+    <style name="ActionBarTabStyle.Pmp" parent="@android:style/Widget.Holo.Light.ActionBar.TabView">
+        <item name="android:background">@drawable/tab_indicator_ab_pmp</item>
+    </style>
 
     <!--</style>-->
 
