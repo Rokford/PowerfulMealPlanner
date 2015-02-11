@@ -402,12 +402,6 @@ public class RecipeListActivity extends ActionBarActivity implements GoogleApiCl
                     skipRecipeCheck = true;
                     oldRecipeName = recipeName;
                 }
-
-//                if (manager.getAllShoppingItemsForRecipe(recipeObject.getString("recipeName")).size() == 0)
-//                {
-//                    manager.createRecipeItem(recipeObject.getString("recipeName"), recipeObject.getString("name"), recipeObject.getString("quantity"), recipeObject.getString("unit"));
-//                }
-
             }
 
             manager.close();

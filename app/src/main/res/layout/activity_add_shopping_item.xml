@@ -77,7 +77,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/category1"
                         android:drawablePadding="10dp"
-                        android:drawableLeft="@drawable/shopping_list"/>
+                        android:drawableLeft="@drawable/meat_fish"/>
 
                     <RadioButton
                         android:layout_width="match_parent"
@@ -88,7 +88,7 @@
 
                         android:drawablePadding="10dp"
                         android:text="@string/category2"
-                        android:drawableLeft="@drawable/shopping_list"/>
+                        android:drawableLeft="@drawable/bread_diary"/>
 
                     <RadioButton
                         android:layout_width="match_parent"
@@ -99,7 +99,7 @@
                         android:textSize="12sp"
                         android:id="@+id/fruitsRadioButton"
 
-                        android:drawableLeft="@drawable/shopping_list"/>
+                        android:drawableLeft="@drawable/fruits_vegetables"/>
 
                     <RadioButton
                         android:layout_width="match_parent"
@@ -110,7 +110,7 @@
                         android:textSize="12sp"
                         android:id="@+id/cerealsRadioButton"
 
-                        android:drawableLeft="@drawable/shopping_list"/>
+                        android:drawableLeft="@drawable/spices_cerelas"/>
 
                     <RadioButton
                         android:layout_width="match_parent"
@@ -121,7 +121,7 @@
 
                         android:layout_height="wrap_content"
                         android:text="@string/category5"
-                        android:drawableLeft="@drawable/shopping_list"/>
+                        android:drawableLeft="@drawable/tinned_frozen"/>
 
                     <RadioButton
                         android:layout_width="match_parent"
@@ -132,7 +132,7 @@
                         android:id="@+id/otherRadioButton"
 
                         android:text="@string/category6"
-                        android:drawableLeft="@drawable/shopping_list"/>
+                        android:drawableLeft="@drawable/other"/>
                 </RadioGroup>
 
             </LinearLayout>

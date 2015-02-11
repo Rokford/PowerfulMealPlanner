@@ -20,7 +20,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -390,36 +392,6 @@ public class ShoppingListActivity extends ActionBarActivity implements ShoppingI
 
             viewPager.setAdapter(shoppingListSwipeAdapter);
 
-            for (int j = 0; j < viewPager.getChildCount(); j++)
-            {
-
-                if (shoppingListSwipeAdapter.getMapWithFragments().get(j) != null)
-                {
-                    ArrayList<ShoppingItem> shoppingItemsForCategory = new ArrayList<ShoppingItem>();
-
-                    for (ShoppingItem item : shoppingItemsList)
-                    {
-                        if (item.getCategory().equals(shoppingListSwipeAdapter.getMapWithFragments().get(j).getCategory()))
-                        {
-                            shoppingItemsForCategory.add(item);
-                        }
-                    }
-
-                    shoppingListSwipeAdapter.getMapWithFragments().get(j).setShoppingItems(shoppingItemsForCategory);
-
-                    shoppingListSwipeAdapter.getMapWithFragments().get(j).adapter.notifyDataSetChanged();
-                }
-            }
-
-            adapter = new ShoppingListAdapter(this);
-
-            adapter.setIgnoreChecked(true);
-
-            adapter.setShoppingItemsList(shoppingItemsList);
-
-            shoppingListView.setAdapter(adapter);
-
-            getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
             ActionBar.TabListener tabListener = new ActionBar.TabListener()
             {
@@ -446,8 +418,70 @@ public class ShoppingListActivity extends ActionBarActivity implements ShoppingI
 
             for (int i = 0; i < Utilities.shoppingListTabsItemsArray.length; i++)
             {
-                getSupportActionBar().addTab(getSupportActionBar().newTab().setIcon(getResources().getDrawable(Utilities.iconForTabString(Utilities.shoppingListTabsItemsArray[i]))).setTabListener(tabListener));
+                ArrayList<ShoppingItem> shoppingItemsForCategory = new ArrayList<ShoppingItem>();
+
+                for (ShoppingItem item : shoppingItemsList)
+                {
+                    if (item.getCategory().equals(Utilities.shoppingListTabsItemsArray[i]))
+                    {
+                        shoppingItemsForCategory.add(item);
+                    }
+                }
+
+                ActionBar.Tab tab = getSupportActionBar().newTab().setCustomView(R.layout.tab_category_item);
+
+                TextView labelTextView = (TextView) tab.getCustomView().findViewById(R.id.tabLabelTextView);
+                ImageView labelImageView = (ImageView) tab.getCustomView().findViewById(R.id.tabLabelImageView);
+
+                labelImageView.setImageResource(Utilities.iconForTabString(Utilities.shoppingListTabsItemsArray[i]));
+
+                int notCheckedItemsCounter = 0;
+
+                for (ShoppingItem item : shoppingItemsForCategory)
+                {
+                    if (!item.isChecked())
+                        notCheckedItemsCounter++;
+                }
+
+                labelTextView.setText(Integer.valueOf(notCheckedItemsCounter).toString());
+
+                getSupportActionBar().addTab(tab.setTag(Utilities.shoppingListTabsItemsArray[i]).setTabListener(tabListener));
             }
+
+
+
+            for (int j = 0; j < viewPager.getChildCount(); j++)
+            {
+
+                if (shoppingListSwipeAdapter.getMapWithFragments().get(j) != null)
+                {
+                    ArrayList<ShoppingItem> shoppingItemsForCategory = new ArrayList<ShoppingItem>();
+
+                    for (ShoppingItem item : shoppingItemsList)
+                    {
+                        if (item.getCategory().equals(shoppingListSwipeAdapter.getMapWithFragments().get(j).getCategory()))
+                        {
+                            shoppingItemsForCategory.add(item);
+                        }
+                    }
+
+
+
+                    shoppingListSwipeAdapter.getMapWithFragments().get(j).setShoppingItems(shoppingItemsForCategory);
+
+                    shoppingListSwipeAdapter.getMapWithFragments().get(j).adapter.notifyDataSetChanged();
+                }
+            }
+
+            adapter = new ShoppingListAdapter(this);
+
+            adapter.setIgnoreChecked(true);
+
+            adapter.setShoppingItemsList(shoppingItemsList);
+
+            shoppingListView.setAdapter(adapter);
+
+            getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
             viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener()
             {
@@ -526,10 +560,26 @@ public class ShoppingListActivity extends ActionBarActivity implements ShoppingI
             }
         }
 
+        ActionBar.Tab tab = getSupportActionBar().getTabAt(viewPager.getCurrentItem());
+
+        TextView labelTextView = (TextView) tab.getCustomView().findViewById(R.id.tabLabelTextView);
+
+        int notCheckedItemsCounter = 0;
+
+        for (ShoppingItem item : shoppingItemsForCategory)
+        {
+            if (!item.isChecked())
+                notCheckedItemsCounter++;
+        }
+
+        labelTextView.setText(Integer.valueOf(notCheckedItemsCounter).toString());
+
         currentFragment.setShoppingItems(shoppingItemsForCategory);
 
         currentFragment.adapter.setShoppingItemsList(shoppingItemsForCategory);
 
         currentFragment.adapter.notifyDataSetChanged();
     }
+
+
 }

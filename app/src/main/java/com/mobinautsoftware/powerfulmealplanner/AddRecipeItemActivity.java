@@ -35,15 +35,12 @@ public class AddRecipeItemActivity extends ActionBarActivity
                 String name = data.getStringExtra("name");
                 String quantity = data.getStringExtra("quantity");
                 String unit = data.getStringExtra("unit");
-                ShoppingItem item = new ShoppingItem(name, quantity, unit);
+                String category = data.getStringExtra("category");
+                ShoppingItem item = new ShoppingItem(name, quantity, unit, category);
                 ingredientItemsList.add(item);
                 recipeIngredientsAdapter.setShoppingItemsList(ingredientItemsList);
                 recipeIngredientsAdapter.notifyDataSetChanged();
             }
-            //            if (resultCode == RESULT_CANCELED)
-            //            {
-            //                //Write your code if there's no result
-            //            }
         }
     }
 

@@ -25,11 +25,12 @@ public class ShoppingItem implements Comparable<ShoppingItem>
 
     }
 
-    public ShoppingItem(String item, String quantity, String unit)
+    public ShoppingItem(String item, String quantity, String unit, String category)
     {
         this.item = item;
         this.quantity = quantity;
         this.unit = unit;
+        this.category = category;
     }
 
     public long getId()
