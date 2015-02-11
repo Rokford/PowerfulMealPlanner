@@ -7,7 +7,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 public class Utilities
 {
@@ -64,6 +63,8 @@ public class Utilities
         Log.e("month: ", Integer.valueOf(currentMonth).toString());
         Log.e("year: ", Integer.valueOf(currentYear).toString());
 
+        calendar.clear();
+
         calendar.set(Calendar.YEAR, currentYear);
         calendar.add(Calendar.MONTH, currentMonth);
 
@@ -114,18 +115,17 @@ public class Utilities
 
     public static int iconForTabString(String tabString)
     {
-        //TODO: proper icons
         if (tabString.equals("Meats & fish"))
-            return R.drawable.shopping_list;
+            return R.drawable.meat_fish;
         else if (tabString.equals("Dairy & bread"))
-            return R.drawable.shopping_list;
+            return R.drawable.bread_diary;
         else if (tabString.equals("Fruits & vegetables"))
-            return R.drawable.shopping_list;
+            return R.drawable.fruits_vegetables;
         else if (tabString.equals("Cereals & spices"))
-            return R.drawable.shopping_list;
+            return R.drawable.spices_cerelas;
         else if (tabString.equals("Tinned & frozen"))
-            return R.drawable.shopping_list;
+            return R.drawable.tinned_frozen;
         else
-            return R.drawable.shopping_list;
+            return R.drawable.other;
     }
 }
