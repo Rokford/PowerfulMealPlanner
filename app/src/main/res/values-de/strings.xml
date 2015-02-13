@@ -55,5 +55,11 @@
     <string name="export_option">Export</string>
     <string name="import_option">Import</string>
     <string name="export_message">Export und Import erfordert Google Drive access.\n\nAfter Exportieren Sie Ihre Rezepte werden Sie in der Lage sein, sie auf einem anderen Android-Gerät mit leistungsstarken Meal Planner installed.\n\nTo weitere Informationen zu dieser Funktion zu importieren, besuchen Sie bitte die In-App-Hilfebereich.</string>
+    <string name="category1">Meats &amp; fish</string>
+    <string name="category2">Dairy &amp; bread</string>
+    <string name="category3">Fruits &amp; vegetables</string>
+    <string name="category4">Cereals &amp; spices</string>
+    <string name="category5">Tinned &amp; frozen</string>
+    <string name="category6">Other</string>
 
 </resources>

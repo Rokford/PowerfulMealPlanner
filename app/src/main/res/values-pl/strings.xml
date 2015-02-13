@@ -55,5 +55,11 @@
     <string name="export_option">Eksport</string>
     <string name="import_option">Import</string>
     <string name="export_message">Eksport i Import wymaga dostępu do Google Drive.\n\nPo wyeksportowaniu przepisów można zaimportować je na każdym urządzeniu z systemem Android na którym zainstalowany jest Powerful Meal Planner.\n\nWięcej informacji znajduje się w sekcji Pomoc.</string>
+    <string name="category1">Meats &amp; fish</string>
+    <string name="category2">Dairy &amp; bread</string>
+    <string name="category3">Fruits &amp; vegetables</string>
+    <string name="category4">Cereals &amp; spices</string>
+    <string name="category5">Tinned &amp; frozen</string>
+    <string name="category6">Other</string>
 
 </resources>
