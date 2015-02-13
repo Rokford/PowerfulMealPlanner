@@ -38,6 +38,8 @@ public class ShoppingListActivity extends ActionBarActivity implements ShoppingI
 
     private ListView shoppingListView;
 
+    private int page;
+
     private ViewPager viewPager;
 
     private ShoppingListAdapter adapter;
@@ -473,6 +475,8 @@ public class ShoppingListActivity extends ActionBarActivity implements ShoppingI
                 }
             }
 
+            viewPager.setCurrentItem(page);
+
             adapter = new ShoppingListAdapter(this);
 
             adapter.setIgnoreChecked(true);
@@ -520,6 +524,8 @@ public class ShoppingListActivity extends ActionBarActivity implements ShoppingI
 
                         shoppingListSwipeAdapter.getMapWithFragments().get(i).adapter.notifyDataSetChanged();
                     }
+
+                    page = i;
                 }
 
                 @Override
