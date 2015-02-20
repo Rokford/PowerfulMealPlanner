@@ -152,6 +152,17 @@ public class DatabaseManager
         long insertId = database.update(databaseCreator.TABLE_SHOPPING_ITEMS, values, databaseCreator.COLUMN_ID + " = " + id, null);
     }
 
+    public void update_recipe_ingredient_byID(int id, String v1, String v2, String v3, String category, String recipeName)
+    {
+        ContentValues values = new ContentValues();
+        values.put(databaseCreator.COLUMN_RECIPE_NAME, recipeName);
+        values.put(databaseCreator.COLUMN_ITEM, v1);
+        values.put(databaseCreator.COLUMN_QUANTITY, v2);
+        values.put(databaseCreator.COLUMN_UNIT, v3);
+        values.put(databaseCreator.COLUMN_CATEGORY, category);
+        long insertId = database.update(databaseCreator.TABLE_RECIPE_ITEMS, values, databaseCreator.COLUMN_ID + " = " + id, null);
+    }
+
     public void updateCheckedMode_byID(int id)
     {
         ContentValues values = new ContentValues();

@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -28,16 +29,27 @@ public class AddRecipeItemActivity extends ActionBarActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1)
+
+        if (resultCode == RESULT_OK)
         {
-            if (resultCode == RESULT_OK)
+            if (requestCode == 1)
             {
+
                 String name = data.getStringExtra("name");
                 String quantity = data.getStringExtra("quantity");
                 String unit = data.getStringExtra("unit");
                 String category = data.getStringExtra("category");
                 ShoppingItem item = new ShoppingItem(name, quantity, unit, category);
                 ingredientItemsList.add(item);
+                recipeIngredientsAdapter.setShoppingItemsList(ingredientItemsList);
+                recipeIngredientsAdapter.notifyDataSetChanged();
+            }
+            else if (requestCode == 2)
+            {
+                DatabaseManager manager = new DatabaseManager(this);
+                manager.open();
+                ingredientItemsList = manager.getAllShoppingItemsForRecipe(recipeName);
+                manager.close();
                 recipeIngredientsAdapter.setShoppingItemsList(ingredientItemsList);
                 recipeIngredientsAdapter.notifyDataSetChanged();
             }
@@ -76,6 +88,18 @@ public class AddRecipeItemActivity extends ActionBarActivity
             recipeIngredientsAdapter.setShoppingItemsList(ingredientItemsList);
             recipeIngredientsAdapter.notifyDataSetChanged();
 
+            ingredientsListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+            {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                {
+                    Intent intent = new Intent(AddRecipeItemActivity.this, AddShoppingItemActivity.class);
+                    intent.putExtra("for_recipe_edit", "true");
+                    intent.putExtra("id", (int) ingredientItemsList.get(position).getId());
+                    intent.putExtra("recipe_name", recipeName);
+                    startActivityForResult(intent, 2, null);
+                }
+            });
         }
 
         recipeIngredientsAdapter.setRecipeName(recipeName);
@@ -90,10 +114,7 @@ public class AddRecipeItemActivity extends ActionBarActivity
                 startActivityForResult(intent, 1, null);
             }
         });
-
-
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
@@ -148,5 +169,4 @@ public class AddRecipeItemActivity extends ActionBarActivity
 
         return super.onCreateOptionsMenu(menu);
     }
-
 }

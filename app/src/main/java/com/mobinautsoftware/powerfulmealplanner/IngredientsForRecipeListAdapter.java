@@ -123,11 +123,11 @@ public class IngredientsForRecipeListAdapter extends BaseAdapter
         this.shoppingItemsList = shoppingItemsList;
     }
 
-    @Override
-    public boolean isEnabled(int position)
-    {
-        return false;
-    }
+//    @Override
+//    public boolean isEnabled(int position)
+//    {
+//        return false;
+//    }
 
     public void setRecipeName(String recipeName)
     {

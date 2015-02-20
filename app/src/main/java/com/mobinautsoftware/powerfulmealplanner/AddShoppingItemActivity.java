@@ -52,25 +52,31 @@ public class AddShoppingItemActivity extends ActionBarActivity
 
         if (extras != null && extras.getString("for_recipe") == null)
         {
-            ArrayList<ShoppingItem> shoppingItemsList = manager.getAllShoppingItems();
+            ArrayList<ShoppingItem> shoppingItemsList = manager.getAllRecipeItems();
             int id = extras.getInt("id");
-            ShoppingItem item = null;
-            for (ShoppingItem s : shoppingItemsList)
+
+            if (id != 0)
             {
-                if (s.getId() == id)
+                ShoppingItem item = null;
+                for (ShoppingItem s : shoppingItemsList)
                 {
-                    item = s;
+                    if (s.getId() == id)
+                    {
+                        item = s;
+                    }
                 }
+
+                //ShoppingItem item = shoppingItemsList.get(extras.getInt("id" ));
+                nameEditText.setText(item.getItem());
+                quantityEditText.setText(item.getQuantity());
+                unitEditText.setText(item.getUnit());
+
+                String categoryName = item.getCategory();
+
+                radioGroup.check(getIdOfCategory(categoryName));
             }
-
-            //ShoppingItem item = shoppingItemsList.get(extras.getInt("id" ));
-            nameEditText.setText(item.getItem());
-            quantityEditText.setText(item.getQuantity());
-            unitEditText.setText(item.getUnit());
-
-            String categoryName = item.getCategory();
-
-            radioGroup.check(getIdOfCategory(categoryName));
+            else
+                radioGroup.check(getIdOfCategory(Utilities.CATEGORY_OTHER));
         }
         else
             radioGroup.check(getIdOfCategory(Utilities.CATEGORY_OTHER));
@@ -85,8 +91,10 @@ public class AddShoppingItemActivity extends ActionBarActivity
                 @Override
                 public int compare(String lhs, String rhs)
                 {
-                    if (manager.getCountForUnit(lhs) > manager.getCountForUnit(rhs)) return -1;
-                    else return 1;
+                    if (manager.getCountForUnit(lhs) > manager.getCountForUnit(rhs))
+                        return -1;
+                    else
+                        return 1;
                 }
             });
         }
@@ -180,11 +188,23 @@ public class AddShoppingItemActivity extends ActionBarActivity
                         setResult(RESULT_OK, returnIntent);
                         finish();
                     }
+                    else if (extras.getString("for_recipe_edit") != null)
+                    {
+                        int id = extras.getInt("id");
+                        String recipeName = extras.getString("recipe_name");
+                        //id++;
+                        manager.update_recipe_ingredient_byID(id, name, quantity, unit, category, recipeName);
+                    }
                     else
                     {
                         int id = extras.getInt("id");
                         //id++;
                         manager.update_byID(id, name, quantity, unit, category);
+
+//                        Intent returnIntent = new Intent();
+//                        setResult(RESULT_OK, returnIntent);
+
+//                        finish();
                     }
                 }
                 else
@@ -198,6 +218,10 @@ public class AddShoppingItemActivity extends ActionBarActivity
                 manager.addToUnitCounter(unit);
 
                 manager.close();
+
+                Intent returnIntent = new Intent();
+                setResult(RESULT_OK, returnIntent);
+
                 finish();
             }
         }
@@ -234,5 +258,4 @@ public class AddShoppingItemActivity extends ActionBarActivity
 
         return categoryId;
     }
-
 }
