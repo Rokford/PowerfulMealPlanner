@@ -52,7 +52,8 @@ public class AddShoppingItemActivity extends ActionBarActivity
 
         if (extras != null && extras.getString("for_recipe") == null)
         {
-            ArrayList<ShoppingItem> shoppingItemsList = manager.getAllRecipeItems();
+            ArrayList<ShoppingItem> shoppingItemsList = manager.getAllShoppingItems();
+
             int id = extras.getInt("id");
 
             if (id != 0)

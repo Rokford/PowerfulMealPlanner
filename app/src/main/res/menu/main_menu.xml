@@ -3,10 +3,6 @@
       xmlns:psl="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_add"
-        psl:showAsAction="always"
-        android:title="@string/add"/>
-    <item
         android:id="@+id/menu_change_mode"
         psl:showAsAction="always"
         android:title="@string/change_mode"/>

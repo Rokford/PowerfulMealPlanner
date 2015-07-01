@@ -6,5 +6,5 @@
         android:width="15dp"
         android:height="15dp"/>
     
-    <solid android:color="@color/help_circle_unselected"/>
+    <solid android:color="@color/lightest_blue"/>
 </shape>

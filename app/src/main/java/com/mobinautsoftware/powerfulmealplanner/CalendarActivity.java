@@ -4,7 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -57,7 +57,7 @@ public class CalendarActivity extends ActionBarActivity
 
         getSupportActionBar().setTitle(getResources().getString(R.string.callendar));
 
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer, R.string.yes, R.string.no)
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.yes, R.string.no)
         {
             @Override
             public void onDrawerOpened(View drawerView)
@@ -258,7 +258,7 @@ public class CalendarActivity extends ActionBarActivity
 
                     if (recipes.size() > 0)
                     {
-                        caldroidFragment.setBackgroundResourceForDate(R.color.lightest_bronze_old, date);
+                        caldroidFragment.setBackgroundResourceForDate(R.color.light_blue, date);
                     }
                 }
 

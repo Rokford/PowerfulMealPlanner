@@ -21,12 +21,18 @@
         <item name="android:actionModeStyle">@style/MyTheme.ActionMode</item>
         <!--<item name="actionBarTabStyle">@style/ActionBarTabStyle.Pmp</item>-->
 
+        <item name="drawerArrowStyle">@style/MyDrawerArrowToggle</item>
+
         <item name="colorPrimary">@color/light_blue</item>
         <item name="colorPrimaryDark">@color/darkest_blue</item>
         <item name="colorAccent">@color/dark_blue</item>
         <!--<item name="android:textColorPrimary">@android:color/white</item>-->
 
 
+    </style>
+
+    <style name="MyDrawerArrowToggle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">@android:color/white</item>
     </style>
 
     <style name="MyTheme.ActionMode" parent="@android:style/Theme.Holo.Light">

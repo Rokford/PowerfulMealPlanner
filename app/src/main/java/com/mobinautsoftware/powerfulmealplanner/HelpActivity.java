@@ -7,7 +7,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.util.TypedValue;
@@ -70,7 +70,7 @@ public class HelpActivity extends ActionBarActivity
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerList = (ListView) findViewById(R.id.left_drawer);
 
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer, R.string.yes, R.string.no)
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.yes, R.string.no)
         {
             @Override
             public void onDrawerOpened(View drawerView)

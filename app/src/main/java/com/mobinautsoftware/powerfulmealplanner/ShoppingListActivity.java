@@ -3,7 +3,7 @@ package com.mobinautsoftware.powerfulmealplanner;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
@@ -24,6 +24,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -64,7 +66,7 @@ public class ShoppingListActivity extends ActionBarActivity implements ShoppingI
 
         getSupportActionBar().setTitle(getResources().getString(R.string.shopping_list));
 
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer, R.string.yes, R.string.no)
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.yes, R.string.no)
         {
             @Override
             public void onDrawerOpened(View drawerView)
@@ -130,6 +132,20 @@ public class ShoppingListActivity extends ActionBarActivity implements ShoppingI
         shoppingListSwipeAdapter = new ShoppingListSwipeAdapter(getSupportFragmentManager());
 
         shoppingListView = (ListView) findViewById(R.id.shoppingListView);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.attachToListView(shoppingListView);
+
+        fab.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(ShoppingListActivity.this, AddShoppingItemActivity.class);
+                startActivity(intent);
+            }
+        });
+
         shoppingListView.setAdapter(adapter);
         shoppingListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
@@ -147,6 +163,7 @@ public class ShoppingListActivity extends ActionBarActivity implements ShoppingI
                 {
                     Intent intent = new Intent(ShoppingListActivity.this, AddShoppingItemActivity.class);
                     intent.putExtra("id", (int) id);
+
                     startActivity(intent);
                 }
                 else
@@ -267,12 +284,12 @@ public class ShoppingListActivity extends ActionBarActivity implements ShoppingI
 
         if (shoppingModeOn)
         {
-            menu.getItem(1).setTitle(getString(R.string.change_mode_off));
+            menu.getItem(0).setTitle(getString(R.string.change_mode_off));
             Toast.makeText(getApplicationContext(), getResources().getString(R.string.shopping_mode_on_toast), Toast.LENGTH_SHORT).show();
         }
         else
         {
-            menu.getItem(1).setTitle(getString(R.string.change_mode));
+            menu.getItem(0).setTitle(getString(R.string.change_mode));
             Toast.makeText(getApplicationContext(), getResources().getString(R.string.shopping_mode_off_toast), Toast.LENGTH_SHORT).show();
         }
 
@@ -297,11 +314,11 @@ public class ShoppingListActivity extends ActionBarActivity implements ShoppingI
             else
                 drawerLayout.openDrawer(Gravity.LEFT);
         }
-        else if (item.getItemId() == R.id.menu_add)
-        {
-            Intent intent = new Intent(this, AddShoppingItemActivity.class);
-            startActivity(intent);
-        }
+//        else if (item.getItemId() == R.id.menu_add)
+//        {
+//            Intent intent = new Intent(this, AddShoppingItemActivity.class);
+//            startActivity(intent);
+//        }
         else if (item.getItemId() == R.id.menu_change_mode)
         {
 

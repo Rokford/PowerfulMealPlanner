@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -40,6 +40,7 @@ import com.google.android.gms.drive.DriveApi.DriveContentsResult;
 import com.google.android.gms.drive.query.Filters;
 import com.google.android.gms.drive.query.Query;
 import com.google.android.gms.drive.query.SearchableField;
+import com.melnykov.fab.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -95,7 +96,7 @@ public class RecipeListActivity extends ActionBarActivity implements GoogleApiCl
 
         getSupportActionBar().setTitle(getResources().getString(R.string.recipies_list));
 
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer, R.string.yes, R.string.no)
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.yes, R.string.no)
         {
             @Override
             public void onDrawerOpened(View drawerView)
@@ -169,6 +170,19 @@ public class RecipeListActivity extends ActionBarActivity implements GoogleApiCl
             }
         });
 
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.attachToListView(recipeListView);
+
+        fab.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(RecipeListActivity.this, AddRecipeItemActivity.class);
+                startActivity(intent);
+            }
+        });
+
         //DELETING with multiple choice listener------------------------------------------------------------
         recipeListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         recipeListView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener()
@@ -233,7 +247,7 @@ public class RecipeListActivity extends ActionBarActivity implements GoogleApiCl
         if (!forCalendar)
         {
             //            menu.getItem(1).setVisible(false);
-            menu.getItem(1).setTitle(getResources().getString(R.string.export));
+            menu.getItem(0).setTitle(getResources().getString(R.string.export));
         }
 
         return super.onCreateOptionsMenu(menu);
@@ -256,11 +270,6 @@ public class RecipeListActivity extends ActionBarActivity implements GoogleApiCl
                 drawerLayout.closeDrawers();
             else
                 drawerLayout.openDrawer(Gravity.LEFT);
-        }
-        else if (item.getItemId() == R.id.menu_new)
-        {
-            Intent intent = new Intent(this, AddRecipeItemActivity.class);
-            startActivity(intent);
         }
         else if (item.getItemId() == R.id.menu_add_checked)
         {
