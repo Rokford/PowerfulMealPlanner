@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                         android:id="@+id/drawer_layout"
-                                        android:background="@color/dark_bronze"
+                                        android:background="@color/lightest_bronze"
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent">
 
@@ -34,7 +34,7 @@
                 android:maxLines="12"
                 android:minLines="12"
                 android:text="TextView"
-                android:textColor="@android:color/white"
+                android:textColor="@android:color/black"
                 android:textSize="14dp"/>
 
             <LinearLayout
@@ -52,7 +52,7 @@
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/light_blue"
+        android:background="@color/lightest_bronze"
         android:cacheColorHint="#00000000"
         android:choiceMode="singleChoice"
         android:divider="@android:color/transparent"

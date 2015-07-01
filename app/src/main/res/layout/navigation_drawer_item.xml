@@ -13,7 +13,6 @@
         android:layout_marginLeft="25dp"
         android:layout_marginBottom="20dp"
         android:layout_centerVertical="true"
-
         android:src="@drawable/calendar"
         android:id="@+id/iconImageView"/>
 

@@ -8,11 +8,12 @@
     <color name="help_circle_unselected">#b2b2b2</color>
 
     <color name="dark_bronze">#78624D</color>
-    <color name="lightest_bronze">#fff5eb</color>
-    <color name="lightest_bronze_old">#FFEAD6</color>
-    <color name="light_bronze">#C5AB92</color>
-    <color name="dark_blue">#416C78</color>
-    <color name="light_blue">#92BAC5</color>
-
+    <color name="lightest_bronze">#FFFFFF</color>
+    <color name="lightest_bronze_old">#FFFFFF</color>
+    <color name="light_bronze">#81D4FA</color>
+    <color name="dark_blue">#0288D1</color>
+    <color name="light_blue">#039BE5</color>
+    <color name="lightest_blue">#E1F5FE</color>
+    <color name="darkest_blue">#0277BD</color>
 
 </resources>
