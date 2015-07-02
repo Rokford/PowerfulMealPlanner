@@ -106,9 +106,6 @@ public class ShoppingListAdapter extends BaseAdapter
     {
         ArrayList<ShoppingItem> shoppingItemsListSorted = new ArrayList<ShoppingItem>();
 
-        if (shoppingItemsList == null)
-            return;
-
         if (!ignoreChecked)
         {
             for (ShoppingItem s : shoppingItemsList)
