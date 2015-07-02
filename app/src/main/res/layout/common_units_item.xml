@@ -11,8 +11,8 @@
     <TextView
         android:id="@+id/nameTextView"
         android:gravity="center"
-        android:background="@android:color/white"
-        android:textColor="@android:color/holo_blue_dark"
+        android:background="@color/lightest_blue"
+        android:textColor="@color/darkest_blue"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:text="TextView"/>

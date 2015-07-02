@@ -63,6 +63,10 @@ public class ShoppingItemSwipeFragment extends ListFragment
 
         adapter = new ShoppingListAdapter(getActivity());
 
+        // Very ugly. Prevents crash, but we should be getting shopping items here
+        if (shoppingItems == null)
+            shoppingItems = new ArrayList<>();
+
         adapter.setShoppingItemsList(shoppingItems);
 
         setListAdapter(adapter);

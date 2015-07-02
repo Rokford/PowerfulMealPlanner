@@ -163,6 +163,7 @@ public class ShoppingListActivity extends ActionBarActivity implements ShoppingI
                 {
                     Intent intent = new Intent(ShoppingListActivity.this, AddShoppingItemActivity.class);
                     intent.putExtra("id", (int) id);
+                    intent.putExtra("fromShoppingList", "fromShoppingList");
 
                     startActivity(intent);
                 }
